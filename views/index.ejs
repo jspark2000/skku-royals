@@ -1,10 +1,140 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>App</title>
-  </head>
-  <body>
-    <%=message%>
-  </body>
+<%- include('common/normal-html-head') %>
+    <body>
+        <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+            <div class="container d-flex align-items-center">
+                <a href="/" class="logo me-auto"><img src="/public/img/royals_logo.png" alt="ROYALS" class="img-fluid"></a>
+                <nav id="navbar" class="navbar order-last order-lg-0">
+                    <ul>
+                        <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                        <li><a class="nav-link scrollto active" href="#services">Tools</a></li>
+                    </ul>
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav>
+            </div>
+        </header>
+        
+        <!-- intro section -->
+        <section id="hero" class="clearfix">
+            <div class="container d-flex h-100">
+                <div class="row justify-content-center align-self-center" data-aos="fade-up">
+                    <div class="col-lg-6 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                        <h2>성균관대 미식축구부<br><span>STAFF WorkSpace</span></h2>
+                        <div>
+                            <a href="/auth/login" class="btn-get-started scrollto">로그인</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 intro-img order-lg-last order-first" data-aos="zoom-out" data-aos-delay="200">
+                        <img src="/public/img/intro-img4.svg" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- intro section end -->
+
+        <main id="main">
+            <!-- update info section -->
+            <section id="call-to-action" class="call-to-action">
+                <div class="container" data-aos="zoom-out">
+                    <div class="row">
+                        <div class="col-lg-9 text-center text-lg-start">
+                            <h3 class="cta-title">공지사항 (Ver 0.0.2)</h3>
+                            <p class="cta-text" style="padding-bottom: 0px;"><mm style="color:red;">출석관리(전체) / 부원관리(전체) / 시합관리(전체) / 관리자페이지(일부분) 만 사용 가능합니다.</mm><br><br>시작시간: 2022-12-31T08:00:00<br>종료시간: 2023-01-10T23:59:59<br></p>
+                        </div>
+                        <div class="col-lg-3 cta-btn-container">
+                            <div class="row">
+                                <div class="col text-center"><a class="cta-btn" style="width: 95%" href="https://github.com/jspark2000/royals-staff">릴리즈 노트</a></div>
+                                <div class="w-100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- update info section end -->
+
+            <!-- service section start -->
+            <section id="services" class="services">
+                <div class="container" data-aos="fade-up">
+                    <header class="section-header">
+                        <h3>Management Tools</h3>
+                        <p>로얄스를 관리할 수 있는 다양한 도구들</p>
+                    </header>
+                    <div class="row g-5">
+                        <div id="attendance" class="col-md-6 col-lg-4 wow bounceInUp" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="box">
+                                <div class="icon" style="background: #fff0da ;"><i class="bi bi-person-check" style="color: #e98e06"></i></div>
+                                <h4 class="title"><a href="/attendance">출석 관리</a></h4>
+                                <p class="description text-center">출석 관리 페이지로 이동합니다</p>
+                            </div>
+                        </div>
+                        <div id="people" class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+                            <div class="box">
+                                <div class="icon" style="background: #e1eeff;">
+                                    <i class="bi bi-people" style="color: #2282ff;"></i>
+                                </div>
+                                <h4 class="title">
+                                    <a href="/people">부원 관리</a>
+                                </h4>
+                                <p class="description text-center">부원 관리 페이지로 이동합니다</p>
+                            </div> 
+                        </div>
+                        <div id="game" class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="box">
+                                <div class="icon" style="background: #eafde7;">
+                                    <i class="bi bi-pin-angle" style="color:#41cf2e;"></i>
+                                </div>
+                                <h4 class="title">
+                                    <a href="/game">시합 관리</a>
+                                </h4>
+                                <p class="description text-center">시합 관리 페이지로 이동합니다</p>
+                            </div>
+                        </div>
+                        <div id="entertainment" class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="400">
+                            <div class="box">
+                                <div class="icon" style="background: #e6fdfc;">
+                                    <i class="bi bi-shield-fill-x" style="color: #3fcdc7;"></i>
+                                </div>
+                                <h4 class="title">
+                                    <a href="/entertainment">엔터테인먼트(준비중)</a>
+                                </h4>
+                                <p class="description text-center">내전 페이지로 이동합니다</p>
+                            </div> 
+                        </div>
+                        <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="500">
+                            <div class="box">
+                                <div class="icon" style="background: #ecebff;">
+                                    <i class="bi bi-lightbulb" style="color: #8660fe;"></i>
+                                </div>
+                                <h4 class="title">
+                                    <a href="#">실험실(준비중)</a>
+                                </h4>
+                                <p class="description text-center">실험적인 기능들을 만나보세요</p>
+                            </div> 
+                        </div>
+                        <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="700">
+                            <div class="box">
+                                <div id="server" class="icon" style="background: gray;">
+                                    <i class="bi bi-grid" style="color: whitesmoke;"></i>
+                                </div>
+                                <h4 class="title">
+                                    <a href="/admin">관리자 페이지</a>
+                                </h4>
+                                <p class="description text-center">관리자 페이지로 이동합니다</p>
+                            </div> 
+                        </div>
+                    </div>
+                  </div>
+              </div>
+            </section>
+            <!-- service section end -->
+        </main>
+        
+        <%- include('common/normal-footer') %>
+
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+        <%- include('common/normal-js') %>
+        
+    </body>
 </html>
