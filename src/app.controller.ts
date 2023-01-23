@@ -1,4 +1,5 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Render, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { AppService } from './app.service';
 
 @Controller()
@@ -7,7 +8,10 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async ejsTest() {
-    return { message: 'ejs TEST' };
+  async sessionTest(@Req() request: Request & { session: { visits: number } }) {
+    request.session.visits = request.session.visits
+      ? request.session.visits + 1
+      : 1;
+    return { message: request.session.visits };
   }
 }
