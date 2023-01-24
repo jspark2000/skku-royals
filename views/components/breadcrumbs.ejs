@@ -1,0 +1,11 @@
+<section id="breadcrumbs" class="breadcrumbs">
+  <div class="container">
+  <ol>
+    <% parents.forEach((parent) => { %>
+      <li><a href="<%=parent.url%>"><%=parent.title%></a></li>
+    <% }) %>
+    <li><%=pageTitle%></li>
+  </ol>
+  <h2><%=pageTitle%></h2>
+  </div>
+</section>
