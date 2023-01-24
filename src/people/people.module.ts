@@ -4,6 +4,6 @@ import { PeopleController } from './people.controller';
 
 @Module({
   providers: [PeopleService],
-  controllers: [PeopleController]
+  controllers: [PeopleController],
 })
 export class PeopleModule {}
