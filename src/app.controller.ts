@@ -8,10 +8,17 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async sessionTest(@Req() request: Request & { session: { visits: number } }) {
-    request.session.visits = request.session.visits
-      ? request.session.visits + 1
-      : 1;
-    return { message: request.session.visits };
+  async sessionTest(@Req() req: Request) {
+    if (req.session.authed) {
+      return {
+        authed: true,
+        userNickname: req.session.userInfo.userNickname,
+      };
+    } else {
+      return {
+        authed: false,
+        userNickname: undefined,
+      };
+    }
   }
 }
