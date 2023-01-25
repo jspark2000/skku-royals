@@ -34,7 +34,19 @@ export class AuthController {
         return res.redirect('/');
       });
     } catch (error) {
-      throw new HttpException('로그인 실패', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('로그인 실패', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  @Get('logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    req.session.destroy((error) => {
+      if (error)
+        throw new HttpException(
+          '로그아웃 실패',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      return res.redirect('/');
+    });
   }
 }
