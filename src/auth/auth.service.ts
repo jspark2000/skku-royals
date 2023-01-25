@@ -88,6 +88,10 @@ export class AuthService {
       return response.data;
     });
 
+    if (userProfile.result_data.profile_image_url === '')
+      userProfile.result_data.profile_image_url =
+        'https://ssl.pstatic.net/cmstatic/webclient/dres/20230116112132/images/template/profile_60x60.png';
+
     return userProfile;
   }
 
@@ -133,7 +137,9 @@ export class AuthService {
       data: {
         userKey: userProfile.result_data.user_key,
         userNickname: userProfile.result_data.name,
-        profileUrl: userProfile.result_data.profile_image_url,
+        profileUrl:
+          userProfile.result_data.profile_image_url ??
+          'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg?type=s75',
       },
       select: {
         userNickname: true,
