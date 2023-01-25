@@ -30,11 +30,47 @@ jobs:
           aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
       
       - uses: actions/checkout@v2
-      - name: Run scripts in server
+      - name: Run scripts in main_server
         uses: appleboy/ssh-action@master
         with:
           key: ${{ secrets.SSH_KEY }}
           host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          script: |
+            . ~/.nvm/nvm.sh
+            nvm use 19
+            cd nest/royals-staff
+            git reset --hard
+            git fetch
+            git pull
+            npm install
+            npx prisma generate
+            npm run build
+            npm run start:reload
+            
+      - name: Run scripts in sub_server_1
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.HOST_2 }}
+          username: ${{ secrets.USER }}
+          script: |
+            . ~/.nvm/nvm.sh
+            nvm use 19
+            cd nest/royals-staff
+            git reset --hard
+            git fetch
+            git pull
+            npm install
+            npx prisma generate
+            npm run build
+            npm run start:reload
+            
+      - name: Run scripts in sub_server_2
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.HOST_3 }}
           username: ${{ secrets.USER }}
           script: |
             . ~/.nvm/nvm.sh
