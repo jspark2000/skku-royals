@@ -45,6 +45,8 @@ jobs:
             git pull
             npm install
             npx prisma generate
+            npm run build
+            npm run start:reload
             
       - name: Remove Github Actions IP From Security Group
         run: |
