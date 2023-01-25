@@ -37,10 +37,15 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           script: |
+            . ~/.nvm/nvm.sh
+            nvm use 19
             cd nest/royals-staff
             git reset --hard
             git fetch
             git pull
+            npm install
+            npx prisma generate
+            npm start:dev
             
       - name: Remove Github Actions IP From Security Group
         run: |
