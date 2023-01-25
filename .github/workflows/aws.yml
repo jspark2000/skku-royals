@@ -37,7 +37,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           script: |
-            cd nest
+            cd nest/royals-staff
             git reset --hard
             git fetch
             git pull
