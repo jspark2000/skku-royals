@@ -1,6 +1,7 @@
-import { Controller, Get, Render, Req } from '@nestjs/common';
+import { Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { AppService } from './app.service';
+import { AuthGuard } from './common/guards/auth.guard';
 
 @Controller()
 export class AppController {
@@ -8,7 +9,7 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async sessionTest(@Req() req: Request) {
+  async getLandingPage(@Req() req: Request) {
     if (req.session.authed) {
       return {
         authed: true,
@@ -20,5 +21,18 @@ export class AppController {
         userNickname: undefined,
       };
     }
+  }
+
+  @Get('admin')
+  @Render('pages/admin/main')
+  @UseGuards(AuthGuard) // @UseGurads(AdminGuard): production
+  getAdminMainPage(@Req() req: Request) {
+    const userInfo: {
+      userNickname: string;
+      role: string;
+      profileURL: string;
+    } = req.session.userInfo;
+
+    return { userInfo };
   }
 }
