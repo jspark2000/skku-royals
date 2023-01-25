@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { PeopleModule } from './people/people.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { AttendanceModule } from './attendance/attendance.module';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AttendanceModule } from './attendance/attendance.module';
     AuthModule,
     PeopleModule,
     AttendanceModule,
+    GameModule,
   ],
   controllers: [AppController],
   providers: [AppService],

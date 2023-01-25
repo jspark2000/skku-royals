@@ -2,12 +2,12 @@ import { Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 
-@Controller('attendance')
+@Controller('game')
 @UseGuards(AuthGuard)
-export class AttendanceController {
+export class GameController {
   @Get()
-  @Render('pages/attendance/main')
+  @Render('pages/game/main')
   getMainPage(@Req() req: Request) {
-    return { userNickname: req.session.userInfo.userNickname };
+    return { userInfo: req.session.userInfo.userNickname };
   }
 }
