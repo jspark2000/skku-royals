@@ -5,6 +5,7 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 import { Client } from 'pg';
 import * as session from 'express-session';
+import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -43,6 +44,7 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
 
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/public' });

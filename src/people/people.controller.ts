@@ -9,6 +9,6 @@ export class PeopleController {
   @Get()
   @UseGuards(AdminGuard)
   getMainPage(@Res() res: Response) {
-    return res.render('pages/people/main');
+    res.render('pages/people/main');
   }
 }
