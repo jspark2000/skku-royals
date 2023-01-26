@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../common/normal-html-head') %>
+  </head>
+  <body>
+    <%- include('../../components/inner-page-header') %>
+    
+    <main id="main">
+      <%- include('../../components/breadcrumbs', { pageTitle: "출석 명단 확인", parents: [{ title: 'Home', url: '/' }, { title: '출석관리', url: '/attendance' }, { title: '출석명단 날짜 선택', url: '/attendance/list' }] }) %>
+      
+      <section class="inner-page my-3">
+        <div class="container align-content-center text-center" data-aos="fade-in">
+          <header class="section-header text-center pt-5">
+            <h3><%=date.toISOString().slice(0, 10)%> 출석 명단</h3>
+            <p>해당 날짜의 출석 명단을 확인하세요</p>
+          </header>
+          <table class="table text-center">
+            <tr class="table-dark">
+              <th>#</th>
+              <th>이름</th>
+              <th>입학년도</th>
+              <th>출석조사응답</th>
+              <th>운동위치</th>
+              <th>체크여부</th>
+            </tr>
+            <% attendances.forEach((attendance, index)=>{ %>
+              <tr>
+                <td><%=index + 1%></td>
+                <td><%=attendance.name%></td>
+                <td><%=attendance.studentNo%></td>
+                <td><span class='badge <%=(!attendance.survey) ? "bg-danger" : (attendance.late) ? "bg-warning": "bg-success"%>'><%=(!attendance.survey) ? "불참" : (attendance.rate) ? "늦참": "참석"%></span></td>
+                <td><%=(attendance.location === "integrated") ? "통합" : (attendance.location === "seoul") ? "명륜" : "율전"%> </td>
+                <td><%=(attendance.checked) ? "체크완료" : "체크전"%></td>
+              </tr>
+            <% }) %>
+          </table>
+          <a href="/attendance/list" class="btn btn-secondary mt-2 mb-5">뒤로가기</a>
+        </div>
+      </section>
+    </main>
+    
+    <%- include('../../common/normal-js') %>
+  </body>
+</html>
