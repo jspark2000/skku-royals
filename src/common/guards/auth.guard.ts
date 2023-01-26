@@ -2,8 +2,9 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  UnauthorizedException,
+  HttpException,
 } from '@nestjs/common';
+import { HttpStatusCode } from 'axios';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 
@@ -13,7 +14,11 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request: Request = context.switchToHttp().getRequest();
-    if (!request.session.authed) throw new UnauthorizedException();
+    if (!request.session.authed)
+      throw new HttpException(
+        '로그인이 필요합니다.',
+        HttpStatusCode.Unauthorized,
+      );
     return true;
   }
 }

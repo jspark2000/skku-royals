@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../common/normal-html-head') %>
+  </head>
+  <body>
+    <%- include('../../components/inner-page-header') %>
+    
+    <main id="main">
+      <%- include('../../components/breadcrumbs', { pageTitle: "부원 명단 확인", parents: [{ title: 'Home', url: '/' }, { title: '부원관리', url: '/people' } ] }) %>
+      
+      <section class="inner-page my-3">
+        <div class="container align-content-center text-center" data-aos="fade-in">
+          <header class="section-header text-center pt-5">
+            <h3>로얄스 부원 명단</h3>
+            <p>전체 부원 명단 테이블을 확인할 수 있습니다</p>
+          </header>
+          <table class="table text-center">
+            <tr class="table-dark">
+              <th>#</th>
+              <th>이름</th>
+              <th>입학년도</th>
+              <th>오펜스</th>
+              <th>디펜스</th>
+              <th>스페셜</th>
+            </tr>
+            <% peopleList.forEach((people, index)=>{ %>
+              <tr>
+                <td><%=index + 1 %></td>
+                <td><%=people.name%></td>
+                <td><%=people.studentNo%></td>
+                <td><%=people.offPosition%></td>
+                <td><%=people.defPosition%></td>
+                <td><%=people.splPosition%></td>
+              </tr>
+            <% }) %>
+          </table>
+          <a href="/people" class="btn btn-secondary mt-2 mb-5">뒤로가기</a>
+        </div>
+      </section>
+    </main>
+    
+    <%- include('../../common/normal-js') %>
+  </body>
+</html>
