@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../common/normal-html-head') %>
+  </head>
+  <body>
+    <%- include('../../components/inner-page-header') %>
+
+    <main id="main">
+      <%- include('../../components/breadcrumbs', { pageTitle: "부원 명단 확인", parents: [{ title: 'Home', url: '/' }, { title: '부원관리', url: '/people' } ] }) %>
+
+      <section class="services pt-4">
+        <div class="container d-flex align-items-center" data-aos="zoom-in">
+          <div class="card border-white shadow mx-auto my-5" style="width: 23rem">
+            <div class="card-header bg-dark text-white fw-bold">업데이트할 부원 정보 입력</div>
+            <div class="card-body">
+              <form method="post" action="/people/position">
+                <div class="form-group">
+                  <label for="name" class="fw-bold">이름</label>
+                  <input type="text" id="name" class="form-control mt-sm-1" name="name" placeholder="고병산" aria-describedby="name_help" />
+                  <small id="name_help" class="form-text text-muted">이름은 공백없는 한글로 작성합니다.</small>
+                </div>
+                <div class="form-group mt-1">
+                  <label for="student_no" class="fw-bold">입학년도(학번)</label>
+                  <input type="number" id="student_no" class="form-control mt-sm-1" name="studentNo" placeholder="2019" aria-describedby="student_no_help" />
+                  <small id="student_no_help" class="form-text text-muted">입학 년도는 4자리로 이루어진 양의 정수입니다.</small>
+                </div>
+                <div class="form-group mt-1">
+                  <label for="off_position" class="fw-bold">오펜스 포지션 선택</label>
+                  <select id="off_position" class="form-control mt-sm-1" name="offPosition" aria-describedby="off_position_help">
+                    <option value="STAFF">STAFF</option>
+                    <option value="QB">QB</option>
+                    <option value="OL">OL</option>
+                    <option value="WR">WR</option>
+                    <option value="RB">RB</option>
+                  </select>
+                  <small id="off_position_help" class="form-text text-muted">드롭다운 목록에서 오펜스 포지션을 선택합니다.</small>
+                </div>
+                <div class="form-group mt-1">
+                  <label for="def_position" class="fw-bold">디펜스 포지션 선택</label>
+                  <select id="def_position" class="form-control mt-sm-1" name="defPosition" aria-describedby="def_position_help">
+                    <option value="STAFF">STAFF</option>
+                    <option value="DL">DL</option>
+                    <option value="LB">LB</option>
+                    <option value="DB">DB</option>
+                  </select>
+                  <small id="def_position_help" class="form-text text-muted">드롭다운 목록에서 디펜스 포지션을 선택합니다.</small>
+                </div>
+                <div class="form-group mt-1 mb-3">
+                  <label for="spl_position" class="fw-bold">스페셜 포지션 선택</label>
+                  <select id="spl_position" class="form-control mt-sm-1" name="splPosition" aria-describedby="spl_position_help">
+                    <option value="STAFF">STAFF</option>
+                    <option value="NORMAL">NORMAL(없는경우)</option>
+                    <option value="KICKER">KICKER</option>
+                    <option value="SNAPPER">SNAPPER</option>
+                    <option value="RETURNER">RETURNER</option>
+                  </select>
+                  <small id="spl_position_help" class="form-text text-muted">드롭다운 목록에서 스페셜 포지션을 선택합니다.</small>
+                </div>
+                <button type="submit" class="btn btn-success me-1">제출하기</button>
+                <a href="/people" class="btn btn-primary">뒤로가기</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('../../common/normal-js') %>
+  </body>
+</html>
