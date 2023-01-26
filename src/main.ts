@@ -45,7 +45,11 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/public' });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));

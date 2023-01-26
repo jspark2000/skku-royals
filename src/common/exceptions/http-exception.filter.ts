@@ -12,12 +12,21 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-    const msg = `[Status: ${status}] ${exception.getResponse()}`;
+    const error = exception.getResponse() as
+      | string
+      | { error: string; statusCode: number; message: string | null };
+    const msg = `[Status Code: ${status}]\\n${exception.getResponse()}`;
 
-    if (status === 404) {
-      response.render('redirect_with_msg', {
-        msg: '[Status: 404] 존재하지 않는 페이지입니다.',
-      });
+    if (typeof error !== 'string') {
+      if (error.statusCode === 404) {
+        response.render('redirect_with_msg', {
+          msg: `[Status Code: 404]\\n존재하지 않는 페이지입니다.`,
+        });
+      } else {
+        response.render('redirect_with_msg', {
+          msg: `[Status Code: ${error.statusCode}]\\n${error.message}`,
+        });
+      }
     } else {
       response.render('redirect_with_msg', { msg });
     }
