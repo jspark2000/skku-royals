@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GameInfoDTO } from './dto/gameInfo.dto';
+import { GetGameResultRequestDTO } from './dto/getGameResultRequest.dto';
+import { GetGameResultResponseDTO } from './dto/getGameResultResponse.dto';
 import { RegisterGameRequestDTO } from './dto/registerGameRequest.dto';
 import { UpdateGameRequestDTO } from './dto/updateGameRequest.dto';
 
@@ -50,5 +52,25 @@ export class GameService {
     });
 
     return updateResult;
+  }
+
+  async getGameResult(
+    gameDTO: GetGameResultRequestDTO,
+  ): Promise<GetGameResultResponseDTO> {
+    const gameResult = await this.prismaService.games.findUniqueOrThrow({
+      where: {
+        gameDate: gameDTO.date,
+      },
+      select: {
+        gameName: true,
+        gameDate: true,
+        homeTeamName: true,
+        homeTeamScore: true,
+        awayTeamName: true,
+        awayTeamScore: true,
+      },
+    });
+
+    return gameResult;
   }
 }

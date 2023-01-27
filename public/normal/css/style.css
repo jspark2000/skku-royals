@@ -1838,3 +1838,43 @@ section {
 #footer .credits a:hover {
   color: #0a98c0;
 }
+
+.game-result h1 {
+  font-size: 100px;
+}
+.game-result h2 {
+  font-size: 22px;
+  font-weight: 500;
+}
+.game-result h4 {
+  font-size: 17px;
+  font-weight: 700;
+}
+.game-result h5 {
+  font-size: 15px;
+  font-weight: 500;
+}
+p {
+  font-size: 15px;
+  font-weight: 300;
+}
+@media (max-width: 800px) {
+  .game-result h1 {
+    font-size: 40px;
+  }
+  .game-result h2 {
+    font-weight: 500;
+    font-size: 20px;
+  }
+  .game-result h4 {
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .game-result h5 {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  p {
+    font-size: 12px;
+  }
+}

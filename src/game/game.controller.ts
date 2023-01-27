@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Post,
   Put,
+  Query,
   Render,
   Req,
   UseGuards,
@@ -14,6 +15,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Request } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { SessionUserInfo } from 'src/common/interfaces/sessionUserInfo.interface';
+import { GetGameResultRequestDTO } from './dto/getGameResultRequest.dto';
 import { RegisterGameRequestDTO } from './dto/registerGameRequest.dto';
 import { UpdateGameRequestDTO } from './dto/updateGameRequest.dto';
 import { GameService } from './game.service';
@@ -79,6 +81,47 @@ export class GameController {
       return { success: true, id, userInfo };
     } catch (error) {
       throw error;
+    }
+  }
+
+  @Get('list')
+  @Render('pages/game/list')
+  async getGameListPage(@Req() req: Request) {
+    const userInfo: SessionUserInfo = req.session.userInfo;
+    try {
+      const gameInfos = await this.gameService.getGameInfos();
+      return { userInfo, gameInfos };
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new HttpException(
+          '시합 정보를 불러오지 못했습니다. 다시 시도해주세요',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  @Get('list/detail')
+  @Render('pages/game/list-detail')
+  async getGameResult(
+    @Req() req: Request,
+    @Query() gameDTO: GetGameResultRequestDTO,
+  ) {
+    const userInfo: SessionUserInfo = req.session.userInfo;
+    try {
+      const gameResult = await this.gameService.getGameResult(gameDTO);
+      return { userInfo, gameResult };
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new HttpException(
+          '시합 정보를 불러오지 못했습니다. 다시 시도해주세요',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      } else {
+        throw error;
+      }
     }
   }
 }
