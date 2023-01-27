@@ -29,6 +29,7 @@ export class AuthController {
     try {
       const sessionInfo = await this.authService.loginOrRegister(code);
       req.session.userInfo = sessionInfo.userInfo;
+      req.session.key = sessionInfo.key;
       req.session.authed = sessionInfo.authed;
       req.session.save(() => {
         return res.redirect('/');

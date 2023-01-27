@@ -50,7 +50,7 @@ export class PeopleController {
   }
 
   @Post('position')
-  @Render('redirect_with_msg')
+  @Render('back_with_msg')
   async alterPosition(
     @Body() alterPositionRequestDTO: AlterPositionRequestDTO,
   ) {
