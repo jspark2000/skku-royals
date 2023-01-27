@@ -1,7 +1,7 @@
 export interface SessionInfo {
   authed: boolean;
+  key: string;
   userInfo: {
-    userKey: string;
     userNickname: string;
     profileURL: string;
     role: string;

@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AttendanceCheckRequestDTO } from './dto/attendanceCheckRequest.dto';
 import { AttendanceDatesListResponseDTO } from './dto/attendanceDateListResponse.dto';
 import { DailyAttendancesRequestDTO } from './dto/dailyAttendancesRequest.dto';
 import { DailyAttendancesResponseDTO } from './dto/dailyAttendancesResponse.dto';
@@ -71,5 +72,39 @@ export class AttendanceService {
     };
 
     return dailyAttendances;
+  }
+
+  async attendanceCheck(
+    attendanceDTO: AttendanceCheckRequestDTO,
+  ): Promise<{ id: number }> {
+    const { uid } = await this.prismaService.people.findUniqueOrThrow({
+      where: {
+        name_studentNo: {
+          name: attendanceDTO.name,
+          studentNo: attendanceDTO.studentNo,
+        },
+      },
+      select: {
+        uid: true,
+      },
+    });
+
+    const updateResult = await this.prismaService.attendance.update({
+      where: {
+        uid_day_location: {
+          uid,
+          day: attendanceDTO.date,
+          location: attendanceDTO.location,
+        },
+      },
+      data: {
+        checked: true,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return updateResult;
   }
 }

@@ -19,16 +19,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (typeof error !== 'string') {
       if (error.statusCode === 404) {
-        response.render('redirect_with_msg', {
+        response.status(status).render('redirect_with_msg', {
           msg: `[Status Code: 404]\\n존재하지 않는 페이지입니다.`,
         });
       } else {
-        response.render('redirect_with_msg', {
+        response.status(status).render('redirect_with_msg', {
           msg: `[Status Code: ${error.statusCode}]\\n${error.message}`,
         });
       }
     } else {
-      response.render('redirect_with_msg', { msg });
+      response.status(status).render('redirect_with_msg', { msg });
     }
   }
 }

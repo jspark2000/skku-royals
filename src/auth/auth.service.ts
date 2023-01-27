@@ -49,8 +49,8 @@ export class AuthService {
 
     return {
       authed: true,
+      key: userProfile.result_data.user_key,
       userInfo: {
-        userKey: userProfile.result_data.user_key,
         userNickname: userProfile.result_data.name,
         profileURL: userProfile.result_data.profile_image_url,
         role,

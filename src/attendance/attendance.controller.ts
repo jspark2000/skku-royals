@@ -1,8 +1,21 @@
-import { Controller, Get, Query, Render, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Put,
+  Query,
+  Render,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Request } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { SessionUserInfo } from 'src/common/interfaces/sessionUserInfo.interface';
 import { AttendanceService } from './attendance.service';
+import { AttendanceCheckRequestDTO } from './dto/attendanceCheckRequest.dto';
 import { DailyAttendancesRequestDTO } from './dto/dailyAttendancesRequest.dto';
 
 @Controller('attendance')
@@ -45,6 +58,52 @@ export class AttendanceController {
       return { userInfo, ...dailyAttendances };
     } catch (error) {
       throw error;
+    }
+  }
+
+  @Get('list/check')
+  @Render('pages/attendance/check')
+  async getDailyAttendanceChecklist(
+    @Req() req: Request,
+    @Query() attendanceDTO: DailyAttendancesRequestDTO,
+  ) {
+    const userInfo: SessionUserInfo = req.session.userInfo;
+    try {
+      const dailyAttendances = await this.attendanceService.getDailyAttendances(
+        attendanceDTO,
+      );
+
+      return { userInfo, ...dailyAttendances };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Put('list/check')
+  async attendanceCheck(
+    @Req() req: Request,
+    @Body() attendanceDTO: AttendanceCheckRequestDTO,
+  ) {
+    const userInfo: SessionUserInfo = req.session.userInfo;
+    try {
+      const { id } = await this.attendanceService.attendanceCheck(
+        attendanceDTO,
+      );
+
+      return {
+        userInfo,
+        success: true,
+        id,
+      };
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new HttpException(
+          '출석 체크에 실패했습니다.',
+          HttpStatus.UNPROCESSABLE_ENTITY,
+        );
+      } else {
+        throw error;
+      }
     }
   }
 }
