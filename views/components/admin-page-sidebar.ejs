@@ -4,7 +4,7 @@
   <li class="nav-heading">관리자 기능</li>
 
   <li class="nav-item">
-      <a class="nav-link <% (select !== 'main') ? 'collapsed' : '' %>" href="/admin">
+      <a class="nav-link <%= (select !== 'main') ? 'collapsed' : '' %>" href="/admin">
       <i class="bi bi-grid"></i>
       <span>대시보드</span>
       </a>
@@ -14,14 +14,14 @@
       <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-shield-lock"></i><span>로그인 관리</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="forms-nav" class="nav-content collapse <% (select !== 'auth') ? '' : 'show' %>" data-bs-parent="#sidebar-nav">
+      <ul id="forms-nav" class="nav-content collapse <%= (select !== 'auth') ? '' : 'show' %>" data-bs-parent="#sidebar-nav">
       <li>
-          <a href="/admin/auth/account-list" <% (select_child !== 'auth/account-list') ? '' : 'class="active"' %> >
+          <a href="/admin/auth/account-list" <%= (select_child !== 'auth/account-list') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>계정 목록</span>
           </a>
       </li>
       <li>
-          <a href="/admin/auth/account-role" <% (select_child !== 'auth/account-role') ? '' : 'class="active"' %> >
+          <a href="/admin/auth/account-role" <%= (select_child !== 'auth/account-role') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>계정 권한 관리</span>
           </a>
       </li>
@@ -32,14 +32,14 @@
       <a class="nav-link collapsed" data-bs-target="#attendance-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-person-check"></i><span>출석 관리</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="attendance-nav" class="nav-content collapse <% (select !== 'attendance') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
+      <ul id="attendance-nav" class="nav-content collapse <%= (select !== 'attendance') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
       <li>
-          <a href="/admin/attendance/update" <% (select_child !== 'attendance/update') ? '' : 'class="active"' %> >
+          <a href="/admin/attendance/update" <%= (select_child !== 'attendance/update') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>출석정보 수정</span>
           </a>
       </li>
       <li>
-          <a href="/admin/attendance/delete" <% (select_child !== 'attendance/delete') ? '' : 'class="active"' %> >
+          <a href="/admin/attendance/delete" <%= (select_child !== 'attendance/delete') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>출석정보 삭제</span>
           </a>
       </li>
@@ -50,14 +50,14 @@
       <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-people"></i><span>부원 관리</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="tables-nav" class="nav-content collapse <% (select !== 'people') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
+      <ul id="tables-nav" class="nav-content collapse <%= (select !== 'people') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
       <li>
-          <a href="/admin/people/register" <% (select_child !== 'people/register') ? '' : 'class="active"' %> >
+          <a href="/admin/people/register" <%= (select_child !== 'people/register') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>신규부원 등록</span>
           </a>
       </li>
       <li>
-          <a href="/admin/people/delete" <% (select_child !== 'people/delete') ? '' : 'class="active"' %> >
+          <a href="/admin/people/delete" <%=(select_child !== 'people/delete') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>부원정보 삭제</span>
           </a>
       </li>
@@ -68,14 +68,14 @@
       <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-bar-chart"></i><span>시합후기 관리</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="charts-nav" class="nav-content collapse <% (select !== 'game-review') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
+      <ul id="charts-nav" class="nav-content collapse <%= (select !== 'game-review') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
       <li>
-          <a href="/admin/game-review/set-date" <% (select_child !== 'game-review/set-date') ? '' : 'class="active"' %> >
+          <a href="/admin/game-review/set-date" <%= (select_child !== 'game-review/set-date') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>마감날짜 설정</span>
           </a>
       </li>
       <li>
-          <a href="/admin/game-review/list" <% (select_child !== 'game-review/list') ? '' : 'class="active"' %> >
+          <a href="/admin/game-review/list" <%= (select_child !== 'game-review/list') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>시합후기 작성현황</span>
           </a>
       </li>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../../common/admin-html-head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <%- include('../../../components/admin-page-header', { userInfo } ) %> <%- include('../../../components/admin-page-sidebar', { select: 'auth', select_child: 'auth/account-list' } ) %>
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>계정 목록</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin">관리자 페이지</a></li>
+            <li class="breadcrumb-item active">계정 목록</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section">
+        <div class="row align-items-top">
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">밴드 계정목록 업데이트 하기</h5>
+                <div class="card-body text-center">
+                  <a href="#" class="btn btn-success">업데이트</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- People Table -->
+          <div class="col-lg-8">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <h5 class="card-title">밴드 계정 목록 테이블</h5>
+                <table class="table table-borderless datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">밴드 닉네임</th>
+                      <th scope="col">식별키</th>
+                      <th scope="col">계정 삭제</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% bandUserList.forEach((bandUser, index) => { %>
+                    <tr>
+                      <th scope="row"><a href="#"><%=index + 1%></a></th>
+                      <td><%=bandUser.userNickname%></td>
+                      <td><%=bandUser.userKey%></td>
+                      <td><button class="btn btn-danger" onclick="deleteBandUser('<%=bandUser.userKey%>')">삭제</button></td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- End People Table -->
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <%- include('../../../common/admin-footer') %>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <%- include('../../../common/admin-js') %>
+
+    <script>
+      async function deleteBandUser(userKey) {
+        const result = await axios({
+          method: 'delete',
+          data: {
+            userKey,
+          },
+          url: location.href
+        }).then((result) => {
+          return result.data;
+        }).catch((error) => {
+          alert('삭제에 실패했습니다.')
+        })
+        
+        alert(`삭제에 성공했습니다.\\n닉네임:${result.userNickname}`);
+        location.reload();
+      }
+    </script>
+  </body>
+</html>

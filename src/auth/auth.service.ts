@@ -6,6 +6,7 @@ import { UserProfile } from './interfaces/userProfile.interface';
 import { BandList } from './interfaces/bandList.interface';
 import { BandUser } from '@prisma/client';
 import { SessionInfo } from './interfaces/sessionInfo.interface';
+import { BandUserDTO } from './dto/bandUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,32 @@ export class AuthService {
 
   getOAuth2URL(): string {
     return `${this.getAuthCodeURL}?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URL}`;
+  }
+
+  async getBandUserList(): Promise<BandUserDTO[]> {
+    const bandUserList = await this.prismaService.bandUser.findMany({
+      select: {
+        userKey: true,
+        userNickname: true,
+        profileUrl: true,
+        role: true,
+      },
+    });
+
+    return bandUserList;
+  }
+
+  async deleteBandUser(userKey: string): Promise<{ userNickname: string }> {
+    const deleteResult = await this.prismaService.bandUser.delete({
+      where: {
+        userKey,
+      },
+      select: {
+        userNickname: true,
+      },
+    });
+
+    return deleteResult;
   }
 
   async loginOrRegister(code: string): Promise<SessionInfo> {
