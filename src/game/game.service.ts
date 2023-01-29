@@ -11,7 +11,7 @@ export class GameService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getGameInfos(): Promise<GameInfoDTO[]> {
-    const gameInfos = await this.prismaService.games.findMany({
+    const gameInfos = await this.prismaService.game.findMany({
       select: {
         gameName: true,
         gameDate: true,
@@ -25,7 +25,7 @@ export class GameService {
   }
 
   async registerGame(gameDTO: RegisterGameRequestDTO): Promise<{ id: number }> {
-    const createResult = await this.prismaService.games.create({
+    const createResult = await this.prismaService.game.create({
       data: {
         ...gameDTO,
       },
@@ -38,7 +38,7 @@ export class GameService {
   }
 
   async updateGame(gameDTO: UpdateGameRequestDTO): Promise<{ id: number }> {
-    const updateResult = await this.prismaService.games.update({
+    const updateResult = await this.prismaService.game.update({
       where: {
         gameDate: gameDTO.gameDate,
       },
@@ -57,7 +57,7 @@ export class GameService {
   async getGameResult(
     gameDTO: GetGameResultRequestDTO,
   ): Promise<GetGameResultResponseDTO> {
-    const gameResult = await this.prismaService.games.findUniqueOrThrow({
+    const gameResult = await this.prismaService.game.findUniqueOrThrow({
       where: {
         gameDate: gameDTO.date,
       },

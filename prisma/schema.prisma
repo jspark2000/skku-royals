@@ -10,15 +10,15 @@ datasource db {
 model Attendance {
   id       Int      @id @default(autoincrement())
   uid      String   @db.Uuid
-  day      DateTime @db.Timestamp(6)
+  date      DateTime @db.Timestamp(6)
   location String   @default("integrated") @db.VarChar(20)
-  rate     Boolean
+  late     Boolean
   survey   Boolean
   checked  Boolean  @default(false)
   isGame   Boolean  @default(false)
   People   People   @relation(fields: [uid], references: [uid], onDelete: Cascade, map: "Attendance_People_uid_fk")
 
-  @@unique([uid, day, location], map: "uid_day_location")
+  @@unique([uid, date, location], map: "uid_date_location")
 }
 
 model BandUser {
@@ -37,7 +37,7 @@ model GameReview {
   submissionTime DateTime @db.Timestamp(6)
 }
 
-model Games {
+model Game {
   id            Int       @id @default(autoincrement())
   gameName      String    @unique @db.VarChar(100)
   gameDate      DateTime  @unique @db.Timestamp(6)
@@ -68,7 +68,7 @@ model People {
   defPosition String       @default("no") @db.VarChar(20)
   splPosition String       @default("no") @db.VarChar(20)
   Attendance  Attendance[]
-  BandUser    BandUser     @relation(fields: [bandUserKey], references: [userKey], onDelete: NoAction, onUpdate: NoAction, map: "People_BandUser_userKey_fk")
+  BandUser    BandUser     @relation(fields: [bandUserKey], references: [userKey], onDelete: Cascade, onUpdate: Cascade, map: "People_BandUser_userKey_fk")
 
   @@unique([name, studentNo], map: "name_studentNo")
 }
