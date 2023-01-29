@@ -12,7 +12,7 @@ export class ApiService {
     const registerResult = await this.prismaService.googleSheet.create({
       data: {
         records: attendanceDTO.attendances,
-        columns: JSON.stringify(attendanceDTO.columnNames),
+        columns: attendanceDTO.columnNames,
         sheetName: attendanceDTO.sheetName,
         createdAt: attendanceDTO.createdAt,
       },

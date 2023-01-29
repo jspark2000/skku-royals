@@ -3,12 +3,13 @@ import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
 
 export class RegisterAttendanceRequestDTO {
   @IsArray()
-  columnNames: string[];
+  columnNames: string;
 
   @IsString()
   attendances: string;
 
   @IsNumber()
+  @Type(() => Number)
   attendances_len: number;
 
   @IsDate()
