@@ -4,6 +4,8 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Logger,
+  Param,
   ParseIntPipe,
   Post,
   Put,
@@ -19,6 +21,7 @@ import { SessionUserInfo } from 'src/common/interfaces/sessionUserInfo.interface
 import { AttendanceService } from './attendance.service';
 import { AttendanceCheckRequestDTO } from './dto/attendanceCheckRequest.dto';
 import { DailyAttendancesRequestDTO } from './dto/dailyAttendancesRequest.dto';
+import { RegisterManyAttendanceDTO } from './dto/registerManyAttendance.dto';
 import { RegisterOneAttendanceDTO } from './dto/registerOneAttendance.dto';
 
 @Controller('attendance')
@@ -130,9 +133,10 @@ export class AttendanceController {
       const { id } = await this.attendanceService.registerOneAttendance(
         attendanceDTO,
       );
-      return { msg: '출석 등록에 성공했습니다.\nid: ' + id };
+      return { msg: `출석 등록에 성공했습니다.\\nid: ${id}` };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
+        Logger.log(error);
         throw new HttpException(
           '부원정보가 존재하지 않습니다.',
           HttpStatus.UNPROCESSABLE_ENTITY,
@@ -144,13 +148,36 @@ export class AttendanceController {
   }
 
   @Get('register/many')
-  // @Render('pages/attendance/register-many')
-  async getDetailAttendanceSurveyResult(@Query('id', ParseIntPipe) id: number) {
-    try {
-      const surveyResult =
-        await this.attendanceService.getDetailAttendanceSurveyResult(id);
+  @Render('pages/attendance/register-many')
+  async getRegisterManyAttendancePage(@Req() req: Request) {
+    const userInfo: SessionUserInfo = req.session.userInfo;
+    return { userInfo };
+  }
 
-      return { surveyResult };
+  @Get('register/many/:id')
+  async getDetailAttendanceSurveyResult(
+    @Req() req: Request,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const userInfo: SessionUserInfo = req.session.userInfo;
+    try {
+      const data = await this.attendanceService.getDetailAttendanceSurveyResult(
+        id,
+      );
+      return { userInfo, data };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post('register/many')
+  async registerManyAttendances(
+    @Body() attendanceDTO: RegisterManyAttendanceDTO,
+  ) {
+    try {
+      const { count, success } =
+        await this.attendanceService.registerManyAttendances(attendanceDTO);
+      return { count, success };
     } catch (error) {
       throw error;
     }

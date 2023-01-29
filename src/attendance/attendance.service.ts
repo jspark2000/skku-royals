@@ -5,6 +5,8 @@ import { AttendanceDatesListResponseDTO } from './dto/attendanceDateListResponse
 import { AttendanceSurveyResultFileDTO } from './dto/attendanceSurveyResultFile.dto';
 import { DailyAttendancesRequestDTO } from './dto/dailyAttendancesRequest.dto';
 import { DailyAttendancesResponseDTO } from './dto/dailyAttendancesResponse.dto';
+import { GetDetailAttendanceSurveyResultDTO } from './dto/getDetailAttendanceSurveyResult.dto';
+import { RegisterManyAttendanceDTO } from './dto/registerManyAttendance.dto';
 import { RegisterOneAttendanceDTO } from './dto/registerOneAttendance.dto';
 
 @Injectable()
@@ -128,14 +130,20 @@ export class AttendanceService {
     return attendanceSurveyResultFiles;
   }
 
-  async getDetailAttendanceSurveyResult(id: number) {
+  async getDetailAttendanceSurveyResult(
+    id: number,
+  ): Promise<GetDetailAttendanceSurveyResultDTO> {
     const resultFile = await this.prismaService.googleSheet.findUniqueOrThrow({
       where: {
         id,
       },
     });
 
-    const surveyResult = JSON.parse(resultFile.records);
+    const surveyResult = {
+      id: resultFile.id,
+      columns: JSON.parse(resultFile.columns),
+      attendances: JSON.parse(resultFile.records),
+    };
 
     return surveyResult;
   }
@@ -185,5 +193,62 @@ export class AttendanceService {
     });
 
     return registerResult;
+  }
+
+  async registerManyAttendances(
+    attendanceDTO: RegisterManyAttendanceDTO,
+  ): Promise<{ count: number; success: boolean }> {
+    let registerationCount = 0;
+
+    for (let i = 0; i < attendanceDTO.attendances.length; i++) {
+      const uid = await this.prismaService.people.findUnique({
+        where: {
+          name_studentNo: {
+            name: attendanceDTO.attendances[i].name,
+            studentNo: attendanceDTO.attendances[i].studentNo,
+          },
+        },
+        select: {
+          uid: true,
+        },
+      });
+      if (uid) {
+        const result = await this.prismaService.attendance.upsert({
+          where: {
+            uid_day_location: {
+              uid: uid.uid,
+              day: attendanceDTO.attendances[i].date,
+              location: attendanceDTO.attendances[i].location,
+            },
+          },
+          create: {
+            day: attendanceDTO.attendances[i].date,
+            location: attendanceDTO.attendances[i].location,
+            survey: attendanceDTO.attendances[i].survey,
+            rate: attendanceDTO.attendances[i].late,
+            isGame: false,
+            People: {
+              connect: {
+                uid: uid.uid,
+              },
+            },
+          },
+          update: {
+            survey: attendanceDTO.attendances[i].survey,
+            rate: attendanceDTO.attendances[i].late,
+          },
+          select: {
+            id: true,
+          },
+        });
+        if (result) {
+          registerationCount += 1;
+        }
+      }
+    }
+
+    const success = registerationCount > 0 ? true : false;
+
+    return { count: registerationCount, success };
   }
 }
