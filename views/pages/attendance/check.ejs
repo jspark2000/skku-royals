@@ -30,7 +30,7 @@
                 <td><%=index + 1%></td>
                 <td><%=attendance.name%></td>
                 <td><%=attendance.studentNo%></td>
-                <td><span class='badge <%=(!attendance.survey) ? "bg-danger" : (attendance.late) ? "bg-warning": "bg-success"%>'><%=(!attendance.survey) ? "불참" : (attendance.rate) ? "늦참": "참석"%></span></td>
+                <td><span class='badge <%=(!attendance.survey) ? "bg-danger" : (attendance.late) ? "bg-warning": "bg-success"%>'><%=(!attendance.survey) ? "불참" : (attendance.late) ? "늦참": "참석"%></span></td>
                 <td><%=(attendance.location === "integrated") ? "통합" : (attendance.location === "seoul") ? "명륜" : "율전"%> </td>
                 <% if (attendance.checked) { %>
                   <td><button class="btn btn-outline-success" disabled>완료</button></td>
