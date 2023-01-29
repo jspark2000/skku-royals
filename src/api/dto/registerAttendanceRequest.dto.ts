@@ -1,8 +1,8 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class RegisterAttendanceRequestDTO {
-  @IsArray()
+  @IsString()
   columnNames: string;
 
   @IsString()
