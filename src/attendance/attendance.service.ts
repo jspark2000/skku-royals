@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AttendanceCheckRequestDTO } from './dto/attendanceCheckRequest.dto';
 import { AttendanceDatesListResponseDTO } from './dto/attendanceDateListResponse.dto';
@@ -16,12 +16,12 @@ export class AttendanceService {
   async getAttendanceDatesList(): Promise<AttendanceDatesListResponseDTO[]> {
     const dates = await this.prismaService.attendance.findMany({
       select: {
-        day: true,
+        date: true,
       },
       orderBy: {
-        day: 'desc',
+        date: 'desc',
       },
-      distinct: ['day'],
+      distinct: ['date'],
     });
 
     if (dates.length === 0) {
@@ -40,7 +40,7 @@ export class AttendanceService {
     const attendances = await this.prismaService.attendance.findMany({
       select: {
         survey: true,
-        rate: true,
+        late: true,
         location: true,
         checked: true,
         People: {
@@ -50,7 +50,7 @@ export class AttendanceService {
           },
         },
       },
-      where: { day: attendanceRequestDTO.date },
+      where: { date: attendanceRequestDTO.date },
       orderBy: [{ People: { studentNo: 'asc' } }, { People: { name: 'asc' } }],
     });
 
@@ -68,7 +68,7 @@ export class AttendanceService {
           name: attendance.People.name,
           studentNo: attendance.People.studentNo,
           survey: attendance.survey,
-          late: attendance.rate,
+          late: attendance.late,
           location: attendance.location,
           checked: attendance.checked,
         };
@@ -95,9 +95,9 @@ export class AttendanceService {
 
     const updateResult = await this.prismaService.attendance.update({
       where: {
-        uid_day_location: {
+        uid_date_location: {
           uid,
-          day: attendanceDTO.date,
+          date: attendanceDTO.date,
           location: attendanceDTO.location,
         },
       },
@@ -166,7 +166,7 @@ export class AttendanceService {
     const checkExistAttendance = await this.prismaService.attendance.findFirst({
       where: {
         uid: uid,
-        day: attendanceDTO.date,
+        date: attendanceDTO.date,
       },
     });
 
@@ -181,8 +181,8 @@ export class AttendanceService {
       data: {
         uid,
         survey: attendanceDTO.survey !== 2 ? true : false,
-        rate: attendanceDTO.survey !== 1 ? false : true,
-        day: attendanceDTO.date,
+        late: attendanceDTO.survey !== 1 ? false : true,
+        date: attendanceDTO.date,
         location: attendanceDTO.location,
         isGame: false,
         checked: false,
@@ -215,17 +215,17 @@ export class AttendanceService {
       if (uid) {
         const result = await this.prismaService.attendance.upsert({
           where: {
-            uid_day_location: {
+            uid_date_location: {
               uid: uid.uid,
-              day: attendanceDTO.attendances[i].date,
+              date: attendanceDTO.attendances[i].date,
               location: attendanceDTO.attendances[i].location,
             },
           },
           create: {
-            day: attendanceDTO.attendances[i].date,
+            date: attendanceDTO.attendances[i].date,
             location: attendanceDTO.attendances[i].location,
             survey: attendanceDTO.attendances[i].survey,
-            rate: attendanceDTO.attendances[i].late,
+            late: attendanceDTO.attendances[i].late,
             isGame: false,
             People: {
               connect: {
@@ -235,7 +235,7 @@ export class AttendanceService {
           },
           update: {
             survey: attendanceDTO.attendances[i].survey,
-            rate: attendanceDTO.attendances[i].late,
+            late: attendanceDTO.attendances[i].late,
           },
           select: {
             id: true,

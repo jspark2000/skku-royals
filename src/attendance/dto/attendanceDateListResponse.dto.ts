@@ -1,3 +1,3 @@
 export interface AttendanceDatesListResponseDTO {
-  day: Date;
+  date: Date;
 }
