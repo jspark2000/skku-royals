@@ -13,7 +13,7 @@ async function bootstrap() {
 
   app.set('trust proxy', 1);
   app.enableCors();
-  
+
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
