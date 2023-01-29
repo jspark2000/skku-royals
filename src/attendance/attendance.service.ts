@@ -1,9 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AttendanceCheckRequestDTO } from './dto/attendanceCheckRequest.dto';
 import { AttendanceDatesListResponseDTO } from './dto/attendanceDateListResponse.dto';
+import { AttendanceSurveyResultFileDTO } from './dto/attendanceSurveyResultFile.dto';
 import { DailyAttendancesRequestDTO } from './dto/dailyAttendancesRequest.dto';
 import { DailyAttendancesResponseDTO } from './dto/dailyAttendancesResponse.dto';
+import { RegisterOneAttendanceDTO } from './dto/registerOneAttendance.dto';
 
 @Injectable()
 export class AttendanceService {
@@ -106,5 +108,82 @@ export class AttendanceService {
     });
 
     return updateResult;
+  }
+
+  async getAttendanceSurveyResultFiles(): Promise<
+    AttendanceSurveyResultFileDTO[]
+  > {
+    const attendanceSurveyResultFiles =
+      await this.prismaService.googleSheet.findMany({
+        select: {
+          id: true,
+          createdAt: true,
+          sheetName: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+    return attendanceSurveyResultFiles;
+  }
+
+  async getDetailAttendanceSurveyResult(id: number) {
+    const resultFile = await this.prismaService.googleSheet.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
+
+    const surveyResult = JSON.parse(resultFile.records);
+
+    return surveyResult;
+  }
+
+  async registerOneAttendance(
+    attendanceDTO: RegisterOneAttendanceDTO,
+  ): Promise<{ id: number }> {
+    const { uid } = await this.prismaService.people.findUniqueOrThrow({
+      where: {
+        name_studentNo: {
+          name: attendanceDTO.name,
+          studentNo: attendanceDTO.studentNo,
+        },
+      },
+      select: {
+        uid: true,
+      },
+    });
+
+    const checkExistAttendance = await this.prismaService.attendance.findFirst({
+      where: {
+        uid: uid,
+        day: attendanceDTO.date,
+      },
+    });
+
+    if (checkExistAttendance) {
+      throw new HttpException(
+        '이미 출석 정보가 존재합니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const registerResult = await this.prismaService.attendance.create({
+      data: {
+        uid,
+        survey: attendanceDTO.survey !== 2 ? true : false,
+        rate: attendanceDTO.survey !== 1 ? false : true,
+        day: attendanceDTO.date,
+        location: attendanceDTO.location,
+        isGame: false,
+        checked: false,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return registerResult;
   }
 }
