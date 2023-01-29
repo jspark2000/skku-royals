@@ -4,6 +4,8 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  ParseIntPipe,
+  Post,
   Put,
   Query,
   Render,
@@ -17,6 +19,7 @@ import { SessionUserInfo } from 'src/common/interfaces/sessionUserInfo.interface
 import { AttendanceService } from './attendance.service';
 import { AttendanceCheckRequestDTO } from './dto/attendanceCheckRequest.dto';
 import { DailyAttendancesRequestDTO } from './dto/dailyAttendancesRequest.dto';
+import { RegisterOneAttendanceDTO } from './dto/registerOneAttendance.dto';
 
 @Controller('attendance')
 @UseGuards(AuthGuard)
@@ -104,6 +107,52 @@ export class AttendanceController {
       } else {
         throw error;
       }
+    }
+  }
+
+  @Get('register')
+  @Render('pages/attendance/register')
+  async getAttendanceSurveyResultFiles(@Req() req: Request) {
+    const userInfo: SessionUserInfo = req.session.userInfo;
+    try {
+      const attendanceSurveyResultFiles =
+        await this.attendanceService.getAttendanceSurveyResultFiles();
+      return { attendanceSurveyResultFiles, userInfo };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post('register')
+  @Render('back_with_msg')
+  async registerOneAttendance(@Body() attendanceDTO: RegisterOneAttendanceDTO) {
+    try {
+      const { id } = await this.attendanceService.registerOneAttendance(
+        attendanceDTO,
+      );
+      return { msg: '출석 등록에 성공했습니다.\nid: ' + id };
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new HttpException(
+          '부원정보가 존재하지 않습니다.',
+          HttpStatus.UNPROCESSABLE_ENTITY,
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  @Get('register/many')
+  // @Render('pages/attendance/register-many')
+  async getDetailAttendanceSurveyResult(@Query('id', ParseIntPipe) id: number) {
+    try {
+      const surveyResult =
+        await this.attendanceService.getDetailAttendanceSurveyResult(id);
+
+      return { surveyResult };
+    } catch (error) {
+      throw error;
     }
   }
 }
