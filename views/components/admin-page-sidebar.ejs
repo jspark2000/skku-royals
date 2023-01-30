@@ -53,8 +53,13 @@
       <ul id="tables-nav" class="nav-content collapse <%= (select !== 'people') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
       <li>
           <a href="/admin/people/register" <%= (select_child !== 'people/register') ? '' : 'class=active' %> >
-          <i class="bi bi-circle"></i><span>신규부원 등록</span>
+          <i class="bi bi-circle"></i><span>부원 등록</span>
           </a>
+      </li>
+      <li>
+        <a href="/admin/people/update" <%= (select_child !== 'people/update') ? '' : 'class=active' %> >
+        <i class="bi bi-circle"></i><span>부원정보 수정</span>
+        </a>
       </li>
       <li>
           <a href="/admin/people/delete" <%=(select_child !== 'people/delete') ? '' : 'class=active' %> >
