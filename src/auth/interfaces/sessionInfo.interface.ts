@@ -3,7 +3,7 @@ export interface SessionInfo {
   key: string;
   userInfo: {
     userNickname: string;
-    profileURL: string;
+    profileUrl: string;
     role: string;
   };
 }

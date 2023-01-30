@@ -1,5 +1,5 @@
 export interface SessionUserInfo {
   userNickname: string;
-  profileURL: string;
+  profileUrl: string;
   role: string;
 }

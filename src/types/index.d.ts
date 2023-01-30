@@ -6,7 +6,7 @@ declare module 'express-session' {
     key: string;
     userInfo: {
       userNickname: string;
-      profileURL: string;
+      profileUrl: string;
       role: string;
     };
   }

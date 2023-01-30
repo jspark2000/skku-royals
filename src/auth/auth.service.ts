@@ -7,6 +7,7 @@ import { BandList } from './interfaces/bandList.interface';
 import { BandUser } from '@prisma/client';
 import { SessionInfo } from './interfaces/sessionInfo.interface';
 import { BandUserDTO } from './dto/bandUser.dto';
+import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto';
 
 @Injectable()
 export class AuthService {
@@ -47,6 +48,31 @@ export class AuthService {
     return deleteResult;
   }
 
+  async updateBandUserRole(
+    accountDTO: AccountUpdateReqeustDTO,
+  ): Promise<{ userNickname: string }> {
+    const updateResult = await this.prismaService.bandUser.update({
+      where: {
+        userKey: accountDTO.userKey,
+      },
+      data: {
+        role: accountDTO.role,
+      },
+      select: {
+        userNickname: true,
+      },
+    });
+
+    if (!updateResult) {
+      throw new HttpException(
+        '업데이트에 실패했습니다.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return updateResult;
+  }
+
   async loginOrRegister(code: string): Promise<SessionInfo> {
     const token = await this.getAccessToken(code);
     const userProfile = await this.getUserProfile(token);
@@ -65,21 +91,24 @@ export class AuthService {
       }
     }
 
-    const { role } = await this.prismaService.bandUser.findUnique({
-      where: {
-        userKey: userProfile.result_data.user_key,
-      },
-      select: {
-        role: true,
-      },
-    });
+    const { role, profileUrl, userNickname } =
+      await this.prismaService.bandUser.findUnique({
+        where: {
+          userKey: userProfile.result_data.user_key,
+        },
+        select: {
+          role: true,
+          profileUrl: true,
+          userNickname: true,
+        },
+      });
 
     return {
       authed: true,
       key: userProfile.result_data.user_key,
       userInfo: {
-        userNickname: userProfile.result_data.name,
-        profileURL: userProfile.result_data.profile_image_url,
+        userNickname,
+        profileUrl,
         role,
       },
     };

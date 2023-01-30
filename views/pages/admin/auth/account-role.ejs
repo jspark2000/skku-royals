@@ -5,15 +5,15 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <%- include('../../../components/admin-page-header', { userInfo } ) %> <%- include('../../../components/admin-page-sidebar', { select: 'auth', select_child: 'auth/account-list' } ) %>
+    <%- include('../../../components/admin-page-header', { userInfo } ) %> <%- include('../../../components/admin-page-sidebar', { select: 'auth', select_child: 'auth/account-role' } ) %>
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>계정 목록</h1>
+        <h1>계정 권한 변경</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/Admin">관리자 페이지</a></li>
-            <li class="breadcrumb-item active">계정 목록</li>
+            <li class="breadcrumb-item"><a href="/admin">관리자 페이지</a></li>
+            <li class="breadcrumb-item active">계정 권한 변경</li>
           </ol>
         </nav>
       </div>
@@ -31,8 +31,9 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">밴드 닉네임</th>
-                      <th scope="col">식별키</th>
-                      <th scope="col">계정 삭제</th>
+                      <th scope="col">권한</th>
+                      <th scope="col">변경할 권한</th>
+                      <th scope="col">변경하기</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -40,8 +41,14 @@
                     <tr>
                       <th scope="row"><a href="#"><%=index + 1%></a></th>
                       <td><%=bandUser.userNickname%></td>
-                      <td><%=bandUser.userKey%></td>
-                      <td><button class="btn btn-danger" onclick="deleteBandUser('<%=bandUser.userKey%>')">삭제</button></td>
+                      <td><span class='badge <%=(bandUser.role === 'normal') ? "bg-warning" : (bandUser.role === 'newbie') ? "bg-success": "bg-black"%>'><%=bandUser.role%></span></td>
+                      <td>
+                        <select id=<%=bandUser.userKey%> class="form-select w-75" >
+                          <option value="newbie" <%=bandUser.role === 'newbie' ? 'selected' : ''%>>newbie</option>
+                          <option value="normal" <%=bandUser.role === 'normal' ? 'selected' : ''%>>normal</option>
+                        </select>
+                      </td>
+                      <td><button class="btn btn-warning" onclick="updateBandUserRole('<%=[bandUser.userKey]%>')">변경하기</button></td>
                     </tr>
                     <% }) %>
                   </tbody>
@@ -62,20 +69,28 @@
     <%- include('../../../common/admin-js') %>
 
     <script>
-      async function deleteBandUser(userKey) {
+      async function updateBandUserRole(userKey) {
+        const targetRole = document.getElementById(userKey).value
+        
         const result = await axios({
-          method: 'delete',
+          method: 'put',
           data: {
             userKey,
+            role: targetRole,
           },
           url: location.href
         }).then((result) => {
           return result.data;
         }).catch((error) => {
-          alert('삭제에 실패했습니다.')
+          alert('업데이트에 실패했습니다.')
+          location.reload();
         })
         
-        alert(`삭제에 성공했습니다.\n닉네임:${result.userNickname}`);
+        if(result.success) {
+          alert(`업데이트에 성공했습니다.\n닉네임:${result.userNickname}`);
+        } else {
+          alert(`업데이트에 실패했습니다.`);
+        }
         location.reload();
       }
     </script>
