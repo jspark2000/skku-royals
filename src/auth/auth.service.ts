@@ -6,6 +6,8 @@ import { UserProfile } from './interfaces/userProfile.interface';
 import { BandList } from './interfaces/bandList.interface';
 import { BandUser } from '@prisma/client';
 import { SessionInfo } from './interfaces/sessionInfo.interface';
+import { BandUserDTO } from './dto/bandUser.dto';
+import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +20,57 @@ export class AuthService {
 
   getOAuth2URL(): string {
     return `${this.getAuthCodeURL}?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URL}`;
+  }
+
+  async getBandUserList(): Promise<BandUserDTO[]> {
+    const bandUserList = await this.prismaService.bandUser.findMany({
+      select: {
+        userKey: true,
+        userNickname: true,
+        profileUrl: true,
+        role: true,
+      },
+    });
+
+    return bandUserList;
+  }
+
+  async deleteBandUser(userKey: string): Promise<{ userNickname: string }> {
+    const deleteResult = await this.prismaService.bandUser.delete({
+      where: {
+        userKey,
+      },
+      select: {
+        userNickname: true,
+      },
+    });
+
+    return deleteResult;
+  }
+
+  async updateBandUserRole(
+    accountDTO: AccountUpdateReqeustDTO,
+  ): Promise<{ userNickname: string }> {
+    const updateResult = await this.prismaService.bandUser.update({
+      where: {
+        userKey: accountDTO.userKey,
+      },
+      data: {
+        role: accountDTO.role,
+      },
+      select: {
+        userNickname: true,
+      },
+    });
+
+    if (!updateResult) {
+      throw new HttpException(
+        '업데이트에 실패했습니다.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return updateResult;
   }
 
   async loginOrRegister(code: string): Promise<SessionInfo> {
@@ -38,21 +91,24 @@ export class AuthService {
       }
     }
 
-    const { role } = await this.prismaService.bandUser.findUnique({
-      where: {
-        userKey: userProfile.result_data.user_key,
-      },
-      select: {
-        role: true,
-      },
-    });
+    const { role, profileUrl, userNickname } =
+      await this.prismaService.bandUser.findUnique({
+        where: {
+          userKey: userProfile.result_data.user_key,
+        },
+        select: {
+          role: true,
+          profileUrl: true,
+          userNickname: true,
+        },
+      });
 
     return {
       authed: true,
       key: userProfile.result_data.user_key,
       userInfo: {
-        userNickname: userProfile.result_data.name,
-        profileURL: userProfile.result_data.profile_image_url,
+        userNickname,
+        profileUrl,
         role,
       },
     };
