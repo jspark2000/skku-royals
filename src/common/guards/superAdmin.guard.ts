@@ -15,10 +15,7 @@ export class AdminGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request: Request = context.switchToHttp().getRequest();
 
-    if (
-      request.session.userInfo.role !== 'admin' &&
-      request.session.userInfo.role !== 'superAdmin'
-    ) {
+    if (request.session.userInfo.role !== 'superAdmin') {
       throw new HttpException('권한이 없습니다.', HttpStatus.FORBIDDEN);
     }
 
