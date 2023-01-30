@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../../common/admin-html-head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <%- include('../../../components/admin-page-header', { userInfo } ) %> <%- include('../../../components/admin-page-sidebar', { select: 'people', select_child: 'people/update' } ) %>
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>부원정보 수정</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">관리자 페이지</a></li>
+            <li class="breadcrumb-item active">부원정보 수정</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section">
+        <div class="row align-items-top">
+          <div class="col-lg-4">
+            <div class="card overflow-auto">
+              <div class="card">
+                <div id="target" class="card-body">
+                  <p class="pt-4">부원 정보를 선택하면 이곳에 부원 정보 수정 폼이 생성됩니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <h5 class="card-title">부원 목록 테이블</h5>
+                <table class="table table-borderless datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">이름</th>
+                      <th scope="col">입학년도</th>
+                      <th scope="col">선택</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% peopleList.forEach((people, index) => { %>
+                    <tr>
+                      <th scope="row"><a href="#"><%=index + 1%></a></th>
+                      <td><%=people.name%></td>
+                      <td><%=people.studentNo%></td>
+                      <td><button class="btn btn-outline-info" onclick="updatePeople('<%=[people.name, people.studentNo, people.uid].join()%>')">선택</button></td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <%- include('../../../common/admin-footer') %>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <%- include('../../../common/admin-js') %>
+    <script src="/public/admin/js/people.js"></script>
+  </body>
+</html>
