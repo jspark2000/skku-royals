@@ -21,7 +21,7 @@
                       <label for="day" class="fw-bold">출석 명단 날짜 선택</label>
                       <select id="day" class="form-select mt-sm-1" name="date" aria-describedby="attendance_date_help">
                         <% dates.forEach((date)=>{ %>
-                        <option value="<%=date.day.toISOString().slice(0, 10)%>"><%=date.day.toISOString().slice(0, 10)%></option>
+                        <option value="<%=date.date.toISOString().slice(0, 10)%>"><%=date.date.toISOString().slice(0, 10)%></option>
                         <% }) %>
                       </select>
                       <small id="attendance_date_help" class="form-text text-muted">드롭다운 목록에서 출석 날짜를 선택합니다.</small>
@@ -43,7 +43,7 @@
                       <label for="day" class="fw-bold">출석 체크 날짜 선택</label>
                       <select id="day" class="form-select mt-sm-1" name="date" aria-describedby="attendance_date_help">
                         <% dates.forEach((date)=>{ %>
-                        <option value="<%=date.day.toISOString().slice(0, 10)%>"><%=date.day.toISOString().slice(0, 10)%></option>
+                        <option value="<%=date.date.toISOString().slice(0, 10)%>"><%=date.date.toISOString().slice(0, 10)%></option>
                         <% }) %>
                       </select>
                       <small id="attendance_date_help" class="form-text text-muted">드롭다운 목록에서 출석 날짜를 선택합니다.</small>
