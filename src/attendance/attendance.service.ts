@@ -8,6 +8,8 @@ import { DailyAttendancesResponseDTO } from './dto/dailyAttendancesResponse.dto'
 import { GetDetailAttendanceSurveyResultDTO } from './dto/getDetailAttendanceSurveyResult.dto';
 import { RegisterManyAttendanceDTO } from './dto/registerManyAttendance.dto';
 import { RegisterOneAttendanceDTO } from './dto/registerOneAttendance.dto';
+import { UpdateManyAttendancesRequestDTO } from './dto/updateManyAttendancesRequest.dto';
+import { UpdateOneAttendanceRequestDTO } from './dto/updateOneAttendanceRequest.dto';
 
 @Injectable()
 export class AttendanceService {
@@ -250,5 +252,83 @@ export class AttendanceService {
     const success = registerationCount > 0 ? true : false;
 
     return { count: registerationCount, success };
+  }
+
+  async updateOneAttendance(
+    attendanceDTO: UpdateOneAttendanceRequestDTO,
+  ): Promise<{ id: number }> {
+    const uid = await this.prismaService.people.findUnique({
+      where: {
+        name_studentNo: {
+          name: attendanceDTO.name,
+          studentNo: attendanceDTO.studentNo,
+        },
+      },
+    });
+
+    if (!uid) {
+      throw new HttpException(
+        '존재하지 않는 부원 정보입니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const exist = await this.prismaService.attendance.findUnique({
+      where: {
+        uid_date_location: {
+          uid: uid.uid,
+          date: attendanceDTO.date,
+          location: attendanceDTO.location,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!exist) {
+      throw new HttpException(
+        '존재하지 않는 출석 정보입니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const updateResult = await this.prismaService.attendance.update({
+      where: {
+        id: exist.id,
+      },
+      data: {
+        date: attendanceDTO.toDate,
+        survey: attendanceDTO.toSurvey !== '2' ? true : false,
+        late: attendanceDTO.toSurvey !== '1' ? false : true,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return updateResult;
+  }
+
+  async updateManyAttendances(
+    attendanceDTO: UpdateManyAttendancesRequestDTO,
+  ): Promise<{ count: number }> {
+    const updateResult = await this.prismaService.attendance.updateMany({
+      where: {
+        date: attendanceDTO.date,
+      },
+      data: {
+        date: attendanceDTO.toDate,
+      },
+    });
+
+    if (updateResult.count === 0) {
+      throw new HttpException(
+        '존재하지 않는 출석 정보입니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return updateResult;
   }
 }
