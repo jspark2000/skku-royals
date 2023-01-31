@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../../common/admin-html-head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <%- include('../../../components/admin-page-header', { userInfo } ) %> <%- include('../../../components/admin-page-sidebar', { select: 'attendance', select_child: 'attendance/update' } ) %>
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>출석정보 수정</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">관리자 페이지</a></li>
+            <li class="breadcrumb-item active">출석정보 수정</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section">
+        <div class="row align-items-top">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">수정할 출석 정보 입력 (개별)</h5>
+                <form id="update-one-form" class="row g-3" onsubmit="updateOneAttendance()">
+                  <div class="col-12">
+                    <label for="" class="form-label">이름</label>
+                    <input id="update-one-form-name" type="text" class="form-control" name="name" required/>
+                  </div>
+                  <div class="col-12">
+                    <label for="" class="form-label">입학년도</label>
+                    <input id="update-one-form-studentNo" type="number" class="form-control" name="studentNo" required/>
+                  </div>
+                  <div class="col-12">
+                    <label for="" class="form-label">변경 대상 날짜 선택 (from)</label>
+                    <input id="update-one-form-date" type="date" class="form-control" name="fromDate" required/>
+                  </div>
+                  <div class="col-12">
+                    <label for="" class="form-label">변경 대상 캠퍼스 선택 (from)</label>
+                    <select id="update-one-form-location" class="form-select" name="location">
+                      <option value="integrated">통합</option>
+                      <option value="seoul">명륜</option>
+                      <option value="suwon">율전</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="" class="form-label">변경할 날짜 선택 (to)</label>
+                    <input id="update-one-form-toDate" type="date" class="form-control" name="toDate" required/>
+                  </div>
+                  <div class="col-12">
+                    <label for="" class="form-label">출석 유형 변경</label>
+                    <select id="update-one-form-toSurvey" class="form-select" name="toSurvey">
+                      <option value="0">참석</option>
+                      <option value="1">늦참</option>
+                      <option value="2">불참</option>
+                    </select>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-outline-success">변경하기</button>
+                  </div>
+                  <div class="card-footer">하나의 출석 정보만 변경하고 싶을 때 사용합니다.</div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">수정할 출석 정보 입력 (단체)</h5>
+                <form id="update-many-form" class="row g-3" onsubmit="updateManyAttendances()">
+                  <div class="col-12">
+                    <label for="" class="form-label">변경 대상 날짜 선택 (from)</label>
+                    <input id="update-many-form-date" type="date" class="form-control" name="date" required/>
+                  </div>
+                  <div class="col-12">
+                    <label for="" class="form-label">변경할 날짜 선택 (to)</label>
+                    <input id="update-many-form-toDate" type="date" class="form-control" name="toDate" required/>
+                  </div>
+                  <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-outline-success">변경하기</button>
+                  </div>
+                  <div class="card-footer">구글폼 연동 출석 업로드시 날짜를 잘못 선택했을때 여기에서 한번에 바꿀 수 있습니다.</div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <%- include('../../../common/admin-footer') %>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <%- include('../../../common/admin-js') %>
+
+    <script>
+      document.getElementById('update-one-form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+      })
+      
+      document.getElementById('update-many-form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+      }) 
+      
+      async function updateOneAttendance() {
+        const name = document.getElementById('update-one-form-name').value
+        const studentNo = document.getElementById('update-one-form-studentNo').value
+        const date = document.getElementById('update-one-form-date').value
+        const location = document.getElementById('update-one-form-location').value
+        const toDate = document.getElementById('update-one-form-toDate').value
+        const toSurvey = document.getElementById('update-one-form-toSurvey').value
+        
+        const data = await axios({
+          method: 'put',
+          data: {
+            name,
+            studentNo,
+            date,
+            location,
+            toDate,
+            toSurvey
+          },
+          url: `${window.location.href}/one`,
+        }).then((result) => {
+          return result.data;
+        }).catch((error) => {
+          alert(`[ERROR]출석 정보를 변경하지 못했습니다.\n입력하신 정보를 다시한번 확인해주세요`);
+        })
+        
+        if (data.success) {
+          alert(`출석 정보가 변경되었습니다.\n출석 id:${data.id}` )
+          window.location.reload();
+        }
+      }
+      
+      async function updateManyAttendances() {
+        const date = document.getElementById('update-many-form-date').value;
+        const toDate = document.getElementById('update-many-form-toDate').value;
+        
+        const data = await axios({
+          method: 'put',
+          data: {
+            date,
+            toDate,
+          },
+          url: `${window.location.href}/many`,
+        }).then((result) => {
+          return result.data;
+        }).catch((error) => {
+          alert(`[ERROR]출석 정보를 변경하지 못했습니다.\n입력하신 정보를 다시한번 확인해주세요`);
+        })
+        
+        if (data.success) {
+          alert(`출석 정보가 변경되었습니다.\n변경된 출석 수: ${data.count}개`)
+          window.location.reload();
+        }
+      }
+    </script>
+  </body>
+</html>
