@@ -7,10 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TeamRole {
+  HeadCoach
+  Coach
+  Staff
+  Athlete
+}
+
 model Attendance {
   id       Int      @id @default(autoincrement())
   uid      String   @db.Uuid
-  date      DateTime @db.Timestamp(6)
+  date     DateTime @db.Timestamp(6)
   location String   @default("integrated") @db.VarChar(20)
   late     Boolean
   survey   Boolean
@@ -61,6 +68,7 @@ model GoogleSheet {
 model People {
   id          Int          @id @default(autoincrement())
   uid         String       @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  teamRole    TeamRole     @default(Athlete)
   name        String       @db.VarChar(20)
   studentNo   Int
   bandUserKey String       @unique @db.VarChar(60)
