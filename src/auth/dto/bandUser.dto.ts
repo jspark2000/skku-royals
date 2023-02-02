@@ -3,4 +3,5 @@ export interface BandUserDTO {
   userNickname: string;
   profileUrl: string;
   role: string;
+  teamRole: string;
 }

@@ -5,5 +5,6 @@ export interface SessionInfo {
     userNickname: string;
     profileUrl: string;
     role: string;
+    teamRole: string;
   };
 }

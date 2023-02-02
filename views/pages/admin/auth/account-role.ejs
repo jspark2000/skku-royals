@@ -33,6 +33,7 @@
                       <th scope="col">밴드 닉네임</th>
                       <th scope="col">권한</th>
                       <th scope="col">변경할 권한</th>
+                      <th scope="col">변경할 직책</th>
                       <th scope="col">변경하기</th>
                     </tr>
                   </thead>
@@ -46,6 +47,14 @@
                         <select id=<%=bandUser.userKey%> class="form-select w-75" >
                           <option value="newbie" <%=bandUser.role === 'newbie' ? 'selected' : ''%>>newbie</option>
                           <option value="normal" <%=bandUser.role === 'normal' ? 'selected' : ''%>>normal</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select id=<%=bandUser.userKey + '-teamRole'%> class="form-select w-75" >
+                          <option value="HeadCoach" <%=bandUser.teamRole === 'HeadCoach' ? 'selected' : ''%>>감독</option>
+                          <option value="Coach" <%=bandUser.teamRole === 'Coach' ? 'selected' : ''%>>코치</option>
+                          <option value="Staff" <%=bandUser.teamRole === 'Staff' ? 'selected' : ''%>>스태프</option>
+                          <option value="Athlete" <%=bandUser.teamRole === 'Athlete' ? 'selected' : ''%>>선수</option>
                         </select>
                       </td>
                       <td><button class="btn btn-warning" onclick="updateBandUserRole('<%=[bandUser.userKey]%>')">변경하기</button></td>
@@ -71,12 +80,14 @@
     <script>
       async function updateBandUserRole(userKey) {
         const targetRole = document.getElementById(userKey).value
+        const targetTeamRole = document.getElementById(userKey+'-teamRole').value
         
         const result = await axios({
           method: 'put',
           data: {
             userKey,
             role: targetRole,
+            teamRole: targetTeamRole,
           },
           url: location.href
         }).then((result) => {
