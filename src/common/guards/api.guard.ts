@@ -14,7 +14,7 @@ export class APIGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request: Request = context.switchToHttp().getRequest();
-    if (request.header('api_secret') !== process.env.API_SECRET) {
+    if (request.header('x-api-key') !== process.env.API_SECRET) {
       throw new HttpException('Permession Denied', HttpStatus.UNAUTHORIZED);
     }
     return true;
