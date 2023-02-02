@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Get, UseGuards } from '@nestjs/common';
 import { APIGuard } from 'src/common/guards/api.guard';
 import { ApiService } from './api.service';
 import { RegisterAttendanceRequestDTO } from './dto/registerAttendanceRequest.dto';
@@ -7,6 +7,12 @@ import { RegisterAttendanceRequestDTO } from './dto/registerAttendanceRequest.dt
 @UseGuards(APIGuard)
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
+  
+  @Get('test')
+  async test(
+  ) {
+    return { sucess: true };
+  }
 
   @Post('attendance')
   async registerGoogleSheet(
