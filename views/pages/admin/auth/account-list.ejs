@@ -31,7 +31,8 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">밴드 닉네임</th>
-                      <th scope="col">식별키</th>
+                      <th scope="col">권한</th>
+                      <th scope="col">직책</th>
                       <th scope="col">계정 삭제</th>
                     </tr>
                   </thead>
@@ -40,7 +41,8 @@
                     <tr>
                       <th scope="row"><a href="#"><%=index + 1%></a></th>
                       <td><%=bandUser.userNickname%></td>
-                      <td><%=bandUser.userKey%></td>
+                      <td><%=bandUser.role%></td>
+                      <td><%=bandUser.teamRole%></td>
                       <td><button class="btn btn-danger" onclick="deleteBandUser('<%=bandUser.userKey%>')">삭제</button></td>
                     </tr>
                     <% }) %>

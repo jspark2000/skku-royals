@@ -6,4 +6,7 @@ export class AccountUpdateReqeustDTO {
 
   @IsString()
   role: string;
+
+  @IsString()
+  teamRole: string;
 }

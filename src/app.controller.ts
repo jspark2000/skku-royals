@@ -14,12 +14,12 @@ export class AppController {
     if (req.session.authed) {
       return {
         authed: true,
-        userNickname: req.session.userInfo.userNickname,
+        userInfo: req.session.userInfo,
       };
     } else {
       return {
         authed: false,
-        userNickname: undefined,
+        userInfo: undefined,
       };
     }
   }

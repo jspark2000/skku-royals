@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AccessToken } from './interfaces/accessToken.interface';
 import { UserProfile } from './interfaces/userProfile.interface';
 import { BandList } from './interfaces/bandList.interface';
-import { BandUser } from '@prisma/client';
+import { BandUser, TeamRole } from '@prisma/client';
 import { SessionInfo } from './interfaces/sessionInfo.interface';
 import { BandUserDTO } from './dto/bandUser.dto';
 import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto';
@@ -29,6 +29,7 @@ export class AuthService {
         userNickname: true,
         profileUrl: true,
         role: true,
+        teamRole: true,
       },
     });
 
@@ -36,6 +37,22 @@ export class AuthService {
   }
 
   async deleteBandUser(userKey: string): Promise<{ userNickname: string }> {
+    const adminCheck = await this.prismaService.bandUser.findUnique({
+      where: {
+        userKey,
+      },
+      select: {
+        role: true,
+      },
+    });
+
+    if (adminCheck.role === 'admin' || adminCheck.role === 'superAdmin') {
+      throw new HttpException(
+        'admin 이상 권한을 포함하는 변경은 superAdmin 전용 메뉴에서 가능합니다.',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
     const deleteResult = await this.prismaService.bandUser.delete({
       where: {
         userKey,
@@ -51,12 +68,29 @@ export class AuthService {
   async updateBandUserRole(
     accountDTO: AccountUpdateReqeustDTO,
   ): Promise<{ userNickname: string }> {
+    const adminCheck = await this.prismaService.bandUser.findUnique({
+      where: {
+        userKey: accountDTO.userKey,
+      },
+      select: {
+        role: true,
+      },
+    });
+
+    if (adminCheck.role === 'admin' || adminCheck.role === 'superAdmin') {
+      throw new HttpException(
+        'admin 이상 권한을 포함하는 변경은 superAdmin 전용 메뉴에서 가능합니다.',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
     const updateResult = await this.prismaService.bandUser.update({
       where: {
         userKey: accountDTO.userKey,
       },
       data: {
         role: accountDTO.role,
+        teamRole: TeamRole[accountDTO.teamRole],
       },
       select: {
         userNickname: true,
@@ -91,7 +125,7 @@ export class AuthService {
       }
     }
 
-    const { role, profileUrl, userNickname } =
+    const { role, profileUrl, userNickname, teamRole } =
       await this.prismaService.bandUser.findUnique({
         where: {
           userKey: userProfile.result_data.user_key,
@@ -100,6 +134,7 @@ export class AuthService {
           role: true,
           profileUrl: true,
           userNickname: true,
+          teamRole: true,
         },
       });
 
@@ -110,6 +145,7 @@ export class AuthService {
         userNickname,
         profileUrl,
         role,
+        teamRole,
       },
     };
   }
