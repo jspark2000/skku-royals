@@ -74,12 +74,12 @@ async function getStatistics() {
   new ApexCharts(document.querySelector('#reportsChart'), {
     series: [
       {
-        name: '출석률',
-        data: chartData.total,
-      },
-      {
         name: '참석비율',
         data: chartData.presence,
+      },
+      {
+        name: '출석률',
+        data: chartData.total,
       },
       {
         name: '늦참비율',
@@ -96,7 +96,10 @@ async function getStatistics() {
     markers: {
       size: 4,
     },
-    colors: ['#4154f1', '#2eca6a', '#ff771d'],
+    colors: ['#2eca6a', '#4154f1', '#ff771d'],
+    markers: {
+      size: 5,
+    },
     fill: {
       type: 'gradient',
       gradient: {
@@ -116,6 +119,10 @@ async function getStatistics() {
     xaxis: {
       type: 'text',
       categories: chartData.categories,
+    },
+    yaxis: {
+      min: 0,
+      max: 100,
     },
   }).render();
 

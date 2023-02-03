@@ -49,6 +49,8 @@ export class AttendanceService {
           select: {
             name: true,
             studentNo: true,
+            offPosition: true,
+            defPosition: true,
           },
         },
       },
@@ -73,6 +75,8 @@ export class AttendanceService {
           late: attendance.late,
           location: attendance.location,
           checked: attendance.checked,
+          offPosition: attendance.People.offPosition,
+          defPosition: attendance.People.defPosition,
         };
       }),
     };
