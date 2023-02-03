@@ -7,5 +7,7 @@ export interface DailyAttendancesResponseDTO {
     late: boolean;
     location: string;
     checked: boolean;
+    offPosition: string;
+    defPosition: string;
   }[];
 }
