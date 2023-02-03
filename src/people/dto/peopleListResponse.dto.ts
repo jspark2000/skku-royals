@@ -1,4 +1,5 @@
 export interface PeopleListResponseDTO {
+  id: number;
   name: string;
   studentNo: number;
   offPosition: string;

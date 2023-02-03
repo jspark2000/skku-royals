@@ -70,10 +70,10 @@
   </li>
 
   <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-bar-chart"></i><span>시합후기 관리</span><i class="bi bi-chevron-down ms-auto"></i>
+      <a class="nav-link collapsed" data-bs-target="#reviews-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-eye"></i><span>시합후기 관리</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="charts-nav" class="nav-content collapse <%= (select !== 'game') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
+      <ul id="reviews-nav" class="nav-content collapse <%= (select !== 'game') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
       <li>
           <a href="/admin/game/setting-review" <%= (select_child !== 'game/settting-review') ? '' : 'class=active' %> >
           <i class="bi bi-circle"></i><span>시합후기 마감설정</span>
@@ -86,6 +86,24 @@
       </li>
       </ul>
   </li>
+  
+  <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-bar-chart"></i><span>통계</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="charts-nav" class="nav-content collapse <%= (select !== 'statistics') ? '' : 'show' %> " data-bs-parent="#sidebar-nav">
+      <li>
+          <a href="/admin/statistics/position" <%= (select_child !== 'statistics/position') ? '' : 'class=active' %> >
+          <i class="bi bi-circle"></i><span>포지션별 출석 통계</span>
+          </a>
+      </li>
+      <li>
+          <a href="/admin/statistics/personal" <%= (select_child !== 'statistics/personal') ? '' : 'class=active' %> >
+          <i class="bi bi-circle"></i><span>개인별 출석 통계</span>
+          </a>
+      </li>
+    </ul>
+</li>
 
   <li class="nav-heading mt-4">일반 기능 바로가기</li>
 
