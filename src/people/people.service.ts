@@ -13,6 +13,7 @@ export class PeopleService {
   async getPeopleList(): Promise<PeopleListResponseDTO[]> {
     const peopleList = await this.prismaService.people.findMany({
       select: {
+        id: true,
         name: true,
         studentNo: true,
         offPosition: true,

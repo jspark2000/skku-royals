@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../../common/admin-html-head') %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <%- include('../../../components/admin-page-header', { userInfo } ) %> <%- include('../../../components/admin-page-sidebar', { select: 'statistics', select_child: 'statistics/personal' } ) %>
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>개인별 출석 통계</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">관리자 페이지</a></li>
+            <li class="breadcrumb-item active">개인별 출석 통계</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section dashboard">
+        <div class="row">
+          <div class="col-lg-5">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <h5 class="card-title">조회할 부원 선택</h5>
+                <form id="form" class="row g-3" onsubmit="getStatistics()">
+                  <div class="col-12">
+                    <label for="" class="form-label fw-bold">부원 선택</label>
+                    <select name="id" id="peopleId" class="form-select">
+                      <% peopleList.forEach( (people) => { %>
+                      <option value="<%=people.id%>"><%=`${people.name}(${people.studentNo})`%></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-outline-success">조회하기</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div id="profile" class="col-lg-3" style="display: none">
+            <div class="card">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <img id="peopleImg" class="rounded-circle mb-3" style="border-radius: 50%; max-width: 80px;" src="" alt="https://ssl.pstatic.net/cmstatic/webclient/dres/20230127145944/images/template/profile_60x60.png" />
+                <h2 id="peopleName" style="font-size: 20px; color: #2c384e"></h2>
+                <h3 id="peoplePosition" class="mt-2" style="font-size: 15px; color: #2c384e; margin-top:2px; padding-top: 0px;"></h3>
+              </div>
+            </div>
+          </div>
+          <!-- Visitor Card -->
+          <div class="col-lg-4" id="offPositionHolder" style="display: none;">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 id="offPositionDescript" class="card-title">포지션 출석 비교</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-arrow-left-right"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6 id="offPositionRank"></h6>
+                    <span id="offPositionTotal" class="text-success small pt-1 fw-bold"></span><span class="text-muted small pt-2 ps-1">(포지션 전체 인원)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4" id="defPositionHolder" style="display: none;">
+            <div class="card info-card customers-card">
+              <div class="card-body">
+                <h5 id="defPositionDescript" class="card-title"></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6 id="defPositionRank"></h6>
+                    <span id="defPositionTotal" class="text-success small pt-1 fw-bold"></span><span class="text-muted small pt-2 ps-1">(포지션 전체 인원)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End People Card -->
+          <div id="monthlyTable" class="col-lg-8" style="display: none">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">출석률 추세 <span>| 최근 6개월</span></h5>
+                <!-- Line Chart -->
+                <div id="reportsChart"></div>
+              </div>
+            </div>
+          </div>
+          <!-- End Reports -->
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <%- include('../../../common/admin-footer') %>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <%- include('../../../common/admin-js') %>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        document.getElementById('form').addEventListener('submit', (e) => {
+          e.preventDefault();
+        });
+      });
+
+      async function getStatistics() {
+        const id = document.getElementById('peopleId').value;
+
+        const data = await axios({
+          method: 'get',
+          url: window.location.href + `/${id}`,
+        })
+          .then((result) => {
+            return result.data;
+          })
+          .catch((error) => {
+            alert('정보를 불러오는데 실패했습니다.');
+            window.location.reload();
+          });
+
+        const { userProfile, semesterAttendances, positionAttendanceRank } = data;
+
+        const profile = document.getElementById('profile');
+        profile.style.display = '';
+
+        document.getElementById('peopleImg').setAttribute('src', userProfile.BandUser.profileUrl);
+        document.getElementById('peopleName').innerText = `${userProfile.name} (${userProfile.studentNo})`;
+        document.getElementById('peoplePosition').innerText = `${userProfile.offPosition}`;
+        if(userProfile.defPosition !== 'STAFF' && userProfile.defPosition !== 'no') {
+          document.getElementById('peoplePosition').innerText += ` / ${userProfile.defPosition}`;
+        }
+
+        const monthlyTable = document.getElementById('monthlyTable');
+        monthlyTable.style.display = '';
+
+        const reportsChart = document.getElementById('reportsChart');
+        reportsChart.innerHTML = '';
+
+        const chartData = {
+          presence: [],
+          late: [],
+          total: [],
+          categories: [],
+        };
+
+        semesterAttendances.usualAttendances.forEach((monthlyAttendance) => {
+          const total = monthlyAttendance.presence + monthlyAttendance.late + monthlyAttendance.absent;
+          chartData.presence.push(parseInt(monthlyAttendance.presence / total * 100));
+          chartData.late.push(parseInt(monthlyAttendance.late / total * 100));
+          chartData.total.push(parseInt((monthlyAttendance.presence + monthlyAttendance.late) * 100 / total))
+          chartData.categories.push(`${monthlyAttendance.year}-${monthlyAttendance.month}`);
+        });
+
+        new ApexCharts(document.querySelector('#reportsChart'), {
+          series: [
+            {
+              name: '출석률',
+              data: chartData.total,
+            },
+            {
+              name: '참석비율',
+              data: chartData.presence,
+            },
+            {
+              name: '늦참비율',
+              data: chartData.late,
+            },
+          ],
+          chart: {
+            height: 350,
+            type: 'area',
+            toolbar: {
+              show: false,
+            },
+          },
+          markers: {
+            size: 4,
+          },
+          colors: ['#4154f1', '#2eca6a', '#ff771d'],
+          fill: {
+            type: 'gradient',
+            gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.3,
+              opacityTo: 0.4,
+              stops: [0, 90, 100],
+            },
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          stroke: {
+            curve: 'smooth',
+            width: 2,
+          },
+          xaxis: {
+            type: 'text',
+            categories: chartData.categories,
+          },
+        }).render();
+        
+        const offPositionView = document.getElementById('offPositionHolder')
+        const offPositionDesc = document.getElementById('offPositionDescript')
+        const offPositionRank = document.getElementById('offPositionRank')
+        const offPositionTotal = document.getElementById('offPositionTotal')
+        
+        offPositionView.style.display = '';
+        offPositionDesc.innerHTML = `오펜스 포지션 출석 비교<span> | 최근 30일</span>`
+        offPositionRank.innerText = `${positionAttendanceRank.offPositionRank}위`
+        offPositionTotal.innerText = ` ${positionAttendanceRank.offPositionTotal}명`;
+        
+        if (userProfile.defPosition !== 'STAFF' && userProfile.defPosition !== 'no') {
+          const defPositionView = document.getElementById('defPositionHolder')
+          const defPositionDesc = document.getElementById('defPositionDescript')
+          const defPositionRank = document.getElementById('defPositionRank')
+          const defPositionTotal = document.getElementById('defPositionTotal')
+          
+          defPositionView.style.display = '';
+          defPositionDesc.innerHTML = `디펜스 포지션 출석 비교<span> | 최근 30일</span>`
+          defPositionRank.innerText = `${positionAttendanceRank.defPositionRank}위`
+          defPositionTotal.innerText = ` ${positionAttendanceRank.defPositionTotal}명`;
+        }
+      }
+    </script>
+  </body>
+</html>

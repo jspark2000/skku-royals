@@ -7,5 +7,6 @@ import { AuthService } from 'src/auth/auth.service';
 @Module({
   providers: [PeopleService, AuthService],
   controllers: [PeopleController, PeopleAdminController],
+  exports: [PeopleService],
 })
 export class PeopleModule {}
