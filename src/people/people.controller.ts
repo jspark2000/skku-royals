@@ -7,17 +7,14 @@ import {
   Post,
   Render,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Request } from 'express';
-import { AuthGuard } from 'src/common/guards/auth.guard';
 import { SessionUserInfo } from 'src/common/interfaces/sessionUserInfo.interface';
 import { AlterPositionRequestDTO } from './dto/alterPositionRequest.dto';
 import { PeopleService } from './people.service';
 
 @Controller('people')
-@UseGuards(AuthGuard)
 export class PeopleController {
   constructor(private readonly peopleService: PeopleService) {}
 
@@ -30,13 +27,10 @@ export class PeopleController {
   }
 
   @Get('list')
-  @Render('pages/people/list')
-  async getPeopleList(@Req() req: Request) {
+  async getPeopleList() {
+    // eslint-disable-next-line no-useless-catch
     try {
-      const userInfo: SessionUserInfo = req.session.userInfo;
-      const peopleList = await this.peopleService.getPeopleList();
-
-      return { userInfo, peopleList };
+      return await this.peopleService.getPeopleList();
     } catch (error) {
       throw error;
     }

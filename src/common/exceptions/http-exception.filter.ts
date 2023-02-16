@@ -15,24 +15,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const error = exception.getResponse() as
       | string
       | { error: string; statusCode: number; message: string | null };
-    const msg = `[Status Code: ${status}]\\n${exception.getResponse()}`;
 
-    if (typeof error !== 'string') {
-      if (error.statusCode === 404) {
-        response.status(status).render('back_with_msg', {
-          msg: `[Status Code: 404]\\n존재하지 않는 페이지입니다.`,
-        });
-      } else {
-        response.status(status).render('back_with_msg', {
-          msg: `[Status Code: ${error.statusCode}]\\n${error.message}`,
-        });
-      }
-    } else if (status === 401) {
-      response
-        .status(401)
-        .render('redirect_with_msg', { msg, url: process.env.BASE_URL });
-    } else {
-      response.status(status).render('back_with_msg', { msg });
-    }
+    response.status(status).json(error);
   }
 }

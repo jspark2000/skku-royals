@@ -1,15 +1,14 @@
-import { Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AppService } from './app.service';
-import { AuthGuard } from './common/guards/auth.guard';
-import { SessionUserInfo } from './common/interfaces/sessionUserInfo.interface';
+import { Public } from './auth/decorators/public.decorator';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @Render('index')
+  @Public()
   async getLandingPage(@Req() req: Request) {
     if (req.session.authed) {
       return {
@@ -22,14 +21,5 @@ export class AppController {
         userInfo: undefined,
       };
     }
-  }
-
-  @Get('admin')
-  @Render('pages/admin/main')
-  @UseGuards(AuthGuard) // @UseGurads(AdminGuard): production
-  getAdminMainPage(@Req() req: Request) {
-    const userInfo: SessionUserInfo = req.session.userInfo;
-
-    return { userInfo };
   }
 }
