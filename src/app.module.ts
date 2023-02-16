@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  CacheModule,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +15,10 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { GameModule } from './game/game.module';
 import { ApiModule } from './api/api.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { BandModule } from './band/band.module';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -17,15 +26,33 @@ import { StatisticsModule } from './statistics/statistics.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => {
+        return {
+          store: redisStore,
+          host: process.env.REDIS_URL,
+          port: process.env.REDIS_PORT,
+          auth_pass: process.env.REDIS_PASSWORD,
+        };
+      },
+    }),
     AuthModule,
     PeopleModule,
     AttendanceModule,
     GameModule,
     ApiModule,
     StatisticsModule,
+    BandModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

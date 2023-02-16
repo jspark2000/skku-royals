@@ -1,13 +1,27 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import axios from 'axios';
 import { AccessToken } from './interfaces/accessToken.interface';
 import { UserProfile } from './interfaces/userProfile.interface';
 import { BandList } from './interfaces/bandList.interface';
 import { BandUser, TeamRole } from '@prisma/client';
-import { SessionInfo } from './interfaces/sessionInfo.interface';
 import { BandUserDTO } from './dto/bandUser.dto';
 import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto';
+import { JwtService, JwtVerifyOptions } from '@nestjs/jwt';
+import { JwtObject, JwtPayload, JwtTokens } from './interfaces/jwt.interface';
+import {
+  ACCESS_TOKEN_EXPIRATION_SEC,
+  REFRESH_TOKEN_EXPIRATION_SEC,
+} from './constants/jwt.constants';
+import { Cache } from 'cache-manager';
+import { refreshTokenCacheKey } from 'src/common/cache/keys';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +30,11 @@ export class AuthService {
   private readonly getUserProfileURL = 'https://openapi.band.us/v2/profile';
   private readonly getBandListURL = 'https://openapi.band.us/v2.1/bands';
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+  ) {}
 
   getOAuth2URL(): string {
     return `${this.getAuthCodeURL}?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URL}`;
@@ -107,7 +125,7 @@ export class AuthService {
     return updateResult;
   }
 
-  async loginOrRegister(code: string): Promise<SessionInfo> {
+  async loginOrRegister(code: string) {
     const token = await this.getAccessToken(code);
     const userProfile = await this.getUserProfile(token);
     const isWhiteList = await this.checkWhiteList(token);
@@ -125,7 +143,7 @@ export class AuthService {
       }
     }
 
-    const { role, profileUrl, userNickname, teamRole } =
+    const { profileUrl, userNickname, teamRole } =
       await this.prismaService.bandUser.findUnique({
         where: {
           userKey: userProfile.result_data.user_key,
@@ -138,15 +156,15 @@ export class AuthService {
         },
       });
 
+    const access_token = await this.createJwtTokens({
+      userKey: userProfile.result_data.user_key,
+      userProfileUrl: profileUrl,
+      teamRole,
+      userNickname,
+    });
+
     return {
-      authed: true,
-      key: userProfile.result_data.user_key,
-      userInfo: {
-        userNickname,
-        profileUrl,
-        role,
-        teamRole,
-      },
+      ...access_token,
     };
   }
 
@@ -240,5 +258,79 @@ export class AuthService {
     });
 
     return registerationResult;
+  }
+
+  async createJwtTokens(user: JwtPayload): Promise<JwtTokens> {
+    const payload: JwtPayload = user;
+    const accessToken = await this.jwtService.signAsync(
+      {
+        ...payload,
+      },
+      {
+        expiresIn: ACCESS_TOKEN_EXPIRATION_SEC,
+      },
+    );
+    const refreshToken = await this.jwtService.signAsync(
+      {
+        ...payload,
+      },
+      {
+        expiresIn: REFRESH_TOKEN_EXPIRATION_SEC,
+      },
+    );
+
+    await this.cacheManager.set(
+      refreshTokenCacheKey(user.userKey),
+      refreshToken,
+      REFRESH_TOKEN_EXPIRATION_SEC,
+    );
+
+    return { accessToken, refreshToken };
+  }
+
+  async updateJwtTokens(refreshToken: string): Promise<JwtTokens> {
+    const { userKey, userNickname, userProfileUrl, teamRole } =
+      await this.verifyJwtToken(refreshToken);
+    if (!(await this.isValidRefreshToken(refreshToken, userKey))) {
+      throw new HttpException(
+        'JWT TOKEN INVALID',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+    return await this.createJwtTokens({
+      userKey,
+      userNickname,
+      userProfileUrl,
+      teamRole,
+    });
+  }
+
+  async verifyJwtToken(
+    token: string,
+    options: JwtVerifyOptions = {},
+  ): Promise<JwtObject> {
+    const jwtVerifyOptions = {
+      secret: process.env.JWT_SECRET,
+      ...options,
+    };
+    try {
+      return await this.jwtService.verifyAsync(token, jwtVerifyOptions);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async isValidRefreshToken(refreshToken: string, userKey: string) {
+    const cachedRefreshToken = await this.cacheManager.get(
+      refreshTokenCacheKey(userKey),
+    );
+    if (cachedRefreshToken !== refreshToken) {
+      return false;
+    }
+    return true;
+  }
+
+  async deleteRefreshToken(userKey: string) {
+    return await this.cacheManager.del(refreshTokenCacheKey(userKey));
   }
 }

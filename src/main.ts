@@ -1,10 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 import { AppModule } from './app.module';
-import { Client } from 'pg';
-import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { json, urlencoded } from 'express';
 
@@ -12,41 +10,12 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.set('trust proxy', 1);
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+  });
 
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
-
-  const conObject = {
-    user: process.env.SESSION_USER,
-    host: process.env.SESSION_HOST,
-    database: process.env.SESSION_DATABASE,
-    password: process.env.SESSION_PASSWORD,
-    port: parseInt(process.env.SESSION_PORT, 10),
-  };
-
-  const sessionClient = new Client(conObject);
-  sessionClient.connect();
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const sessionStore = new (require('connect-pg-simple')(session))({
-    conObject,
-  });
-
-  app.use(
-    session({
-      store: sessionStore,
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24,
-        httpOnly: true,
-        sameSite: false,
-        // secure: true,
-      },
-    }),
-  );
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
@@ -54,11 +23,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.use(cookieParser());
 
-  app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/public' });
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('ejs');
-
-  await app.listen(3000);
+  await app.listen(6000);
 }
 bootstrap();

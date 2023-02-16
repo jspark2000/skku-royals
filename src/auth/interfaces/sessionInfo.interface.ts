@@ -1,4 +1,5 @@
 export interface SessionInfo {
+  access_token: string;
   authed: boolean;
   key: string;
   userInfo: {

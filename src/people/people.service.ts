@@ -1,14 +1,43 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AlterPositionRequestDTO } from './dto/alterPositionRequest.dto';
 import { PeopleListResponseDTO } from './dto/peopleListResponse.dto';
 import { PeopleListWithUidResponseDTO } from './dto/peopleListWithUidResponse.dto';
-import { RegisterPeopleRequestDTO } from './dto/registerPeopleRequest.dto';
-import { UpdatePeopleRequestDTO } from './dto/updatePeopleRequest.dto';
+import { PeopleUpdateDTO } from './dto/peopleUpdate.dto';
+import { RegisterPeopleDTO } from './dto/registerPeople.dto';
 
 @Injectable()
 export class PeopleService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async getPeopleModal(id: number) {
+    const peopleModal = await this.prismaService.people.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        studentNo: true,
+        offPosition: true,
+        defPosition: true,
+        splPosition: true,
+      },
+    });
+
+    if (!peopleModal) {
+      throw new UnprocessableEntityException(
+        '해당하는 부원이 존재하지 않습니다.',
+      );
+    }
+
+    return peopleModal;
+  }
 
   async getPeopleList(): Promise<PeopleListResponseDTO[]> {
     const peopleList = await this.prismaService.people.findMany({
@@ -53,30 +82,27 @@ export class PeopleService {
     return peopleList;
   }
 
-  async updatePeople(
-    peopleDTO: UpdatePeopleRequestDTO,
-  ): Promise<{ uid: string }> {
-    const updateResult = await this.prismaService.people.update({
+  async updatePeople(id: number, peopleDTO: PeopleUpdateDTO) {
+    const result = await this.prismaService.people.update({
       where: {
-        uid: peopleDTO.uid,
+        id,
       },
       data: {
-        name: peopleDTO.name,
-        studentNo: peopleDTO.studentNo,
+        ...peopleDTO,
       },
       select: {
-        uid: true,
+        id: true,
       },
     });
 
-    if (!updateResult) {
+    if (!result) {
       throw new HttpException(
-        '부원 삭제에 실패했습니다.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        '해당하는 부원 정보가 없습니다.',
+        HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
 
-    return updateResult;
+    return result;
   }
 
   async deletePeople(uid: string): Promise<{ uid: string }> {
@@ -129,37 +155,29 @@ export class PeopleService {
     });
   }
 
-  async registerPeople(
-    peopleDTO: RegisterPeopleRequestDTO,
-  ): Promise<{ uid: string }> {
-    const check = await this.prismaService.people.findUnique({
-      where: {
-        bandUserKey: peopleDTO.userKey,
-      },
-    });
-
-    if (check) {
-      throw new HttpException(
-        '해당 부원이 이미 존재합니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    const registerResult = await this.prismaService.people.create({
+  async registerPeople(peopleDTO: RegisterPeopleDTO) {
+    const result = await this.prismaService.people.create({
       data: {
         name: peopleDTO.name,
         studentNo: peopleDTO.studentNo,
         BandUser: {
           connect: {
-            userKey: peopleDTO.userKey,
+            id: peopleDTO.id,
           },
         },
       },
       select: {
-        uid: true,
+        id: true,
       },
     });
 
-    return registerResult;
+    if (!result) {
+      throw new HttpException(
+        '내부 오류 발생',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    return result;
   }
 }
