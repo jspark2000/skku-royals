@@ -12,6 +12,7 @@ async function bootstrap() {
   app.set('trust proxy', 1);
   app.enableCors({
     credentials: true,
+    origin: 'https://royals-staff.team',
   });
 
   app.use(json({ limit: '50mb' }));
