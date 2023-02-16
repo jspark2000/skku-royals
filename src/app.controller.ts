@@ -22,4 +22,10 @@ export class AppController {
       };
     }
   }
+
+  @Get('test')
+  @Public()
+  async test() {
+    return { message: 'test success' };
+  }
 }
