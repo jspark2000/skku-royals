@@ -25,7 +25,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   setJwtResponse = (res: Response, jwtTokens: JwtTokens) => {
-    res.setHeader('authorization', `${AUTH_TYPE} ${jwtTokens.accessToken}`);
+    res.setHeader('Authorization', `${AUTH_TYPE} ${jwtTokens.accessToken}`);
     res.cookie(
       'refresh_token',
       jwtTokens.refreshToken,
