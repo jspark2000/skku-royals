@@ -13,6 +13,7 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: 'https://royals-staff.team',
+    exposedHeaders: ['authorization'],
   });
 
   app.use(json({ limit: '50mb' }));
