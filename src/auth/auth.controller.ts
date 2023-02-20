@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -69,6 +70,9 @@ export class AuthController {
       this.setJwtResponse(res, newJwtTokens);
       return;
     } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       throw new UnauthorizedException(error.message);
     }
   }

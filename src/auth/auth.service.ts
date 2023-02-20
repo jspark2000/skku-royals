@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   CACHE_MANAGER,
   HttpException,
   HttpStatus,
@@ -292,10 +293,7 @@ export class AuthService {
     const { userKey, userNickname, userProfileUrl, teamRole } =
       await this.verifyJwtToken(refreshToken);
     if (!(await this.isValidRefreshToken(refreshToken, userKey))) {
-      throw new HttpException(
-        'JWT TOKEN INVALID',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new BadRequestException('유효하지 않은 토근입니다.');
     }
     return await this.createJwtTokens({
       userKey,
