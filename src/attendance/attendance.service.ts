@@ -1,6 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { GoogleSheet } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AttendanceDateDTO } from './dto/attendanceDate.dto';
+import { attendanceRegisterDTO } from './dto/attendanceRegister.dto';
 
 @Injectable()
 export class AttendanceService {
@@ -135,5 +142,81 @@ export class AttendanceService {
     };
 
     return result;
+  }
+
+  async getGoogleSheetList(): Promise<GoogleSheet[]> {
+    const googleSheetList = await this.prismaService.googleSheet.findMany({
+      take: 10,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (googleSheetList.length === 0) {
+      throw new UnprocessableEntityException(
+        '불러올 GoogleSheet 정보가 없습니다.',
+      );
+    }
+
+    return googleSheetList;
+  }
+
+  async registerAttendances(
+    attendanceDTO: attendanceRegisterDTO[],
+  ): Promise<{ count: number }> {
+    attendanceDTO.forEach(
+      (attendance) => (attendance.date = new Date(attendance.date)),
+    );
+
+    let count = 0;
+
+    for (let i = 0; i < attendanceDTO.length; i++) {
+      const attendance = attendanceDTO[i];
+      const uid = await this.prismaService.people.findUnique({
+        where: {
+          name_studentNo: {
+            name: attendance.name,
+            studentNo: attendance.studentNo,
+          },
+        },
+        select: {
+          uid: true,
+        },
+      });
+
+      if (uid) {
+        const result = await this.prismaService.attendance.upsert({
+          where: {
+            uid_date_location: {
+              uid: uid.uid,
+              date: attendance.date,
+              location: attendance.location,
+            },
+          },
+          create: {
+            People: {
+              connect: {
+                uid: uid.uid,
+              },
+            },
+            date: attendance.date,
+            location: attendance.location,
+            survey: attendance.survey,
+            late: attendance.late,
+            checked: false,
+          },
+          update: {
+            survey: attendance.survey,
+            late: attendance.late,
+            checked: false,
+          },
+        });
+
+        if (result) {
+          count++;
+        }
+      }
+    }
+    return { count };
   }
 }
