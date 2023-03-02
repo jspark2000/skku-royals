@@ -6,7 +6,9 @@ import {
 } from '@nestjs/common';
 import { GoogleSheet } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AttendanceCheckDTO } from './dto/attendanceCheck.dto';
 import { AttendanceDateDTO } from './dto/attendanceDate.dto';
+import { AttendanceDeleteDTO } from './dto/attendanceDelete.dto';
 import { attendanceRegisterDTO } from './dto/attendanceRegister.dto';
 
 @Injectable()
@@ -47,6 +49,7 @@ export class AttendanceService {
         location: true,
         survey: true,
         late: true,
+        checked: true,
         People: {
           select: {
             name: true,
@@ -84,6 +87,7 @@ export class AttendanceService {
         location: attendance.location,
         survey: attendance.survey,
         late: attendance.late,
+        checked: attendance.checked,
         name: attendance.People.name,
         studentNo: attendance.People.studentNo,
         offPosition: attendance.People.offPosition,
@@ -218,5 +222,42 @@ export class AttendanceService {
       }
     }
     return { count };
+  }
+
+  async checkAttendance(attendanceDTO: AttendanceCheckDTO) {
+    const result = await this.prismaService.attendance.update({
+      where: {
+        id: attendanceDTO.id,
+      },
+      data: {
+        location: attendanceDTO.location,
+        survey: attendanceDTO.survey,
+        late: attendanceDTO.late,
+        checked: attendanceDTO.checked,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!result) {
+      throw new UnprocessableEntityException(
+        '해당 출석 정보가 존재하지 않습니다.',
+      );
+    }
+
+    return result;
+  }
+
+  async deleteAttendances(
+    attendanceDTO: AttendanceDeleteDTO,
+  ): Promise<{ count: number }> {
+    const result = await this.prismaService.attendance.deleteMany({
+      where: {
+        date: attendanceDTO.date,
+      },
+    });
+
+    return result;
   }
 }
