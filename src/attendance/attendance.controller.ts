@@ -1,8 +1,19 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Req,
+} from '@nestjs/common';
 import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { AttendanceService } from './attendance.service';
+import { AttendanceCheckDTO } from './dto/attendanceCheck.dto';
 import { AttendanceDateDTO } from './dto/attendanceDate.dto';
+import { AttendanceDeleteDTO } from './dto/attendanceDelete.dto';
 import { attendanceRegisterDTO } from './dto/attendanceRegister.dto';
 
 @Roles('normal')
@@ -31,6 +42,16 @@ export class AttendanceController {
       attendanceDTO,
     );
     return count;
+  }
+
+  @Put('check')
+  async checkAttendance(@Body() attendanceDTO: AttendanceCheckDTO) {
+    return await this.attendanceService.checkAttendance(attendanceDTO);
+  }
+
+  @Delete()
+  async deleteAttendances(@Body() attendanceDTO: AttendanceDeleteDTO) {
+    return await this.attendanceService.deleteAttendances(attendanceDTO);
   }
 
   @Get(':date')
