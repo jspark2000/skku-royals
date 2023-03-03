@@ -8,6 +8,7 @@ import {
   Put,
   Req,
 } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { AttendanceService } from './attendance.service';
@@ -16,8 +17,8 @@ import { AttendanceDateDTO } from './dto/attendanceDate.dto';
 import { AttendanceDeleteDTO } from './dto/attendanceDelete.dto';
 import { attendanceRegisterDTO } from './dto/attendanceRegister.dto';
 
-@Roles('normal')
 @Controller('attendance')
+@Roles(Role.Newbie)
 export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceService) {}
 
@@ -37,6 +38,7 @@ export class AttendanceController {
   }
 
   @Post('register')
+  // @Roles(Role.Normal)
   async registerAttendances(@Body() attendanceDTO: attendanceRegisterDTO[]) {
     const { count } = await this.attendanceService.registerAttendances(
       attendanceDTO,
@@ -45,11 +47,13 @@ export class AttendanceController {
   }
 
   @Put('check')
+  @Roles(Role.Normal)
   async checkAttendance(@Body() attendanceDTO: AttendanceCheckDTO) {
     return await this.attendanceService.checkAttendance(attendanceDTO);
   }
 
   @Delete()
+  @Roles(Role.Admin)
   async deleteAttendances(@Body() attendanceDTO: AttendanceDeleteDTO) {
     return await this.attendanceService.deleteAttendances(attendanceDTO);
   }

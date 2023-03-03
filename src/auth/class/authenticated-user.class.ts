@@ -1,11 +1,11 @@
-import { TeamRole } from '@prisma/client';
+import { Role, TeamRole } from '@prisma/client';
 
 export class AuthenticatedUser {
   #userKey: string;
   #userNickname: string;
   #userProfileUrl: string;
   #teamRole: TeamRole;
-  #role: string;
+  #role: Role;
 
   constructor(userKey, userNickname, userProfileUrl, teamRole) {
     this.#userKey = userKey;
@@ -34,15 +34,15 @@ export class AuthenticatedUser {
     return this.#role;
   }
 
-  set role(role) {
+  set role(role: Role) {
     this.#role = role;
   }
 
   isAdmin(): boolean {
-    return this.#role === 'admin';
+    return this.#role === Role.Admin;
   }
 
   isSuperAdmin(): boolean {
-    return this.#role === 'superAdmin';
+    return this.#role === Role.SuperAdmin;
   }
 }

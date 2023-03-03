@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { Role } from '@prisma/client';
 import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 
@@ -13,24 +14,28 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (role === 'newbie') {
+    if (role === undefined) {
+      return true;
+    }
+
+    if (role === Role.Newbie) {
       return true;
     }
 
     const request: AuthenticatedRequest = context.switchToHttp().getRequest();
 
-    if (role === 'superAdmin') {
-      return request.user.role === 'superAdmin' ? true : false;
+    if (role === Role.SuperAdmin) {
+      return request.user.role === Role.SuperAdmin ? true : false;
     }
 
-    if (role === 'admin') {
+    if (role === Role.Admin) {
       if (request.user.isSuperAdmin() || request.user.isAdmin()) return true;
       return false;
     }
 
-    if (role === 'normal') {
+    if (role === Role.Normal) {
       if (request.user.isSuperAdmin() || request.user.isAdmin()) return true;
-      if (request.user.role === 'normal') return true;
+      if (request.user.role === Role.Normal) return true;
       return false;
     }
 

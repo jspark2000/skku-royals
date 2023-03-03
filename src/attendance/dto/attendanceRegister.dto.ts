@@ -20,4 +20,7 @@ export class attendanceRegisterDTO {
   @IsDate()
   @Type(() => Date)
   date: Date;
+
+  @IsString()
+  reason: string;
 }
