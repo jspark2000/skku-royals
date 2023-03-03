@@ -19,6 +19,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { BandModule } from './band/band.module';
 import * as redisStore from 'cache-manager-redis-store';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -51,6 +52,10 @@ import * as redisStore from 'cache-manager-redis-store';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

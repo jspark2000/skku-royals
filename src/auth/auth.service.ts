@@ -12,7 +12,7 @@ import axios from 'axios';
 import { AccessToken } from './interfaces/accessToken.interface';
 import { UserProfile } from './interfaces/userProfile.interface';
 import { BandList } from './interfaces/bandList.interface';
-import { BandUser, TeamRole } from '@prisma/client';
+import { BandUser, Role, TeamRole } from '@prisma/client';
 import { BandUserDTO } from './dto/bandUser.dto';
 import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto';
 import { JwtService, JwtVerifyOptions } from '@nestjs/jwt';
@@ -65,7 +65,7 @@ export class AuthService {
       },
     });
 
-    if (adminCheck.role === 'admin' || adminCheck.role === 'superAdmin') {
+    if (adminCheck.role === Role.Admin || adminCheck.role === Role.SuperAdmin) {
       throw new HttpException(
         'admin 이상 권한을 포함하는 변경은 superAdmin 전용 메뉴에서 가능합니다.',
         HttpStatus.FORBIDDEN,
@@ -96,7 +96,7 @@ export class AuthService {
       },
     });
 
-    if (adminCheck.role === 'admin' || adminCheck.role === 'superAdmin') {
+    if (adminCheck.role === Role.Admin || adminCheck.role === Role.SuperAdmin) {
       throw new HttpException(
         'admin 이상 권한을 포함하는 변경은 superAdmin 전용 메뉴에서 가능합니다.',
         HttpStatus.FORBIDDEN,
@@ -108,7 +108,7 @@ export class AuthService {
         userKey: accountDTO.userKey,
       },
       data: {
-        role: accountDTO.role,
+        role: Role[accountDTO.role],
         teamRole: TeamRole[accountDTO.teamRole],
       },
       select: {

@@ -1,7 +1,10 @@
 import { Controller, Get, Param, Req } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { BandService } from './band.service';
 
+@Roles(Role.Newbie)
 @Controller('band')
 export class BandController {
   constructor(private readonly bandService: BandService) {}

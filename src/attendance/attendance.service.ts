@@ -4,7 +4,7 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { GoogleSheet } from '@prisma/client';
+import { GoogleSheet, Location } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AttendanceCheckDTO } from './dto/attendanceCheck.dto';
 import { AttendanceDateDTO } from './dto/attendanceDate.dto';
@@ -49,6 +49,7 @@ export class AttendanceService {
         location: true,
         survey: true,
         late: true,
+        reason: true,
         checked: true,
         People: {
           select: {
@@ -88,6 +89,7 @@ export class AttendanceService {
         survey: attendance.survey,
         late: attendance.late,
         checked: attendance.checked,
+        reason: attendance.reason,
         name: attendance.People.name,
         studentNo: attendance.People.studentNo,
         offPosition: attendance.People.offPosition,
@@ -131,9 +133,9 @@ export class AttendanceService {
         return {
           date: attendance.date.toISOString().slice(0, 10),
           location:
-            attendance.location === 'integrated'
+            attendance.location === Location.Integrated
               ? '통합'
-              : attendance.location === 'seoul'
+              : attendance.location === Location.Seoul
               ? '명륜'
               : '율전',
           attendance: attendance.survey
@@ -171,7 +173,6 @@ export class AttendanceService {
     attendanceDTO.forEach(
       (attendance) => (attendance.date = new Date(attendance.date)),
     );
-
     let count = 0;
 
     for (let i = 0; i < attendanceDTO.length; i++) {
@@ -191,10 +192,9 @@ export class AttendanceService {
       if (uid) {
         const result = await this.prismaService.attendance.upsert({
           where: {
-            uid_date_location: {
+            uid_date: {
               uid: uid.uid,
               date: attendance.date,
-              location: attendance.location,
             },
           },
           create: {
@@ -204,10 +204,11 @@ export class AttendanceService {
               },
             },
             date: attendance.date,
-            location: attendance.location,
+            location: Location[attendance.location],
             survey: attendance.survey,
             late: attendance.late,
             checked: false,
+            reason: attendance.reason,
           },
           update: {
             survey: attendance.survey,
@@ -230,7 +231,7 @@ export class AttendanceService {
         id: attendanceDTO.id,
       },
       data: {
-        location: attendanceDTO.location,
+        location: Location[attendanceDTO.location],
         survey: attendanceDTO.survey,
         late: attendanceDTO.late,
         checked: attendanceDTO.checked,

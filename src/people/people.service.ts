@@ -105,24 +105,15 @@ export class PeopleService {
     return result;
   }
 
-  async deletePeople(uid: string): Promise<{ uid: string }> {
-    const result = await this.prismaService.people.delete({
+  async deletePeople(id: number) {
+    return await this.prismaService.people.delete({
       where: {
-        uid,
+        id,
       },
       select: {
-        uid: true,
+        id: true,
       },
     });
-
-    if (!result) {
-      throw new HttpException(
-        '부원 삭제에 실패했습니다.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-
-    return result;
   }
 
   async alterPosition(
