@@ -98,58 +98,6 @@ export class AttendanceService {
     });
   }
 
-  async getRecentAttendances(userKey: string) {
-    const userInfo = await this.prismaService.bandUser.findUnique({
-      where: {
-        userKey,
-      },
-      select: {
-        People: {
-          select: {
-            uid: true,
-          },
-        },
-      },
-    });
-
-    const attendances = await this.prismaService.attendance.findMany({
-      where: {
-        uid: userInfo.People.uid,
-      },
-      select: {
-        date: true,
-        location: true,
-        late: true,
-        survey: true,
-      },
-      orderBy: {
-        date: 'desc',
-      },
-      take: 5,
-    });
-
-    const result = {
-      attendances: attendances.map((attendance) => {
-        return {
-          date: attendance.date.toISOString().slice(0, 10),
-          location:
-            attendance.location === Location.Integrated
-              ? '통합'
-              : attendance.location === Location.Seoul
-              ? '명륜'
-              : '율전',
-          attendance: attendance.survey
-            ? attendance.late
-              ? '늦참'
-              : '참석'
-            : '불참',
-        };
-      }),
-    };
-
-    return result;
-  }
-
   async getGoogleSheetList(): Promise<GoogleSheet[]> {
     const googleSheetList = await this.prismaService.googleSheet.findMany({
       take: 10,

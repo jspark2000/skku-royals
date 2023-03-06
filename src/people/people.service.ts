@@ -5,9 +5,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AlterPositionRequestDTO } from './dto/alterPositionRequest.dto';
 import { PeopleListResponseDTO } from './dto/peopleListResponse.dto';
-import { PeopleListWithUidResponseDTO } from './dto/peopleListWithUidResponse.dto';
 import { PeopleUpdateDTO } from './dto/peopleUpdate.dto';
 import { RegisterPeopleDTO } from './dto/registerPeople.dto';
 
@@ -62,26 +60,6 @@ export class PeopleService {
     return peopleList;
   }
 
-  async getPeopleListWithUid(): Promise<PeopleListWithUidResponseDTO[]> {
-    const peopleList = await this.prismaService.people.findMany({
-      select: {
-        name: true,
-        studentNo: true,
-        uid: true,
-      },
-      orderBy: [{ studentNo: 'asc' }, { name: 'asc' }],
-    });
-
-    if (peopleList.length === 0) {
-      throw new HttpException(
-        '데이터베이스에서 정보를 불러오는데 실패했습니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    return peopleList;
-  }
-
   async updatePeople(id: number, peopleDTO: PeopleUpdateDTO) {
     const result = await this.prismaService.people.update({
       where: {
@@ -116,46 +94,11 @@ export class PeopleService {
     });
   }
 
-  async alterPosition(
-    alterPositionRequestDTO: AlterPositionRequestDTO,
-  ): Promise<void> {
-    const { uid } = await this.prismaService.people.findUniqueOrThrow({
-      where: {
-        name_studentNo: {
-          name: alterPositionRequestDTO.name,
-          studentNo: alterPositionRequestDTO.studentNo,
-        },
-      },
-      select: {
-        uid: true,
-      },
-    });
-
-    await this.prismaService.people.update({
-      where: {
-        uid,
-      },
-      data: {
-        offPosition: alterPositionRequestDTO.offPosition,
-        defPosition: alterPositionRequestDTO.defPosition,
-        splPosition: alterPositionRequestDTO.splPosition,
-      },
-      select: {
-        uid: true,
-      },
-    });
-  }
-
   async registerPeople(peopleDTO: RegisterPeopleDTO) {
     const result = await this.prismaService.people.create({
       data: {
         name: peopleDTO.name,
         studentNo: peopleDTO.studentNo,
-        BandUser: {
-          connect: {
-            id: peopleDTO.id,
-          },
-        },
       },
       select: {
         id: true,

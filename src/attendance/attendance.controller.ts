@@ -6,10 +6,8 @@ import {
   Param,
   Post,
   Put,
-  Req,
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
-import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { AttendanceService } from './attendance.service';
 import { AttendanceCheckDTO } from './dto/attendanceCheck.dto';
@@ -25,11 +23,6 @@ export class AttendanceController {
   @Get('date-list')
   async getAttendanceDateList() {
     return await this.attendanceService.getAttendanceDateList();
-  }
-
-  @Get('recent')
-  async getRecentAttendances(@Req() req: AuthenticatedRequest) {
-    return await this.attendanceService.getRecentAttendances(req.user.userKey);
   }
 
   @Get('register')

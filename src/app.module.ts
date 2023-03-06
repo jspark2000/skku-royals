@@ -12,9 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { PeopleModule } from './people/people.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { AttendanceModule } from './attendance/attendance.module';
-import { GameModule } from './game/game.module';
 import { ApiModule } from './api/api.module';
-import { StatisticsModule } from './statistics/statistics.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { BandModule } from './band/band.module';
@@ -41,9 +39,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     AuthModule,
     PeopleModule,
     AttendanceModule,
-    GameModule,
     ApiModule,
-    StatisticsModule,
     BandModule,
   ],
   controllers: [AppController],

@@ -4,6 +4,6 @@ import { BandController } from './band.controller';
 
 @Module({
   providers: [BandService],
-  controllers: [BandController]
+  controllers: [BandController],
 })
 export class BandModule {}

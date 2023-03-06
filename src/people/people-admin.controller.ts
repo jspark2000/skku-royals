@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,6 +10,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { PeopleUpdateDTO } from './dto/peopleUpdate.dto';
 import { RegisterPeopleDTO } from './dto/registerPeople.dto';
@@ -33,7 +35,13 @@ export class PeopleAdminController {
 
   @Post()
   async registerPeople(@Body() peopleDTO: RegisterPeopleDTO) {
-    return await this.peopleService.registerPeople(peopleDTO);
+    try {
+      return await this.peopleService.registerPeople(peopleDTO);
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new BadRequestException('이미 존재하는 부원입니다.');
+      }
+    }
   }
 
   @Delete(':id')

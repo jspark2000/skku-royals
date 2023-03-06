@@ -8,8 +8,4 @@ export class RegisterPeopleDTO {
   @IsNumber()
   @Type(() => Number)
   studentNo: number;
-
-  @IsNumber()
-  @Type(() => Number)
-  id: number;
 }
