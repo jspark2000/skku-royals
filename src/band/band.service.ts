@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateRoleDTO } from './dto/updateRole.dto';
 
 @Injectable()
 export class BandService {
@@ -11,11 +13,7 @@ export class BandService {
         id: true,
         profileUrl: true,
         userNickname: true,
-        People: {
-          select: {
-            uid: true,
-          },
-        },
+        role: true,
       },
     });
 
@@ -31,7 +29,7 @@ export class BandService {
         id: bandUser.id,
         profileUrl: bandUser.profileUrl,
         userNickname: bandUser.userNickname,
-        registered: bandUser.People ? true : false,
+        role: bandUser.role,
       };
     });
   }
@@ -56,5 +54,33 @@ export class BandService {
     }
 
     return profile;
+  }
+
+  async updateRole(bandDTO: UpdateRoleDTO) {
+    return await this.prismaService.bandUser.update({
+      where: {
+        id: bandDTO.id,
+      },
+      data: {
+        userNickname: bandDTO.name,
+        role: Role[bandDTO.role],
+      },
+      select: {
+        id: true,
+        role: true,
+        userNickname: true,
+      },
+    });
+  }
+
+  async deleteUser(id: number) {
+    return await this.prismaService.bandUser.delete({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+      },
+    });
   }
 }
