@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class PeopleUpdateDTO {
   @IsString()
@@ -8,6 +8,12 @@ export class PeopleUpdateDTO {
   @IsNumber()
   @Type(() => Number)
   studentNo: number;
+
+  @IsBoolean()
+  newbie: boolean;
+
+  @IsBoolean()
+  absence: boolean;
 
   @IsString()
   offPosition: string;

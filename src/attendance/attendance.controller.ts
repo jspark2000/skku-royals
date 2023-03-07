@@ -51,6 +51,11 @@ export class AttendanceController {
     return await this.attendanceService.deleteAttendances(attendanceDTO);
   }
 
+  @Get('report/:date')
+  async getDailyReport(@Param('date') date: string) {
+    return await this.attendanceService.issueDailyReport(date);
+  }
+
   @Get(':date')
   async getAttendances(@Param() attendanceDTO: AttendanceDateDTO) {
     return await this.attendanceService.getAttendances(attendanceDTO);
