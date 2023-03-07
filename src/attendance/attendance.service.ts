@@ -174,9 +174,9 @@ export class AttendanceService {
             reason: attendance.reason,
           },
           update: {
+            location: Location[attendance.location],
             survey: attendance.survey,
             late: attendance.late,
-            checked: false,
           },
         });
 
@@ -197,6 +197,7 @@ export class AttendanceService {
         location: Location[attendanceDTO.location],
         survey: attendanceDTO.survey,
         late: attendanceDTO.late,
+        checked: true,
       },
       select: {
         id: true,
