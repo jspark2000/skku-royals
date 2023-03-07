@@ -20,6 +20,7 @@ export class BandController {
   constructor(private readonly bandService: BandService) {}
 
   @Get('user/list')
+  @Roles(Role.Admin)
   async getBandUserList() {
     return await this.bandService.getBandUserList();
   }
@@ -36,8 +37,11 @@ export class BandController {
 
   @Patch('role')
   @Roles(Role.Admin)
-  async updateRole(@Body() bandDTO: UpdateRoleDTO) {
-    return await this.bandService.updateRole(bandDTO);
+  async updateRole(
+    @Body() bandDTO: UpdateRoleDTO,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    return await this.bandService.updateRole(bandDTO, req.user.role);
   }
 
   @Delete(':id')

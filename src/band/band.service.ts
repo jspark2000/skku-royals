@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateRoleDTO } from './dto/updateRole.dto';
@@ -56,7 +61,30 @@ export class BandService {
     return profile;
   }
 
-  async updateRole(bandDTO: UpdateRoleDTO) {
+  async updateRole(bandDTO: UpdateRoleDTO, role: Role) {
+    if (role === Role.Admin) {
+      if (bandDTO.role === Role.Admin || bandDTO.role === Role.SuperAdmin) {
+        throw new BadRequestException(
+          'Admin 권한 이상으로의 변경은 SuperAdmin만 가능합니다.',
+        );
+      }
+    }
+
+    const superAdminCheck = await this.prismaService.bandUser.findUnique({
+      where: {
+        id: bandDTO.id,
+      },
+      select: {
+        role: true,
+      },
+    });
+
+    if (superAdminCheck.role === Role.SuperAdmin) {
+      throw new BadRequestException(
+        'SuperAdmin의 권한은 임의로 변경할 수 없습니다.',
+      );
+    }
+
     return await this.prismaService.bandUser.update({
       where: {
         id: bandDTO.id,
@@ -74,6 +102,21 @@ export class BandService {
   }
 
   async deleteUser(id: number) {
+    const adminCheck = await this.prismaService.bandUser.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        role: true,
+      },
+    });
+
+    if (adminCheck.role === Role.Admin || adminCheck.role === Role.SuperAdmin) {
+      throw new BadRequestException(
+        'Admin 이상의 권한을 가진 유저는 삭제할 수 없습니다.',
+      );
+    }
+
     return await this.prismaService.bandUser.delete({
       where: {
         id,

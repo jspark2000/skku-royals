@@ -11,7 +11,9 @@ import {
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import { Request, Response } from 'express';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { AuthService } from './auth.service';
 import {
   AUTH_TYPE,
@@ -78,6 +80,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  @Roles(Role.Newbie)
   async logout(
     @Req() req: AuthenticatedRequest,
     @Res({ passthrough: true }) res: Response,
@@ -89,5 +92,11 @@ export class AuthController {
     } catch (error) {
       throw new InternalServerErrorException();
     }
+  }
+
+  @Get('role')
+  @Roles(Role.Newbie)
+  async getRole(@Req() req: AuthenticatedRequest) {
+    return { role: req.user.role };
   }
 }

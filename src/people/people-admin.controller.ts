@@ -16,7 +16,7 @@ import { PeopleUpdateDTO } from './dto/peopleUpdate.dto';
 import { RegisterPeopleDTO } from './dto/registerPeople.dto';
 import { PeopleService } from './people.service';
 
-// @Roles(Role.Admin)
+@Roles(Role.Admin)
 @Controller('admin/people')
 export class PeopleAdminController {
   constructor(private readonly peopleService: PeopleService) {}
