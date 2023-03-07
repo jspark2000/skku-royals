@@ -197,7 +197,6 @@ export class AttendanceService {
         location: Location[attendanceDTO.location],
         survey: attendanceDTO.survey,
         late: attendanceDTO.late,
-        checked: attendanceDTO.checked,
       },
       select: {
         id: true,
