@@ -26,12 +26,13 @@ export class AttendanceController {
   }
 
   @Get('register')
+  @Roles(Role.Admin)
   async getGoogleSheetList() {
     return await this.attendanceService.getGoogleSheetList();
   }
 
   @Post('register')
-  // @Roles(Role.Normal)
+  @Roles(Role.Admin)
   async registerAttendances(@Body() attendanceDTO: attendanceRegisterDTO[]) {
     const { count } = await this.attendanceService.registerAttendances(
       attendanceDTO,

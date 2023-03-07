@@ -293,7 +293,7 @@ export class AuthService {
     const { userKey, userNickname, userProfileUrl, teamRole } =
       await this.verifyJwtToken(refreshToken);
     if (!(await this.isValidRefreshToken(refreshToken, userKey))) {
-      throw new BadRequestException('유효하지 않은 토근입니다.');
+      throw new BadRequestException('다른기기에서 로그인 했습니다.');
     }
     return await this.createJwtTokens({
       userKey,
