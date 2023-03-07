@@ -22,6 +22,8 @@ export class PeopleService {
         id: true,
         name: true,
         studentNo: true,
+        newbie: true,
+        absence: true,
         offPosition: true,
         defPosition: true,
         splPosition: true,
@@ -43,11 +45,13 @@ export class PeopleService {
         id: true,
         name: true,
         studentNo: true,
+        newbie: true,
+        absence: true,
         offPosition: true,
         defPosition: true,
         splPosition: true,
       },
-      orderBy: [{ studentNo: 'asc' }, { name: 'asc' }],
+      orderBy: [{ newbie: 'asc' }, { studentNo: 'asc' }, { name: 'asc' }],
     });
 
     if (peopleList.length === 0) {

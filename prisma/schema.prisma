@@ -85,6 +85,8 @@ model People {
   attendance  Boolean      @default(true)
   name        String       @db.VarChar(20)
   studentNo   Int
+  newbie      Boolean      @default(false)
+  absence     Boolean      @default(false)
   offPosition String       @default("no") @db.VarChar(20)
   defPosition String       @default("no") @db.VarChar(20)
   splPosition String       @default("no") @db.VarChar(20)
