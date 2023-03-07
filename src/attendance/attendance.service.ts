@@ -59,7 +59,6 @@ export class AttendanceService {
         People: {
           absence: false,
         },
-        checked: false,
       },
       select: {
         id: true,
