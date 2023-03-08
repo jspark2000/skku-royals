@@ -1,26 +1,31 @@
-import { Type } from 'class-transformer';
-import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer'
+import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator'
 
-export class attendanceRegisterDTO {
+export class RegisterAttendancesDTO {
+  @Type(() => RegisterAttendanceDTO)
+  attendances: RegisterAttendanceDTO[]
+}
+
+export class RegisterAttendanceDTO {
   @IsString()
-  name: string;
+  name: string
 
   @IsNumber()
-  studentNo: number;
+  studentNo: number
 
   @IsBoolean()
-  survey: boolean;
+  survey: boolean
 
   @IsBoolean()
-  late: boolean;
+  late: boolean
 
   @IsString()
-  location: string;
+  location: string
 
   @IsDate()
   @Type(() => Date)
-  date: Date;
+  date: Date
 
   @IsString()
-  reason: string;
+  reason: string
 }

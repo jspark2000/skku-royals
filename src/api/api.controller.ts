@@ -1,8 +1,8 @@
-import { Body, Controller, Post, Get, UseGuards } from '@nestjs/common';
-import { Public } from 'src/auth/decorators/public.decorator';
-import { APIGuard } from 'src/common/guards/api.guard';
-import { ApiService } from './api.service';
-import { RegisterAttendanceRequestDTO } from './dto/registerAttendanceRequest.dto';
+import { Body, Controller, Post, Get, UseGuards } from '@nestjs/common'
+import { Public } from 'src/auth/decorators/public.decorator'
+import { APIGuard } from 'src/common/guards/api.guard'
+import { ApiService } from './api.service'
+import { RegisterAttendanceRequestDTO } from './dto/registerAttendanceRequest.dto'
 
 @Public()
 @UseGuards(APIGuard)
@@ -12,18 +12,14 @@ export class ApiController {
 
   @Get('test')
   async test() {
-    return { sucess: true };
+    return { sucess: true }
   }
 
   @Post('attendance')
   async registerGoogleSheet(
-    @Body() attendanceDTO: RegisterAttendanceRequestDTO,
+    @Body() attendanceDTO: RegisterAttendanceRequestDTO
   ) {
-    try {
-      const { id } = await this.apiService.registerGoogleSheet(attendanceDTO);
-      return { id, success: true };
-    } catch (error) {
-      throw error;
-    }
+    const { id } = await this.apiService.registerGoogleSheet(attendanceDTO)
+    return { id, success: true }
   }
 }

@@ -1,12 +1,12 @@
-import { IsString } from 'class-validator';
+import { IsString } from 'class-validator'
 
 export class AccountUpdateReqeustDTO {
   @IsString()
-  userKey: string;
+  userKey: string
 
   @IsString()
-  role: string;
+  role: string
 
   @IsString()
-  teamRole: string;
+  teamRole: string
 }

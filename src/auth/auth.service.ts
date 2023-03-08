@@ -5,40 +5,40 @@ import {
   HttpStatus,
   Inject,
   Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import axios from 'axios';
-import { AccessToken } from './interfaces/accessToken.interface';
-import { UserProfile } from './interfaces/userProfile.interface';
-import { BandList } from './interfaces/bandList.interface';
-import { BandUser, Role, TeamRole } from '@prisma/client';
-import { BandUserDTO } from './dto/bandUser.dto';
-import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto';
-import { JwtService, JwtVerifyOptions } from '@nestjs/jwt';
-import { JwtObject, JwtPayload, JwtTokens } from './interfaces/jwt.interface';
+  InternalServerErrorException
+} from '@nestjs/common'
+import { PrismaService } from 'src/prisma/prisma.service'
+import axios from 'axios'
+import { AccessToken } from './interfaces/accessToken.interface'
+import { UserProfile } from './interfaces/userProfile.interface'
+import { BandList } from './interfaces/bandList.interface'
+import { BandUser, Role, TeamRole } from '@prisma/client'
+import { BandUserDTO } from './dto/bandUser.dto'
+import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto'
+import { JwtService, JwtVerifyOptions } from '@nestjs/jwt'
+import { JwtObject, JwtPayload, JwtTokens } from './interfaces/jwt.interface'
 import {
   ACCESS_TOKEN_EXPIRATION_SEC,
-  REFRESH_TOKEN_EXPIRATION_SEC,
-} from './constants/jwt.constants';
-import { Cache } from 'cache-manager';
-import { refreshTokenCacheKey } from 'src/common/cache/keys';
+  REFRESH_TOKEN_EXPIRATION_SEC
+} from './constants/jwt.constants'
+import { Cache } from 'cache-manager'
+import { refreshTokenCacheKey } from 'src/common/cache/keys'
 
 @Injectable()
 export class AuthService {
-  private readonly getAuthCodeURL = 'https://auth.band.us/oauth2/authorize';
-  private readonly getTokenURL = 'https://auth.band.us/oauth2/token';
-  private readonly getUserProfileURL = 'https://openapi.band.us/v2/profile';
-  private readonly getBandListURL = 'https://openapi.band.us/v2.1/bands';
+  private readonly getAuthCodeURL = 'https://auth.band.us/oauth2/authorize'
+  private readonly getTokenURL = 'https://auth.band.us/oauth2/token'
+  private readonly getUserProfileURL = 'https://openapi.band.us/v2/profile'
+  private readonly getBandListURL = 'https://openapi.band.us/v2.1/bands'
 
   constructor(
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
   getOAuth2URL(): string {
-    return `${this.getAuthCodeURL}?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URL}`;
+    return `${this.getAuthCodeURL}?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URL}`
   }
 
   async getBandUserList(): Promise<BandUserDTO[]> {
@@ -48,201 +48,201 @@ export class AuthService {
         userNickname: true,
         profileUrl: true,
         role: true,
-        teamRole: true,
-      },
-    });
+        teamRole: true
+      }
+    })
 
-    return bandUserList;
+    return bandUserList
   }
 
   async deleteBandUser(userKey: string): Promise<{ userNickname: string }> {
     const adminCheck = await this.prismaService.bandUser.findUnique({
       where: {
-        userKey,
+        userKey
       },
       select: {
-        role: true,
-      },
-    });
+        role: true
+      }
+    })
 
     if (adminCheck.role === Role.Admin || adminCheck.role === Role.SuperAdmin) {
       throw new HttpException(
         'admin 이상 권한을 포함하는 변경은 superAdmin 전용 메뉴에서 가능합니다.',
-        HttpStatus.FORBIDDEN,
-      );
+        HttpStatus.FORBIDDEN
+      )
     }
 
     const deleteResult = await this.prismaService.bandUser.delete({
       where: {
-        userKey,
+        userKey
       },
       select: {
-        userNickname: true,
-      },
-    });
+        userNickname: true
+      }
+    })
 
-    return deleteResult;
+    return deleteResult
   }
 
   async updateBandUserRole(
-    accountDTO: AccountUpdateReqeustDTO,
+    accountDTO: AccountUpdateReqeustDTO
   ): Promise<{ userNickname: string }> {
     const adminCheck = await this.prismaService.bandUser.findUnique({
       where: {
-        userKey: accountDTO.userKey,
+        userKey: accountDTO.userKey
       },
       select: {
-        role: true,
-      },
-    });
+        role: true
+      }
+    })
 
     if (adminCheck.role === Role.Admin || adminCheck.role === Role.SuperAdmin) {
       throw new HttpException(
         'admin 이상 권한을 포함하는 변경은 superAdmin 전용 메뉴에서 가능합니다.',
-        HttpStatus.FORBIDDEN,
-      );
+        HttpStatus.FORBIDDEN
+      )
     }
 
     const updateResult = await this.prismaService.bandUser.update({
       where: {
-        userKey: accountDTO.userKey,
+        userKey: accountDTO.userKey
       },
       data: {
         role: Role[accountDTO.role],
-        teamRole: TeamRole[accountDTO.teamRole],
+        teamRole: TeamRole[accountDTO.teamRole]
       },
       select: {
-        userNickname: true,
-      },
-    });
+        userNickname: true
+      }
+    })
 
     if (!updateResult) {
       throw new HttpException(
         '업데이트에 실패했습니다.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
     }
 
-    return updateResult;
+    return updateResult
   }
 
   async loginOrRegister(code: string) {
-    const token = await this.getAccessToken(code);
-    const userProfile = await this.getUserProfile(token);
-    const isWhiteList = await this.checkWhiteList(token);
+    const token = await this.getAccessToken(code)
+    const userProfile = await this.getUserProfile(token)
+    const isWhiteList = await this.checkWhiteList(token)
     if (!isWhiteList) {
       throw new HttpException(
         '성균관대 미식축구부 밴드에 가입되어있지 않습니다.',
-        HttpStatus.BAD_REQUEST,
-      );
+        HttpStatus.BAD_REQUEST
+      )
     }
-    const isRegistered = await this.checkRegistration(userProfile);
+    const isRegistered = await this.checkRegistration(userProfile)
     if (!isRegistered) {
-      const registerResult = await this.registerUser(userProfile);
+      const registerResult = await this.registerUser(userProfile)
       if (!registerResult) {
-        throw new HttpException('DB 오류', HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new HttpException('DB 오류', HttpStatus.INTERNAL_SERVER_ERROR)
       }
     }
 
     const { profileUrl, userNickname, teamRole } =
       await this.prismaService.bandUser.findUnique({
         where: {
-          userKey: userProfile.result_data.user_key,
+          userKey: userProfile.result_data.user_key
         },
         select: {
           role: true,
           profileUrl: true,
           userNickname: true,
-          teamRole: true,
-        },
-      });
+          teamRole: true
+        }
+      })
 
     const access_token = await this.createJwtTokens({
       userKey: userProfile.result_data.user_key,
       userProfileUrl: profileUrl,
       teamRole,
-      userNickname,
-    });
+      userNickname
+    })
 
     return {
-      ...access_token,
-    };
+      ...access_token
+    }
   }
 
   private async getAccessToken(code: string): Promise<AccessToken> {
     const accessTokenURL =
-      this.getTokenURL + '?grant_type=authorization_code' + '&code=' + code;
+      this.getTokenURL + '?grant_type=authorization_code' + '&code=' + code
     const Authorization =
-      'Basic ' + btoa(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET);
+      'Basic ' + btoa(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET)
     const headers = {
-      Authorization,
-    };
+      Authorization
+    }
     const token: AccessToken = await axios({
       method: 'get',
       url: accessTokenURL,
-      headers,
+      headers
     }).then((response) => {
-      return response.data;
-    });
+      return response.data
+    })
 
-    return token;
+    return token
   }
 
   private async getUserProfile(token: AccessToken): Promise<UserProfile> {
     const profileURL =
-      this.getUserProfileURL + '?access_token=' + token.access_token;
+      this.getUserProfileURL + '?access_token=' + token.access_token
 
     const userProfile: UserProfile = await axios({
       method: 'get',
-      url: profileURL,
+      url: profileURL
     }).then((response) => {
-      return response.data;
-    });
+      return response.data
+    })
 
     if (userProfile.result_data.profile_image_url === '')
       userProfile.result_data.profile_image_url =
-        'https://ssl.pstatic.net/cmstatic/webclient/dres/20230116112132/images/template/profile_60x60.png';
+        'https://ssl.pstatic.net/cmstatic/webclient/dres/20230116112132/images/template/profile_60x60.png'
 
-    return userProfile;
+    return userProfile
   }
 
   private async checkWhiteList(token: AccessToken): Promise<boolean> {
     const bandListURL =
-      this.getBandListURL + '?access_token=' + token.access_token;
+      this.getBandListURL + '?access_token=' + token.access_token
 
     const bandList: BandList = await axios({
       method: 'get',
-      url: bandListURL,
+      url: bandListURL
     }).then((response) => {
-      return response.data;
-    });
+      return response.data
+    })
 
     const bandExist = bandList.result_data.bands.filter(
-      (value) => value.band_key === process.env.ROYALS_BAND_KEY,
-    );
+      (value) => value.band_key === process.env.ROYALS_BAND_KEY
+    )
 
     if (bandExist.length !== 0) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
   }
 
   private async checkRegistration(userProfile: UserProfile): Promise<boolean> {
-    const userKey = userProfile.result_data.user_key;
+    const userKey = userProfile.result_data.user_key
     const isRegistered: BandUser = await this.prismaService.bandUser.findUnique(
       {
         where: {
-          userKey,
-        },
-      },
-    );
+          userKey
+        }
+      }
+    )
 
-    return isRegistered ? true : false;
+    return isRegistered ? true : false
   }
 
   private async registerUser(
-    userProfile: UserProfile,
+    userProfile: UserProfile
   ): Promise<{ userNickname: string; role: string }> {
     const registerationResult = await this.prismaService.bandUser.create({
       data: {
@@ -250,85 +250,85 @@ export class AuthService {
         userNickname: userProfile.result_data.name,
         profileUrl:
           userProfile.result_data.profile_image_url ??
-          'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg?type=s75',
+          'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg?type=s75'
       },
       select: {
         userNickname: true,
-        role: true,
-      },
-    });
+        role: true
+      }
+    })
 
-    return registerationResult;
+    return registerationResult
   }
 
   async createJwtTokens(user: JwtPayload): Promise<JwtTokens> {
-    const payload: JwtPayload = user;
+    const payload: JwtPayload = user
     const accessToken = await this.jwtService.signAsync(
       {
-        ...payload,
+        ...payload
       },
       {
-        expiresIn: ACCESS_TOKEN_EXPIRATION_SEC,
-      },
-    );
+        expiresIn: ACCESS_TOKEN_EXPIRATION_SEC
+      }
+    )
     const refreshToken = await this.jwtService.signAsync(
       {
-        ...payload,
+        ...payload
       },
       {
-        expiresIn: REFRESH_TOKEN_EXPIRATION_SEC,
-      },
-    );
+        expiresIn: REFRESH_TOKEN_EXPIRATION_SEC
+      }
+    )
 
     await this.cacheManager.set(
       refreshTokenCacheKey(user.userKey),
       refreshToken,
-      REFRESH_TOKEN_EXPIRATION_SEC,
-    );
+      REFRESH_TOKEN_EXPIRATION_SEC
+    )
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken }
   }
 
   async updateJwtTokens(refreshToken: string): Promise<JwtTokens> {
     const { userKey, userNickname, userProfileUrl, teamRole } =
-      await this.verifyJwtToken(refreshToken);
+      await this.verifyJwtToken(refreshToken)
     if (!(await this.isValidRefreshToken(refreshToken, userKey))) {
-      throw new BadRequestException('다른기기에서 로그인 했습니다.');
+      throw new BadRequestException('다른기기에서 로그인 했습니다.')
     }
     return await this.createJwtTokens({
       userKey,
       userNickname,
       userProfileUrl,
-      teamRole,
-    });
+      teamRole
+    })
   }
 
   async verifyJwtToken(
     token: string,
-    options: JwtVerifyOptions = {},
+    options: JwtVerifyOptions = {}
   ): Promise<JwtObject> {
     const jwtVerifyOptions = {
       secret: process.env.JWT_SECRET,
-      ...options,
-    };
+      ...options
+    }
     try {
-      return await this.jwtService.verifyAsync(token, jwtVerifyOptions);
+      return await this.jwtService.verifyAsync(token, jwtVerifyOptions)
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException()
     }
   }
 
   async isValidRefreshToken(refreshToken: string, userKey: string) {
     const cachedRefreshToken = await this.cacheManager.get(
-      refreshTokenCacheKey(userKey),
-    );
+      refreshTokenCacheKey(userKey)
+    )
     if (cachedRefreshToken !== refreshToken) {
-      return false;
+      return false
     }
-    return true;
+    return true
   }
 
   async deleteRefreshToken(userKey: string) {
-    return await this.cacheManager.del(refreshTokenCacheKey(userKey));
+    return await this.cacheManager.del(refreshTokenCacheKey(userKey))
   }
 }

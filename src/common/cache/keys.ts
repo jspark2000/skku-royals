@@ -1,2 +1,2 @@
 export const refreshTokenCacheKey = (userKey: string) =>
-  `userKey:${userKey}:refresh_token`;
+  `userKey:${userKey}:refresh_token`

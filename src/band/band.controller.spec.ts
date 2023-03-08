@@ -1,18 +1,22 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { BandController } from './band.controller';
+import { ConfigService } from '@nestjs/config'
+import { Test, TestingModule } from '@nestjs/testing'
+import { expect } from 'chai'
+import { BandController } from './band.controller'
+import { BandService } from './band.service'
 
 describe('BandController', () => {
-  let controller: BandController;
+  let controller: BandController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BandController],
-    }).compile();
+      providers: [ConfigService, { provide: BandService, useValue: {} }]
+    }).compile()
 
-    controller = module.get<BandController>(BandController);
-  });
+    controller = module.get<BandController>(BandController)
+  })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+    expect(controller).to.be.ok
+  })
+})

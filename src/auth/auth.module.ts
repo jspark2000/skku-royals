@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
-import { JwtStrategy } from './strategy/jwt.strategy';
+import { Module } from '@nestjs/common'
+import { AuthService } from './auth.service'
+import { AuthController } from './auth.controller'
+import { PassportModule } from '@nestjs/passport'
+import { JwtModule, JwtModuleOptions } from '@nestjs/jwt'
+import { JwtStrategy } from './strategy/jwt.strategy'
 
 @Module({
   imports: [
@@ -11,14 +11,14 @@ import { JwtStrategy } from './strategy/jwt.strategy';
     JwtModule.registerAsync({
       useFactory: async () => {
         const options: JwtModuleOptions = {
-          secret: process.env.JWT_SECRET,
-        };
-        return options;
-      },
-    }),
+          secret: process.env.JWT_SECRET
+        }
+        return options
+      }
+    })
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService]
 })
 export class AuthModule {}

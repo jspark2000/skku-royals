@@ -1,18 +1,18 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator'
 
 export class AttendanceCheckDTO {
   @IsNumber()
-  id: number;
+  id: number
 
   @IsString()
-  location: string;
+  location: string
 
   @IsBoolean()
-  survey: boolean;
+  survey: boolean
 
   @IsBoolean()
-  late: boolean;
+  late: boolean
 
   @IsBoolean()
-  checked: boolean;
+  checked: boolean
 }

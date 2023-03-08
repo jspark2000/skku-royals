@@ -1,1 +1,3 @@
-*.ejs
+dist/
+node_modules/
+*.md
