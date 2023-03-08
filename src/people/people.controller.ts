@@ -10,11 +10,6 @@ export class PeopleController {
 
   @Get('list')
   async getPeopleList() {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      return await this.peopleService.getPeopleList();
-    } catch (error) {
-      throw error;
-    }
+    return await this.peopleService.getPeopleList();
   }
 }

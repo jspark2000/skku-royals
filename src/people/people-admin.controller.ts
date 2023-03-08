@@ -20,6 +20,7 @@ import { PeopleService } from './people.service';
 @Controller('admin/people')
 export class PeopleAdminController {
   constructor(private readonly peopleService: PeopleService) {}
+
   @Get(':id')
   async getPeopleModal(@Param('id', ParseIntPipe) id: number) {
     return await this.peopleService.getPeopleModal(id);
