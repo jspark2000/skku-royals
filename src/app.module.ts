@@ -23,7 +23,9 @@ import { RolesGuard } from './common/guards/roles.guard'
   imports: [
     PrismaModule,
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
+      envFilePath:
+        process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local'
     }),
     CacheModule.registerAsync({
       isGlobal: true,
