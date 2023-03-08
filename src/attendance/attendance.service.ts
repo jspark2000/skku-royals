@@ -10,7 +10,7 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { AttendanceCheckDTO } from './dto/attendanceCheck.dto'
 import { AttendanceDateDTO } from './dto/attendanceDate.dto'
 import { AttendanceDeleteDTO } from './dto/attendanceDelete.dto'
-import { attendanceRegisterDTO } from './dto/attendanceRegister.dto'
+import { RegisterAttendancesDTO } from './dto/attendanceRegister.dto'
 
 @Injectable()
 export class AttendanceService {
@@ -131,15 +131,15 @@ export class AttendanceService {
   }
 
   async registerAttendances(
-    attendanceDTO: attendanceRegisterDTO[]
+    attendanceDTO: RegisterAttendancesDTO
   ): Promise<{ count: number }> {
-    attendanceDTO.forEach(
+    attendanceDTO.attendances.forEach(
       (attendance) => (attendance.date = new Date(attendance.date))
     )
     let count = 0
 
-    for (let i = 0; i < attendanceDTO.length; i++) {
-      const attendance = attendanceDTO[i]
+    for (let i = 0; i < attendanceDTO.attendances.length; i++) {
+      const attendance = attendanceDTO.attendances[i]
       const uid = await this.prismaService.people.findUnique({
         where: {
           name_studentNo: {

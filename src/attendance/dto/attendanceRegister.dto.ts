@@ -1,7 +1,12 @@
 import { Type } from 'class-transformer'
 import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator'
 
-export class attendanceRegisterDTO {
+export class RegisterAttendancesDTO {
+  @Type(() => RegisterAttendanceDTO)
+  attendances: RegisterAttendanceDTO[]
+}
+
+export class RegisterAttendanceDTO {
   @IsString()
   name: string
 

@@ -5,7 +5,7 @@ import { AttendanceService } from './attendance.service'
 import { AttendanceCheckDTO } from './dto/attendanceCheck.dto'
 import { AttendanceDateDTO } from './dto/attendanceDate.dto'
 import { AttendanceDeleteDTO } from './dto/attendanceDelete.dto'
-import { attendanceRegisterDTO } from './dto/attendanceRegister.dto'
+import { RegisterAttendancesDTO } from './dto/attendanceRegister.dto'
 
 @Controller('attendance')
 @Roles(Role.Newbie)
@@ -25,7 +25,7 @@ export class AttendanceController {
 
   @Post('register')
   @Roles(Role.Admin)
-  async registerAttendances(@Body() attendanceDTO: attendanceRegisterDTO[]) {
+  async registerAttendances(@Body() attendanceDTO: RegisterAttendancesDTO) {
     const { count } = await this.attendanceService.registerAttendances(
       attendanceDTO
     )
