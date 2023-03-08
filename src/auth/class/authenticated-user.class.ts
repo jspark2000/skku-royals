@@ -7,7 +7,12 @@ export class AuthenticatedUser {
   #teamRole: TeamRole;
   #role: Role;
 
-  constructor(userKey, userNickname, userProfileUrl, teamRole) {
+  constructor(
+    userKey: string,
+    userNickname: string,
+    userProfileUrl: string,
+    teamRole: TeamRole,
+  ) {
     this.#userKey = userKey;
     this.#userNickname = userNickname;
     this.#userProfileUrl = userProfileUrl;
