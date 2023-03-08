@@ -27,7 +27,7 @@ jobs:
         run: npx prisma generate
 
       - name: Build
-        run: npm run build
+        run: npm run build:prod
 
       - name: Cache dist
         uses: actions/cache@v3
