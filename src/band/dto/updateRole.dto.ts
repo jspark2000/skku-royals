@@ -1,12 +1,12 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator'
 
 export class UpdateRoleDTO {
   @IsNumber()
-  id: number;
+  id: number
 
   @IsString()
-  role: string;
+  role: string
 
   @IsString()
-  name: string;
+  name: string
 }

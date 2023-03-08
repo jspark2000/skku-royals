@@ -2,12 +2,12 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { PeopleListResponseDTO } from './dto/peopleListResponse.dto';
-import { PeopleUpdateDTO } from './dto/peopleUpdate.dto';
-import { RegisterPeopleDTO } from './dto/registerPeople.dto';
+  UnprocessableEntityException
+} from '@nestjs/common'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { PeopleListResponseDTO } from './dto/peopleListResponse.dto'
+import { PeopleUpdateDTO } from './dto/peopleUpdate.dto'
+import { RegisterPeopleDTO } from './dto/registerPeople.dto'
 
 @Injectable()
 export class PeopleService {
@@ -16,7 +16,7 @@ export class PeopleService {
   async getPeopleModal(id: number) {
     const peopleModal = await this.prismaService.people.findUnique({
       where: {
-        id,
+        id
       },
       select: {
         id: true,
@@ -26,17 +26,17 @@ export class PeopleService {
         absence: true,
         offPosition: true,
         defPosition: true,
-        splPosition: true,
-      },
-    });
+        splPosition: true
+      }
+    })
 
     if (!peopleModal) {
       throw new UnprocessableEntityException(
-        '해당하는 부원이 존재하지 않습니다.',
-      );
+        '해당하는 부원이 존재하지 않습니다.'
+      )
     }
 
-    return peopleModal;
+    return peopleModal
   }
 
   async getPeopleList(): Promise<PeopleListResponseDTO[]> {
@@ -49,73 +49,70 @@ export class PeopleService {
         absence: true,
         offPosition: true,
         defPosition: true,
-        splPosition: true,
+        splPosition: true
       },
-      orderBy: [{ newbie: 'asc' }, { studentNo: 'asc' }, { name: 'asc' }],
-    });
+      orderBy: [{ newbie: 'asc' }, { studentNo: 'asc' }, { name: 'asc' }]
+    })
 
     if (peopleList.length === 0) {
       throw new HttpException(
         '데이터베이스에서 정보를 불러오는데 실패했습니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+        HttpStatus.UNPROCESSABLE_ENTITY
+      )
     }
 
-    return peopleList;
+    return peopleList
   }
 
   async updatePeople(id: number, peopleDTO: PeopleUpdateDTO) {
     const result = await this.prismaService.people.update({
       where: {
-        id,
+        id
       },
       data: {
-        ...peopleDTO,
+        ...peopleDTO
       },
       select: {
-        id: true,
-      },
-    });
+        id: true
+      }
+    })
 
     if (!result) {
       throw new HttpException(
         '해당하는 부원 정보가 없습니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+        HttpStatus.UNPROCESSABLE_ENTITY
+      )
     }
 
-    return result;
+    return result
   }
 
   async deletePeople(id: number) {
     return await this.prismaService.people.delete({
       where: {
-        id,
+        id
       },
       select: {
-        id: true,
-      },
-    });
+        id: true
+      }
+    })
   }
 
   async registerPeople(peopleDTO: RegisterPeopleDTO) {
     const result = await this.prismaService.people.create({
       data: {
         name: peopleDTO.name,
-        studentNo: peopleDTO.studentNo,
+        studentNo: peopleDTO.studentNo
       },
       select: {
-        id: true,
-      },
-    });
+        id: true
+      }
+    })
 
     if (!result) {
-      throw new HttpException(
-        '내부 오류 발생',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new HttpException('내부 오류 발생', HttpStatus.UNPROCESSABLE_ENTITY)
     }
 
-    return result;
+    return result
   }
 }
