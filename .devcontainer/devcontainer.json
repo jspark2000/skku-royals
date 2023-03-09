@@ -1,0 +1,21 @@
+{
+  "name": "skku-royals",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "runServices": ["app", "dev-db", "dev-cache"],
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "scripts/setup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "hbenl.vscode-mocha-test-adapter",
+        "prisma.prisma",
+        "rangav.vscode-thunder-client"
+      ]
+    }
+  },
+  // Connect as non-root user (https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user)
+  "remoteUser": "node"
+}

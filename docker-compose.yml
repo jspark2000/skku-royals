@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    profiles: ['devcontainer']
+    container_name: royals-dev
+    image: mcr.microsoft.com/vscode/devcontainers/typescript-node:18-bullseye
+    volumes:
+      - .:/workspace:cached
+    command: sleep infinity
+    environment:
+      DEVCONTAINER: 1
+  dev-db:
+    container_name: royals-dev-db
+    image: postgres:14-alpine
+    ports:
+      - 5443:5442
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: royals
+  dev-cache:
+    container_name: royals-dev-cache
+    image: redis:7-alpine
+    ports:
+      - 6390:6389
