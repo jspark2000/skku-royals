@@ -11,7 +11,7 @@ if [ -z $DEVCONTAINER ]
 then
   echo "DATABASE_URL=\"postgresql://postgres:1234@localhost:5443/royals?schema=public\"" > .env
 else
-  echo "DATABASE_URL=\"postgresql://postgres:1234@dev-db:5442/royals?schema=public\"" > .env
+  echo "DATABASE_URL=\"postgresql://postgres:1234@royals-dev-db:5442/royals?schema=public\"" > .env
 fi
 
 # Save cache database URL and PORT to dotenv file
