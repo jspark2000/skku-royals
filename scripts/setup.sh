@@ -11,7 +11,7 @@ if [ -z $DEVCONTAINER ]
 then
   echo "DATABASE_URL=\"postgresql://postgres:1234@localhost:5443/royals?schema=public\"" > .env
 else
-  echo "DATABASE_URL=\"postgresql://postgres:1234@royals-dev-db:5442/royals?schema=public\"" > .env
+  echo "DATABASE_URL=\"postgresql://postgres:1234@royals-dev-db:5432/royals?schema=public\"" > .env
 fi
 
 # Save cache database URL and PORT to dotenv file
@@ -21,7 +21,7 @@ then
   echo "CACHE_DATABASE_PORT=6390" >> .env
 else
   echo "CACHE_DATABASE_URL=\"royals-dev-cache\"" >> .env
-  echo "CACHE_DATABASE_PORT=6389" >> .env
+  echo "CACHE_DATABASE_PORT=6379" >> .env
 fi
 
 # Use docker-compose profile
