@@ -17,11 +17,11 @@ fi
 # Save cache database URL and PORT to dotenv file
 if [ -z $DEVCONTAINER ]
 then
-  echo "CACHE_DATABASE_URL=\"localhost\"" >> .env
-  echo "CACHE_DATABASE_PORT=6390" >> .env
+  echo "REDIS_URL=\"localhost\"" >> .env
+  echo "REDIS_PORT=6390" >> .env
 else
-  echo "CACHE_DATABASE_URL=\"royals-dev-cache\"" >> .env
-  echo "CACHE_DATABASE_PORT=6379" >> .env
+  echo "REDIS_URL=\"royals-dev-cache\"" >> .env
+  echo "REDIS_PORT=6379" >> .env
 fi
 
 # Use docker-compose profile
