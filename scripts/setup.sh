@@ -33,6 +33,10 @@ fi
 echo "JWT_SECRET=$(head -c 64 /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | sha256sum | head -c 64)" >> .env
 echo "ORIGIN=http://localhost:5173" >> .env
 
+# Generate thunder client environment
+# Since environment variable changes frequently, let git ignore actual environment variables
+cp thunder-tests/thunderEnvironmentBase.json thunder-tests/thunderEnvironment.json
+
 # Install packages
 npm install
 

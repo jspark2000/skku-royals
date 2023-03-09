@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "colName": "ROYALS-STAFF",
+    "created": "2023-03-09T05:02:24.769Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "85e527f5-374e-4325-92e0-d7da738fe6ad",
+        "name": "AUTH",
+        "containerId": "",
+        "created": "2023-03-09T05:02:33.334Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "ad9cc884-1d8e-461c-a78c-d0d2f058cf63",
+        "name": "COMMOM",
+        "containerId": "",
+        "created": "2023-03-09T05:02:45.833Z",
+        "sortNum": 20000
+      },
+      {
+        "_id": "81794cfe-8100-4940-9e70-aa1d63bc582b",
+        "name": "BAND",
+        "containerId": "",
+        "created": "2023-03-09T05:16:18.560Z",
+        "sortNum": 30000
+      },
+      {
+        "_id": "392f5b41-c398-4b17-9f84-c0e1d23a9af5",
+        "name": "ATTENDANCE",
+        "containerId": "",
+        "created": "2023-03-09T05:17:12.541Z",
+        "sortNum": 40000
+      },
+      {
+        "_id": "f1e36dc1-3f2d-4d9e-8244-e0d41e84ead1",
+        "name": "GAME",
+        "containerId": "",
+        "created": "2023-03-09T05:17:38.713Z",
+        "sortNum": 50000
+      },
+      {
+        "_id": "9e1c817b-abce-494b-a3d2-fab36e3e491d",
+        "name": "PEOPLE",
+        "containerId": "",
+        "created": "2023-03-09T05:17:54.351Z",
+        "sortNum": 60000
+      }
+    ]
+  }
+]
