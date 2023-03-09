@@ -1,9 +1,0 @@
-{
-  "extends": [
-    "config:base",
-    "group:allNonMajor",
-    "schedule:weekly",
-    ":label(dependencies)"
-  ],
-  "rangeStrategy": "bump"
-}
