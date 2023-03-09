@@ -7,3 +7,9 @@ pre-commit:
     prettier:
       glob: '*.{js,ts,yaml,yml}'
       run: npx prettier --check {staged_files}
+
+post-checkout:
+  commands:
+    setup:
+      interactive: true
+      run: ./scripts/post-checkout.sh
