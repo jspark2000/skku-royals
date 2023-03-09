@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable
 } from '@nestjs/common'
-import { Role } from '@prisma/client'
+import { Role, TeamRole } from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UpdateRoleDTO } from './dto/updateRole.dto'
 
@@ -111,6 +111,10 @@ export class BandService {
       }
     })
 
+    if (!adminCheck) {
+      throw new BadRequestException('존재하지 않는 유저입니다.')
+    }
+
     if (adminCheck.role === Role.Admin || adminCheck.role === Role.SuperAdmin) {
       throw new BadRequestException(
         'Admin 이상의 권한을 가진 유저는 삭제할 수 없습니다.'
@@ -123,6 +127,24 @@ export class BandService {
       },
       select: {
         id: true
+      }
+    })
+  }
+
+  // only used to test
+  async createFakeBandUser(secret: string) {
+    if (secret !== process.env.JWT_SECRET) {
+      throw new BadRequestException('잘못된 접근입니다.')
+    }
+
+    return await this.prismaService.bandUser.create({
+      data: {
+        id: 100,
+        userKey: 'fakeUser',
+        userNickname: 'fakeUser',
+        profileUrl: '',
+        role: Role.Newbie,
+        teamRole: TeamRole.Staff
       }
     })
   }

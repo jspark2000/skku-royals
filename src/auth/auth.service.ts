@@ -331,4 +331,34 @@ export class AuthService {
   async deleteRefreshToken(userKey: string) {
     return await this.cacheManager.del(refreshTokenCacheKey(userKey))
   }
+
+  // only used for thunder-client test
+  async fakeLogin(userKey: string, secret: string) {
+    if (secret !== process.env.JWT_SECRET) {
+      throw new BadRequestException('올바르지 않은 접근입니다.')
+    }
+
+    const check = await this.prismaService.bandUser.findUnique({
+      where: {
+        userKey
+      },
+      select: {
+        userKey: true,
+        teamRole: true,
+        userNickname: true
+      }
+    })
+
+    if (!check) {
+      throw new BadRequestException('존재하지 않는 계정입니다.')
+    }
+
+    return await this.createJwtTokens({
+      teamRole: check.teamRole,
+      userKey: check.userKey,
+      userNickname: check.userNickname,
+      userProfileUrl:
+        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg'
+    })
+  }
 }

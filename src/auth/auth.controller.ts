@@ -99,4 +99,23 @@ export class AuthController {
   async getRole(@Req() req: AuthenticatedRequest) {
     return { role: req.user.role }
   }
+
+  // only used for thunder-client test
+  @Public()
+  @Post('fake/login')
+  async fakeLogin(
+    @Body('userKey') userKey: string,
+    @Body('secret') secret: string,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    try {
+      const token: JwtTokens = await this.authService.fakeLogin(userKey, secret)
+      this.setJwtResponse(res, token)
+    } catch (error) {
+      throw new HttpException(
+        '[TEST] 로그인 실패',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    }
+  }
 }
