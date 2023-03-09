@@ -28,7 +28,7 @@ jobs:
         run: npx prisma generate
 
       - name: Build
-        run: npm run build:prod
+        run: npm run build
 
       - name: Cache dist
         uses: actions/cache@v3
@@ -144,7 +144,7 @@ jobs:
             npm install -g dotenv-cli
             npm run migrate:prod
             npx prisma generate
-            npm run build:prod
+            npm run build
             npm run start:reload
 
       - name: Run scripts in sub_server_1
@@ -162,7 +162,7 @@ jobs:
             git pull
             npm install
             npx prisma generate
-            npm run build:prod
+            npm run build
             npm run start:reload
 
       - name: Run scripts in sub_server_2
@@ -180,7 +180,7 @@ jobs:
             git pull
             npm install
             npx prisma generate
-            npm run build:prod
+            npm run build
             npm run start:reload
 
       - name: Remove Github Actions IP From Security Group

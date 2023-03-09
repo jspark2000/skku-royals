@@ -9,19 +9,19 @@ cd $BASEDIR
 # Save database URL to dotenv file for Prisma
 if [ -z $DEVCONTAINER ]
 then
-  echo "DATABASE_URL=\"postgresql://postgres:1234@localhost:5443/royals?schema=public\"" > .env.local
+  echo "DATABASE_URL=\"postgresql://postgres:1234@localhost:5443/royals?schema=public\"" > .env
 else
-  echo "DATABASE_URL=\"postgresql://postgres:1234@dev-db:5432/royals?schema=public\"" > .env.local
+  echo "DATABASE_URL=\"postgresql://postgres:1234@dev-db:5442/royals?schema=public\"" > .env
 fi
 
 # Save cache database URL and PORT to dotenv file
 if [ -z $DEVCONTAINER ]
 then
-  echo "CACHE_DATABASE_URL=\"localhost\"" >> .env.local
-  echo "CACHE_DATABASE_PORT=6390" >> .env.local
+  echo "CACHE_DATABASE_URL=\"localhost\"" >> .env
+  echo "CACHE_DATABASE_PORT=6390" >> .env
 else
-  echo "CACHE_DATABASE_URL=\"royals-dev-cache\"" >> .env.local
-  echo "CACHE_DATABASE_PORT=6389" >> .env.local
+  echo "CACHE_DATABASE_URL=\"royals-dev-cache\"" >> .env
+  echo "CACHE_DATABASE_PORT=6389" >> .env
 fi
 
 # Use docker-compose profile
@@ -30,7 +30,8 @@ then
   docker-compose up -d
 fi
 
-echo "JWT_SECRET=$(head -c 64 /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | sha256sum | head -c 64)" >> .env.local
+echo "JWT_SECRET=$(head -c 64 /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | sha256sum | head -c 64)" >> .env
+echo "ORIGIN=http://localhost:5173" >> .env
 
 # Install packages
 npm install
