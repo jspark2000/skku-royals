@@ -1,22 +1,15 @@
-import { Role, TeamRole } from '@prisma/client'
+import { Role } from '@prisma/client'
 
 export class AuthenticatedUser {
   #userKey: string
   #userNickname: string
   #userProfileUrl: string
-  #teamRole: TeamRole
   #role: Role
 
-  constructor(
-    userKey: string,
-    userNickname: string,
-    userProfileUrl: string,
-    teamRole: TeamRole
-  ) {
+  constructor(userKey: string, userNickname: string, userProfileUrl: string) {
     this.#userKey = userKey
     this.#userNickname = userNickname
     this.#userProfileUrl = userProfileUrl
-    this.#teamRole = teamRole
   }
 
   get userKey() {
@@ -29,10 +22,6 @@ export class AuthenticatedUser {
 
   get userProfileUrl() {
     return this.#userProfileUrl
-  }
-
-  get teamRole() {
-    return this.#teamRole
   }
 
   get role() {

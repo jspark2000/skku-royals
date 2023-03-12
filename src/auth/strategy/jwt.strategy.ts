@@ -19,8 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const authenticatedUser = new AuthenticatedUser(
       payload.userKey,
       payload.userNickname,
-      payload.userProfileUrl,
-      payload.teamRole
+      payload.userProfileUrl
     )
 
     const role = await this.prisma.bandUser.findUnique({
