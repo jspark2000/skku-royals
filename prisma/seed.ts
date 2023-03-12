@@ -1,101 +1,73 @@
-import {
-  BandUser,
-  Location,
-  People,
-  Prisma,
-  PrismaClient,
-  Role,
-  TeamRole
-} from '@prisma/client'
+import { Location, Prisma, PrismaClient, Role, TeamRole } from '@prisma/client'
 const prisma = new PrismaClient()
 async function main() {
-  const bandUsers: BandUser[] = [
+  const bandUsers: Prisma.BandUserCreateManyInput[] = [
     {
-      id: 1,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Newbie,
       userKey: 'newbie',
       userNickname: 'Newbie'
     },
     {
-      id: 2,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Normal,
       userKey: 'normal',
       userNickname: 'Normal'
     },
     {
-      id: 3,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Admin,
       userKey: 'admin',
       userNickname: 'Admin'
     },
     {
-      id: 4,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.SuperAdmin,
       userKey: 'superadmin',
       userNickname: 'SuperAdmin'
     },
     {
-      id: 5,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Normal,
       userKey: 'user01',
       userNickname: 'user01'
     },
     {
-      id: 6,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Normal,
       userKey: 'user02',
       userNickname: 'user02'
     },
     {
-      id: 7,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Normal,
       userKey: 'user03',
       userNickname: 'user03'
     },
     {
-      id: 8,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Normal,
       userKey: 'user04',
       userNickname: 'user04'
     },
     {
-      id: 9,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Normal,
       userKey: 'user05',
       userNickname: 'user05'
     },
     {
-      id: 10,
       profileUrl:
         'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
-      teamRole: TeamRole.Staff,
       role: Role.Normal,
       userKey: 'user06',
       userNickname: 'user06'
@@ -107,98 +79,98 @@ async function main() {
     skipDuplicates: true
   })
 
-  const people: People[] = [
+  const people: Prisma.PeopleCreateManyInput[] = [
     {
-      id: 1,
-      uid: undefined,
       name: 'people01',
-      studentNo: 2023310001,
+      studentNo: 2023,
       absence: false,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Athlete,
+      year: 2015,
       newbie: false,
       offPosition: 'QB',
       defPosition: 'CB',
       splPosition: 'NORMAL'
     },
     {
-      id: 2,
-      uid: undefined,
       name: 'people02',
-      studentNo: 2023310002,
+      studentNo: 2023,
       absence: false,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Athlete,
+      year: 2019,
       newbie: false,
       offPosition: 'OL',
       defPosition: 'DL',
       splPosition: 'NORMAL'
     },
     {
-      id: 3,
-      uid: undefined,
       name: 'people03',
-      studentNo: 2022310003,
+      studentNo: 2022,
       absence: false,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Athlete,
+      year: 2021,
       newbie: false,
       offPosition: 'WR',
       defPosition: 'HYB',
       splPosition: 'NORMAL'
     },
     {
-      id: 4,
-      uid: undefined,
       name: 'people04',
-      studentNo: 2020310004,
+      studentNo: 2020,
       absence: false,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Athlete,
+      year: 2022,
       newbie: false,
       offPosition: 'RB',
       defPosition: 'LB',
       splPosition: 'KICKER'
     },
     {
-      id: 5,
-      uid: undefined,
       name: 'people05',
-      studentNo: 2020310005,
+      studentNo: 2020,
       absence: false,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Staff,
+      year: 2022,
       newbie: false,
       offPosition: 'STAFF',
       defPosition: 'STAFF',
       splPosition: 'STAFF'
     },
     {
-      id: 6,
-      uid: undefined,
       name: 'people06',
-      studentNo: 2020310006,
+      studentNo: 2020,
       absence: true,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Athlete,
+      year: 2020,
       newbie: false,
       offPosition: 'WR',
       defPosition: 'HYB',
       splPosition: 'NORMAL'
     },
     {
-      id: 7,
-      uid: undefined,
       name: 'people07',
-      studentNo: 2020310007,
+      studentNo: 2020,
       absence: false,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Athlete,
+      year: 2015,
       newbie: true,
       offPosition: 'OL',
       defPosition: 'LB',
       splPosition: 'NORMAL'
     },
     {
-      id: 8,
-      uid: undefined,
       name: 'people08',
-      studentNo: 2020310008,
+      studentNo: 2020,
       absence: true,
-      attendance: true,
+      attendanceTarget: true,
+      teamRole: TeamRole.Athlete,
+      year: 2015,
       newbie: true,
       offPosition: 'OL',
       defPosition: 'DL',

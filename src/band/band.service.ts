@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable
 } from '@nestjs/common'
-import { Role, TeamRole } from '@prisma/client'
+import { Role } from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UpdateRoleDTO } from './dto/updateRole.dto'
 
@@ -143,8 +143,7 @@ export class BandService {
         userKey: 'fakeUser',
         userNickname: 'fakeUser',
         profileUrl: '',
-        role: Role.Newbie,
-        teamRole: TeamRole.Staff
+        role: Role.Newbie
       }
     })
   }

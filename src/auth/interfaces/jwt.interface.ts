@@ -1,10 +1,7 @@
-import { TeamRole } from '@prisma/client'
-
 export interface JwtPayload {
   userKey: string
   userNickname: string
   userProfileUrl: string
-  teamRole: TeamRole
 }
 
 export interface JwtObject extends JwtPayload {

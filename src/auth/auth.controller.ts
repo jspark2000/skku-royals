@@ -53,6 +53,7 @@ export class AuthController {
       const token: JwtTokens = await this.authService.loginOrRegister(code)
       this.setJwtResponse(res, token)
     } catch (error) {
+      console.log(error)
       throw new HttpException('로그인 실패', HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }

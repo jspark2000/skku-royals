@@ -12,7 +12,7 @@ import axios from 'axios'
 import { AccessToken } from './interfaces/accessToken.interface'
 import { UserProfile } from './interfaces/userProfile.interface'
 import { BandList } from './interfaces/bandList.interface'
-import { BandUser, Role, TeamRole } from '@prisma/client'
+import { BandUser, Role } from '@prisma/client'
 import { BandUserDTO } from './dto/bandUser.dto'
 import { AccountUpdateReqeustDTO } from './dto/accountUpdateRequest.dto'
 import { JwtService, JwtVerifyOptions } from '@nestjs/jwt'
@@ -47,8 +47,7 @@ export class AuthService {
         userKey: true,
         userNickname: true,
         profileUrl: true,
-        role: true,
-        teamRole: true
+        role: true
       }
     })
 
@@ -108,8 +107,7 @@ export class AuthService {
         userKey: accountDTO.userKey
       },
       data: {
-        role: Role[accountDTO.role],
-        teamRole: TeamRole[accountDTO.teamRole]
+        role: Role[accountDTO.role]
       },
       select: {
         userNickname: true
@@ -144,7 +142,7 @@ export class AuthService {
       }
     }
 
-    const { profileUrl, userNickname, teamRole } =
+    const { profileUrl, userNickname } =
       await this.prismaService.bandUser.findUnique({
         where: {
           userKey: userProfile.result_data.user_key
@@ -152,15 +150,13 @@ export class AuthService {
         select: {
           role: true,
           profileUrl: true,
-          userNickname: true,
-          teamRole: true
+          userNickname: true
         }
       })
 
     const access_token = await this.createJwtTokens({
       userKey: userProfile.result_data.user_key,
       userProfileUrl: profileUrl,
-      teamRole,
       userNickname
     })
 
@@ -290,16 +286,16 @@ export class AuthService {
   }
 
   async updateJwtTokens(refreshToken: string): Promise<JwtTokens> {
-    const { userKey, userNickname, userProfileUrl, teamRole } =
-      await this.verifyJwtToken(refreshToken)
+    const { userKey, userNickname, userProfileUrl } = await this.verifyJwtToken(
+      refreshToken
+    )
     if (!(await this.isValidRefreshToken(refreshToken, userKey))) {
       throw new BadRequestException('다른기기에서 로그인 했습니다.')
     }
     return await this.createJwtTokens({
       userKey,
       userNickname,
-      userProfileUrl,
-      teamRole
+      userProfileUrl
     })
   }
 
@@ -344,7 +340,6 @@ export class AuthService {
       },
       select: {
         userKey: true,
-        teamRole: true,
         userNickname: true
       }
     })
@@ -354,7 +349,6 @@ export class AuthService {
     }
 
     return await this.createJwtTokens({
-      teamRole: check.teamRole,
       userKey: check.userKey,
       userNickname: check.userNickname,
       userProfileUrl:
