@@ -58,8 +58,7 @@ model Attendance {
   uid      String           @db.Uuid
   date     DateTime         @db.Timestamp(6)
   location Location         @default(Integrated)
-  late     Boolean
-  survey   Boolean
+  survey   AttendanceStatus @default(Present)
   checked  Boolean          @default(false)
   isGame   Boolean          @default(false)
   actual   AttendanceStatus @default(Present)
