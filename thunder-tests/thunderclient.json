@@ -8,7 +8,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-03-09T07:59:36.263Z",
-    "modified": "2023-03-09T11:15:15.881Z",
+    "modified": "2023-03-13T01:10:59.310Z",
     "headers": [],
     "params": [],
     "body": {
@@ -758,6 +758,35 @@
       "runRequests": [
         {
           "reqId": "c6d517f3-0882-41d1-9715-91947a18e7cd",
+          "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "38836dcf-c18c-4d07-971f-4cd190798892",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "f010f168-eab7-4023-9e1d-e955dd8a55c8",
+    "name": "test",
+    "url": "/record/111",
+    "method": "DELETE",
+    "sortNum": 240000,
+    "created": "2023-03-13T01:07:46.354Z",
+    "modified": "2023-03-13T04:18:14.875Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"date\": \"2023-01-01\",\n  \"eventValue\": 200,\n  \"item\": \"Power\",\n  \"event\": \"SquatOne\"\n}",
+      "form": []
+    },
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "196ff1d2-a763-4d60-8ee6-6cec49fd3c9f",
           "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
           "triggerCondition": "run-always",
           "triggerValue": ""
