@@ -65,9 +65,9 @@ export class AttendanceService {
         date: true,
         location: true,
         survey: true,
-        late: true,
         reason: true,
         checked: true,
+        actual: true,
         People: {
           select: {
             name: true,
@@ -102,13 +102,13 @@ export class AttendanceService {
         date: attendance.date,
         location: attendance.location,
         survey: attendance.survey,
-        late: attendance.late,
         checked: attendance.checked,
         reason: attendance.reason,
         name: attendance.People.name,
         studentNo: attendance.People.studentNo,
         offPosition: attendance.People.offPosition,
-        defPosition: attendance.People.defPosition
+        defPosition: attendance.People.defPosition,
+        actual: true
       }
     })
   }
@@ -169,14 +169,12 @@ export class AttendanceService {
             date: attendance.date,
             location: Location[attendance.location],
             survey: attendance.survey,
-            late: attendance.late,
             checked: false,
             reason: attendance.reason
           },
           update: {
             location: Location[attendance.location],
-            survey: attendance.survey,
-            late: attendance.late
+            survey: attendance.survey
           }
         })
 
@@ -195,8 +193,7 @@ export class AttendanceService {
       },
       data: {
         location: Location[attendanceDTO.location],
-        survey: attendanceDTO.survey,
-        late: attendanceDTO.late,
+        actual: attendanceDTO.actual,
         checked: true
       },
       select: {
@@ -249,7 +246,7 @@ export class AttendanceService {
       where: {
         date: target,
         People: {
-          absence: false
+          attendanceTarget: true
         },
         checked: true
       },
@@ -263,8 +260,8 @@ export class AttendanceService {
           }
         },
         survey: true,
-        late: true,
-        location: true
+        location: true,
+        actual: true
       },
       orderBy: [
         {
@@ -296,7 +293,12 @@ export class AttendanceService {
             : attendance.location === Location.Seoul
             ? '명륜'
             : '율전',
-        result: !attendance.survey ? 'X' : attendance.late ? '늦참' : 'O',
+        result:
+          attendance.actual === 'Absent'
+            ? 'X'
+            : attendance.actual === 'Tardy'
+            ? '늦참'
+            : 'O',
         staff: attendance.People.offPosition === 'STAFF' ? true : false
       }
     })

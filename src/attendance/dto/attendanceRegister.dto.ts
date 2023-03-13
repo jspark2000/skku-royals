@@ -1,5 +1,6 @@
+import { AttendanceStatus } from '@prisma/client'
 import { Type } from 'class-transformer'
-import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator'
+import { IsDate, IsEnum, IsNumber, IsString } from 'class-validator'
 
 export class RegisterAttendancesDTO {
   @Type(() => RegisterAttendanceDTO)
@@ -13,11 +14,8 @@ export class RegisterAttendanceDTO {
   @IsNumber()
   studentNo: number
 
-  @IsBoolean()
-  survey: boolean
-
-  @IsBoolean()
-  late: boolean
+  @IsEnum(AttendanceStatus)
+  survey: AttendanceStatus
 
   @IsString()
   location: string

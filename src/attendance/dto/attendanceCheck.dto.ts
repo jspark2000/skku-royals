@@ -1,4 +1,5 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator'
+import { AttendanceStatus } from '@prisma/client'
+import { IsBoolean, IsEnum, IsNumber, IsString } from 'class-validator'
 
 export class AttendanceCheckDTO {
   @IsNumber()
@@ -7,11 +8,8 @@ export class AttendanceCheckDTO {
   @IsString()
   location: string
 
-  @IsBoolean()
-  survey: boolean
-
-  @IsBoolean()
-  late: boolean
+  @IsEnum(AttendanceStatus)
+  actual: AttendanceStatus
 
   @IsBoolean()
   checked: boolean
