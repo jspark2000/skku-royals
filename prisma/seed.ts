@@ -1,4 +1,11 @@
-import { Location, Prisma, PrismaClient, Role, TeamRole } from '@prisma/client'
+import {
+  AttendanceStatus,
+  Location,
+  Prisma,
+  PrismaClient,
+  Role,
+  TeamRole
+} from '@prisma/client'
 const prisma = new PrismaClient()
 async function main() {
   const bandUsers: Prisma.BandUserCreateManyInput[] = [
@@ -187,8 +194,7 @@ async function main() {
       date: new Date('2023-03-09'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: true,
+      survey: AttendanceStatus.Present,
       location: Location.Seoul,
       reason: '풀참',
       People: {
@@ -201,8 +207,7 @@ async function main() {
       date: new Date('2023-03-10'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: true,
+      survey: AttendanceStatus.Present,
       location: Location.Seoul,
       reason: '풀참',
       People: {
@@ -215,8 +220,7 @@ async function main() {
       date: new Date('2023-03-11'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: true,
+      survey: AttendanceStatus.Present,
       location: Location.Seoul,
       reason: '풀참',
       People: {
@@ -229,8 +233,7 @@ async function main() {
       date: new Date('2023-03-12'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: true,
+      survey: AttendanceStatus.Present,
       location: Location.Seoul,
       reason: '풀참',
       People: {
@@ -243,8 +246,7 @@ async function main() {
       date: new Date('2023-03-09'),
       checked: false,
       isGame: false,
-      late: true,
-      survey: true,
+      survey: AttendanceStatus.Tardy,
       location: Location.Integrated,
       reason: '병원',
       People: {
@@ -257,8 +259,7 @@ async function main() {
       date: new Date('2023-03-10'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: false,
+      survey: AttendanceStatus.Absent,
       location: Location.Integrated,
       reason: '약속',
       People: {
@@ -271,8 +272,7 @@ async function main() {
       date: new Date('2023-03-11'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: true,
+      survey: AttendanceStatus.Present,
       location: Location.Suwon,
       reason: '',
       People: {
@@ -285,8 +285,7 @@ async function main() {
       date: new Date('2023-03-09'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: true,
+      survey: AttendanceStatus.Present,
       location: Location.Suwon,
       reason: '풀참',
       People: {
@@ -299,8 +298,7 @@ async function main() {
       date: new Date('2023-03-10'),
       checked: false,
       isGame: false,
-      late: false,
-      survey: true,
+      survey: AttendanceStatus.Present,
       location: Location.Suwon,
       reason: '풀참',
       People: {
