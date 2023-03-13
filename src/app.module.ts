@@ -18,6 +18,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 import { BandModule } from './band/band.module'
 import * as redisStore from 'cache-manager-redis-store'
 import { RolesGuard } from './common/guards/roles.guard'
+import { RecordModule } from './record/record.module'
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { RolesGuard } from './common/guards/roles.guard'
     PeopleModule,
     AttendanceModule,
     ApiModule,
-    BandModule
+    BandModule,
+    RecordModule
   ],
   controllers: [AppController],
   providers: [

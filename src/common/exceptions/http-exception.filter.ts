@@ -14,8 +14,29 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus()
     const error = exception.getResponse() as
       | string
-      | { error: string; statusCode: number; message: string | null }
+      | {
+          error: string
+          statusCode: number
+          message?: string | undefined
+          code?: number | undefined
+        }
 
-    response.status(status).json(error)
+    if (status === 403) {
+      response.status(403).json({
+        statusCode: 403,
+        message: '접근 권한이 없습니다.',
+        code: 100
+      })
+    } else {
+      if (typeof error === 'string') {
+        response.status(status).json(error)
+      } else {
+        response.status(status).json({
+          statusCode: status,
+          message: error.message,
+          code: error.code
+        })
+      }
+    }
   }
 }

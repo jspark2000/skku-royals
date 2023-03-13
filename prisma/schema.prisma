@@ -47,17 +47,24 @@ enum RecordEvent {
   YardDash
 }
 
+enum AttendanceStatus {
+  Present
+  Tardy
+  Absent
+}
+
 model Attendance {
-  id       Int      @id @default(autoincrement())
-  uid      String   @db.Uuid
-  date     DateTime @db.Timestamp(6)
-  location Location @default(Integrated)
+  id       Int              @id @default(autoincrement())
+  uid      String           @db.Uuid
+  date     DateTime         @db.Timestamp(6)
+  location Location         @default(Integrated)
   late     Boolean
   survey   Boolean
-  checked  Boolean  @default(false)
-  isGame   Boolean  @default(false)
+  checked  Boolean          @default(false)
+  isGame   Boolean          @default(false)
+  actual   AttendanceStatus @default(Present)
   reason   String?
-  People   People   @relation(fields: [uid], references: [uid], onDelete: Cascade, map: "Attendance_People_uid_fk")
+  People   People           @relation(fields: [uid], references: [uid], onDelete: Cascade, map: "Attendance_People_uid_fk")
 
   @@unique([uid, date], map: "uid_date")
 }
@@ -124,5 +131,7 @@ model Record {
   date       DateTime     @db.Timestamp(6)
   item       RecordItem?
   event      RecordEvent?
-  eventValue String?
+  eventValue Int          @default(0)
+
+  @@unique([uid, date, item, event], map: "uid_date_item_event")
 }
