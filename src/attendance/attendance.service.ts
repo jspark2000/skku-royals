@@ -293,6 +293,12 @@ export class AttendanceService {
             : attendance.location === Location.Seoul
             ? '명륜'
             : '율전',
+        survey:
+          attendance.survey === 'Absent'
+            ? 'X'
+            : attendance.survey === 'Tardy'
+            ? '늦참'
+            : 'O',
         result:
           attendance.actual === 'Absent'
             ? 'X'
