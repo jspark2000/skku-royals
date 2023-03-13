@@ -108,7 +108,7 @@ export class AttendanceService {
         studentNo: attendance.People.studentNo,
         offPosition: attendance.People.offPosition,
         defPosition: attendance.People.defPosition,
-        actual: true
+        actual: attendance.actual
       }
     })
   }

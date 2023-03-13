@@ -54,16 +54,16 @@ enum AttendanceStatus {
 }
 
 model Attendance {
-  id       Int              @id @default(autoincrement())
-  uid      String           @db.Uuid
-  date     DateTime         @db.Timestamp(6)
-  location Location         @default(Integrated)
-  survey   AttendanceStatus @default(Present)
-  checked  Boolean          @default(false)
-  isGame   Boolean          @default(false)
-  actual   AttendanceStatus @default(Present)
+  id       Int               @id @default(autoincrement())
+  uid      String            @db.Uuid
+  date     DateTime          @db.Timestamp(6)
+  location Location          @default(Integrated)
+  survey   AttendanceStatus  @default(Present)
+  checked  Boolean           @default(false)
+  isGame   Boolean           @default(false)
+  actual   AttendanceStatus?
   reason   String?
-  People   People           @relation(fields: [uid], references: [uid], onDelete: Cascade, map: "Attendance_People_uid_fk")
+  People   People            @relation(fields: [uid], references: [uid], onDelete: Cascade, map: "Attendance_People_uid_fk")
 
   @@unique([uid, date], map: "uid_date")
 }
