@@ -49,6 +49,11 @@ export class AttendanceController {
     return await this.attendanceService.issueDailyReport(date)
   }
 
+  @Get('count/position/:date')
+  async getDailyPositionCounts(@Param('date') date: string) {
+    return await this.attendanceService.getDailyPositionCounts(date)
+  }
+
   @Get(':date')
   async getAttendances(@Param() attendanceDTO: AttendanceDateDTO) {
     return await this.attendanceService.getAttendances(attendanceDTO)
