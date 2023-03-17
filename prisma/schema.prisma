@@ -134,3 +134,11 @@ model Record {
 
   @@unique([uid, date, item, event], map: "uid_date_item_event")
 }
+
+model CoachingStaff {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(20)
+  studentNo Int
+  teamRole  TeamRole @default(Athlete)
+  position  String
+}

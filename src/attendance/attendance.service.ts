@@ -3,9 +3,11 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnprocessableEntityException
 } from '@nestjs/common'
 import { GoogleSheet, Location } from '@prisma/client'
+import { Positions } from 'src/common/enums/position.enum'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { AttendanceCheckDTO } from './dto/attendanceCheck.dto'
 import { AttendanceDateDTO } from './dto/attendanceDate.dto'
@@ -57,7 +59,7 @@ export class AttendanceService {
       where: {
         date: attendanceDTO.date,
         People: {
-          absence: false
+          attendanceTarget: true
         }
       },
       select: {
@@ -73,7 +75,8 @@ export class AttendanceService {
             name: true,
             studentNo: true,
             offPosition: true,
-            defPosition: true
+            defPosition: true,
+            newbie: true
           }
         }
       },
@@ -108,7 +111,8 @@ export class AttendanceService {
         studentNo: attendance.People.studentNo,
         offPosition: attendance.People.offPosition,
         defPosition: attendance.People.defPosition,
-        actual: attendance.actual
+        actual: attendance.actual,
+        newbie: attendance.People.newbie
       }
     })
   }
@@ -222,6 +226,105 @@ export class AttendanceService {
     return result
   }
 
+  async getDailyPositionCounts(date: string) {
+    const target = new Date(date)
+
+    const valid = await this.prismaService.attendance.findFirst({
+      where: {
+        date: target,
+        People: {
+          attendanceTarget: true
+        },
+        checked: false
+      },
+      select: {
+        id: true
+      }
+    })
+
+    if (!valid) {
+      throw new NotFoundException('해당하는 날짜의 출석 정보가 없습니다')
+    }
+
+    const countOffense: {
+      location: Location
+      position: string
+      newbie: boolean
+      count: number
+    }[] = await this.prismaService.$queryRawUnsafe(`
+      SELECT location, "offPosition" as position, newbie, count(*)::int FROM (SELECT R.location, R.survey, P."offPosition", P."defPosition", P.newbie, P."attendanceTarget"
+      FROM (SELECT uid, location, survey
+            FROM "Attendance"
+            WHERE date = '${date}') as R
+              LEFT JOIN "People" P on P.uid = R.uid) as N
+      WHERE N."attendanceTarget"=true AND survey<>'Absent'
+      GROUP BY location, "offPosition", newbie
+      ORDER BY location, "offPosition", newbie;
+    `)
+
+    if (countOffense.length === 0) {
+      throw new NotFoundException('해당하는 날짜의 출석 정보가 없습니다')
+    }
+
+    const countDefense: {
+      location: Location
+      position: string
+      newbie: boolean
+      count: number
+    }[] = await this.prismaService.$queryRawUnsafe(`
+      SELECT location, "defPosition" as position, newbie, count(*)::int FROM (SELECT R.location, R.survey, P."offPosition", P."defPosition", P.newbie, P."attendanceTarget"
+      FROM (SELECT uid, location, survey
+            FROM "Attendance"
+            WHERE date = '${date}') as R
+              LEFT JOIN "People" P on P.uid = R.uid) as N
+      WHERE N."attendanceTarget"=true AND survey<>'Absent'
+      GROUP BY location, "defPosition", newbie
+      ORDER BY location, "defPosition", newbie;
+    `)
+
+    if (countDefense.length === 0) {
+      throw new NotFoundException('해당하는 날짜의 출석 정보가 없습니다')
+    }
+
+    const positionCount = countOffense.concat(countDefense)
+
+    const result: {
+      position: string
+      location: Location
+      current: number
+      newbie: number
+    }[] = []
+
+    Object.keys(Positions).forEach((position) =>
+      Object.keys(Location).forEach((location) => {
+        result.push({
+          position,
+          location: Location[location],
+          current:
+            positionCount
+              .filter(
+                (item) =>
+                  item.location === Location[location] &&
+                  !item.newbie &&
+                  item.position === position
+              )
+              .pop()?.count ?? 0,
+          newbie:
+            positionCount
+              .filter(
+                (item) =>
+                  item.location === Location[location] &&
+                  item.newbie &&
+                  item.position === position
+              )
+              .pop()?.count ?? 0
+        })
+      })
+    )
+
+    return result
+  }
+
   async issueDailyReport(date: string) {
     const target = new Date(date)
 
@@ -229,7 +332,7 @@ export class AttendanceService {
       where: {
         date: target,
         People: {
-          absence: false
+          attendanceTarget: true
         },
         checked: false
       },
