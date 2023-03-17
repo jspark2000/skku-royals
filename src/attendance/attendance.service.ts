@@ -233,7 +233,7 @@ export class AttendanceService {
       where: {
         date: target,
         People: {
-          absence: false
+          attendanceTarget: true
         },
         checked: false
       },
