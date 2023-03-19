@@ -45,6 +45,8 @@ export class PeopleService {
         id: true,
         name: true,
         studentNo: true,
+        attendanceTarget: true,
+        year: true,
         newbie: true,
         absence: true,
         offPosition: true,
@@ -56,8 +58,11 @@ export class PeopleService {
 
     if (peopleList.length === 0) {
       throw new HttpException(
-        '데이터베이스에서 정보를 불러오는데 실패했습니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY
+        {
+          message: '데이터베이스에서 정보를 불러오는데 실패했습니다.',
+          code: 100
+        },
+        HttpStatus.NOT_FOUND
       )
     }
 
@@ -79,8 +84,8 @@ export class PeopleService {
 
     if (!result) {
       throw new HttpException(
-        '해당하는 부원 정보가 없습니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY
+        { message: '해당하는 부원 정보가 없습니다.', code: 100 },
+        HttpStatus.NOT_FOUND
       )
     }
 
@@ -102,7 +107,11 @@ export class PeopleService {
     const result = await this.prismaService.people.create({
       data: {
         name: peopleDTO.name,
-        studentNo: peopleDTO.studentNo
+        studentNo: peopleDTO.studentNo,
+        newbie: true,
+        attendanceTarget: true,
+        absence: true,
+        year: new Date().getFullYear()
       },
       select: {
         id: true
@@ -110,7 +119,10 @@ export class PeopleService {
     })
 
     if (!result) {
-      throw new HttpException('내부 오류 발생', HttpStatus.UNPROCESSABLE_ENTITY)
+      throw new HttpException(
+        { message: '서버 오류 발생', code: 100 },
+        HttpStatus.UNPROCESSABLE_ENTITY
+      )
     }
 
     return result

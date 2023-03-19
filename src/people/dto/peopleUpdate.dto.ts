@@ -10,6 +10,9 @@ export class PeopleUpdateDTO {
   studentNo: number
 
   @IsBoolean()
+  attendanceTarget: boolean
+
+  @IsBoolean()
   newbie: boolean
 
   @IsBoolean()
