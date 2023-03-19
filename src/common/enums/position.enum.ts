@@ -7,6 +7,6 @@ export enum Positions {
   DL = 'DL',
   LB = 'LB',
   HYB = 'HYB',
-  CB = 'CB',
+  DB = 'DB',
   no = 'no'
 }
