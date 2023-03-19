@@ -16,10 +16,10 @@ import { ApiModule } from './api/api.module'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 import { BandModule } from './band/band.module'
-import * as redisStore from 'cache-manager-redis-store'
 import { RolesGuard } from './common/guards/roles.guard'
 import { RecordModule } from './record/record.module'
 import { InjuryModule } from './injury/injury.module'
+import { CacheConfigService } from './common/cache/cacheConfig.service'
 
 @Module({
   imports: [
@@ -29,14 +29,7 @@ import { InjuryModule } from './injury/injury.module'
     }),
     CacheModule.registerAsync({
       isGlobal: true,
-      useFactory: async () => {
-        return {
-          store: redisStore,
-          host: process.env.REDIS_URL,
-          port: process.env.REDIS_PORT,
-          auth_pass: process.env.REDIS_PASSWORD
-        }
-      }
+      useClass: CacheConfigService
     }),
     AuthModule,
     PeopleModule,
