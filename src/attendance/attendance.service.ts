@@ -27,14 +27,14 @@ export class AttendanceService {
       orderBy: {
         date: 'desc'
       },
-      take: 10,
+      take: 25,
       distinct: ['date']
     })
 
     if (result.length === 0) {
       throw new HttpException(
         '불러올 출석 명단이 없습니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY
+        HttpStatus.NOT_FOUND
       )
     }
 
@@ -51,7 +51,7 @@ export class AttendanceService {
     if (!attendanceExist) {
       throw new HttpException(
         '해당하는 날짜의 출석 정보가 없습니다.',
-        HttpStatus.UNPROCESSABLE_ENTITY
+        HttpStatus.NOT_FOUND
       )
     }
 
@@ -206,8 +206,9 @@ export class AttendanceService {
     })
 
     if (!result) {
-      throw new UnprocessableEntityException(
-        '해당 출석 정보가 존재하지 않습니다.'
+      throw new HttpException(
+        { message: '해당하는 부원의 출석 정보가 없습니다.', code: 100 },
+        HttpStatus.NOT_FOUND
       )
     }
 

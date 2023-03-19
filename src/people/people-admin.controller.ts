@@ -1,9 +1,10 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -40,7 +41,10 @@ export class PeopleAdminController {
       return await this.peopleService.registerPeople(peopleDTO)
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
-        throw new BadRequestException('이미 존재하는 부원입니다.')
+        throw new HttpException(
+          { messaage: '이미 존재하는 부원입니다', code: 100 },
+          HttpStatus.CONFLICT
+        )
       }
     }
   }
