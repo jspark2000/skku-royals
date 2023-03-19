@@ -3,15 +3,12 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
   Post
 } from '@nestjs/common'
 import { Role } from '@prisma/client'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import { Roles } from 'src/common/decorators/roles.decorator'
 import { PeopleUpdateDTO } from './dto/peopleUpdate.dto'
 import { RegisterPeopleDTO } from './dto/registerPeople.dto'
@@ -37,16 +34,7 @@ export class PeopleAdminController {
 
   @Post()
   async registerPeople(@Body() peopleDTO: RegisterPeopleDTO) {
-    try {
-      return await this.peopleService.registerPeople(peopleDTO)
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        throw new HttpException(
-          { messaage: '이미 존재하는 부원입니다', code: 100 },
-          HttpStatus.CONFLICT
-        )
-      }
-    }
+    return await this.peopleService.registerPeople(peopleDTO)
   }
 
   @Delete(':id')
