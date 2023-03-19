@@ -24,13 +24,15 @@ else
   echo "REDIS_PORT=6379" >> .env
 fi
 
+echo "REDIS_PASSWORD=1234" >> .env
+
 # Use docker-compose profile
 if [ -z $DEVCONTAINER ]
 then
   docker-compose up -d
 fi
 
-echo "JWT_SECRET=$(head -c 64 /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | sha256sum | head -c 64)" >> .env
+echo "JWT_SECRET=45069a61bc8cacfac7300fe9b22216cae315be07d4bfe043d7a4886b1b40fe31" >> .env
 echo "ORIGIN=http://localhost:5173" >> .env
 
 # Generate thunder client environment
@@ -51,3 +53,6 @@ do
   echo -e '\n⚠️ Failed to migrate. Waiting for db to be ready...\n'
   sleep 5
 done
+
+cd $BASEDIR
+npx prisma migrate reset -f # seeding database

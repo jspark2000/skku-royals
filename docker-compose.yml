@@ -23,3 +23,7 @@ services:
     image: redis:7-alpine
     ports:
       - 6390:6379
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "1234"
