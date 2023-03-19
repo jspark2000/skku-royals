@@ -19,6 +19,7 @@ import { BandModule } from './band/band.module'
 import * as redisStore from 'cache-manager-redis-store'
 import { RolesGuard } from './common/guards/roles.guard'
 import { RecordModule } from './record/record.module'
+import { InjuryModule } from './injury/injury.module'
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { RecordModule } from './record/record.module'
     AttendanceModule,
     ApiModule,
     BandModule,
-    RecordModule
+    RecordModule,
+    InjuryModule
   ],
   controllers: [AppController],
   providers: [
