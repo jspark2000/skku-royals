@@ -22,6 +22,8 @@ export class PeopleService {
         id: true,
         name: true,
         studentNo: true,
+        attendanceTarget: true,
+        year: true,
         newbie: true,
         absence: true,
         offPosition: true,
@@ -104,6 +106,20 @@ export class PeopleService {
   }
 
   async registerPeople(peopleDTO: RegisterPeopleDTO) {
+    const check = await this.prismaService.people.findFirst({
+      where: {
+        name: peopleDTO.name,
+        studentNo: peopleDTO.studentNo
+      }
+    })
+
+    if (check) {
+      throw new HttpException(
+        { message: '이미 존재하는 부원입니다.', code: 100 },
+        HttpStatus.CONFLICT
+      )
+    }
+
     const result = await this.prismaService.people.create({
       data: {
         name: peopleDTO.name,
@@ -121,7 +137,7 @@ export class PeopleService {
     if (!result) {
       throw new HttpException(
         { message: '서버 오류 발생', code: 100 },
-        HttpStatus.UNPROCESSABLE_ENTITY
+        HttpStatus.INTERNAL_SERVER_ERROR
       )
     }
 
