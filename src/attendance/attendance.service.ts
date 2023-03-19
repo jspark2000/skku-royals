@@ -235,8 +235,7 @@ export class AttendanceService {
         date: target,
         People: {
           attendanceTarget: true
-        },
-        checked: false
+        }
       },
       select: {
         id: true
