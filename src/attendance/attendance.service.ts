@@ -76,7 +76,15 @@ export class AttendanceService {
             studentNo: true,
             offPosition: true,
             defPosition: true,
-            newbie: true
+            newbie: true,
+            Injury: {
+              where: {
+                AND: [
+                  { startDate: { lte: attendanceDTO.date } },
+                  { endDate: { gte: attendanceDTO.date } }
+                ]
+              }
+            }
           }
         }
       },
@@ -112,7 +120,8 @@ export class AttendanceService {
         offPosition: attendance.People.offPosition,
         defPosition: attendance.People.defPosition,
         actual: attendance.actual,
-        newbie: attendance.People.newbie
+        newbie: attendance.People.newbie,
+        injury: attendance.People.Injury.length > 0 ? true : false
       }
     })
   }
@@ -323,6 +332,92 @@ export class AttendanceService {
     )
 
     return result
+  }
+
+  async issueDailySurveyReport(date: string) {
+    const target = new Date(date)
+
+    const valid = await this.prismaService.attendance.findMany({
+      where: {
+        date: target,
+        People: {
+          attendanceTarget: true
+        }
+      },
+      select: {
+        id: true
+      }
+    })
+
+    if (valid.length === 0) {
+      throw new HttpException(
+        { message: '해당하는 날짜의 출석 정보가 없습니다', code: 100 },
+        HttpStatus.NOT_FOUND
+      )
+    }
+    const attendances = await this.prismaService.attendance.findMany({
+      where: {
+        date: target,
+        People: {
+          attendanceTarget: true
+        }
+      },
+      select: {
+        People: {
+          select: {
+            name: true,
+            studentNo: true,
+            newbie: true,
+            offPosition: true,
+            defPosition: true
+          }
+        },
+        survey: true,
+        location: true,
+        reason: true
+      },
+      orderBy: [
+        {
+          People: {
+            newbie: 'asc'
+          }
+        },
+        {
+          People: {
+            studentNo: 'asc'
+          }
+        },
+        {
+          People: {
+            name: 'asc'
+          }
+        }
+      ]
+    })
+
+    return attendances.map((attendance) => {
+      return {
+        name: attendance.People.name,
+        studentNo: attendance.People.studentNo,
+        newbie: attendance.People.newbie,
+        offPosition: attendance.People.offPosition,
+        defPosition: attendance.People.defPosition,
+        location:
+          attendance.location === Location.Integrated
+            ? '통합'
+            : attendance.location === Location.Seoul
+            ? '명륜'
+            : '율전',
+        survey:
+          attendance.survey === 'Absent'
+            ? 'X'
+            : attendance.survey === 'Tardy'
+            ? '늦참'
+            : 'O',
+        staff: attendance.People.offPosition === 'STAFF' ? true : false,
+        reason: attendance.reason
+      }
+    })
   }
 
   async issueDailyReport(date: string) {
