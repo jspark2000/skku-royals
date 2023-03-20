@@ -121,7 +121,7 @@ export class AttendanceService {
         defPosition: attendance.People.defPosition,
         actual: attendance.actual,
         newbie: attendance.People.newbie,
-        injury: attendance.People.Injury.length > 0 ? true : false
+        injured: attendance.People.Injury.length > 0 ? true : false
       }
     })
   }
