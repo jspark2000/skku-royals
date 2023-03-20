@@ -49,6 +49,11 @@ export class AttendanceController {
     return await this.attendanceService.issueDailyReport(date)
   }
 
+  @Get('report/survey/:date')
+  async getDailySurveyReport(@Param('date') date: string) {
+    return await this.attendanceService.issueDailySurveyReport(date)
+  }
+
   @Get('count/position/:date')
   async getDailyPositionCounts(@Param('date') date: string) {
     return await this.attendanceService.getDailyPositionCounts(date)
