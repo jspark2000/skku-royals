@@ -50,7 +50,7 @@ export class PeopleService {
         attendanceTarget: true,
         year: true,
         newbie: true,
-        absence: false,
+        absence: true,
         offPosition: true,
         defPosition: true,
         splPosition: true
@@ -126,7 +126,7 @@ export class PeopleService {
         studentNo: peopleDTO.studentNo,
         newbie: true,
         attendanceTarget: true,
-        absence: true,
+        absence: false,
         year: new Date().getFullYear()
       },
       select: {
