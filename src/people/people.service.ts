@@ -50,7 +50,7 @@ export class PeopleService {
         attendanceTarget: true,
         year: true,
         newbie: true,
-        absence: true,
+        absence: false,
         offPosition: true,
         defPosition: true,
         splPosition: true
