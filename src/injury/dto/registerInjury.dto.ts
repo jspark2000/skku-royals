@@ -2,8 +2,12 @@ import { Type } from 'class-transformer'
 import { IsDate, IsNumber, IsString } from 'class-validator'
 
 export class RegisterInjuryDTO {
+  @IsString()
+  name: string
+
   @IsNumber()
-  peopleId: number
+  @Type(() => Number)
+  studentNo: number
 
   @IsDate()
   @Type(() => Date)
