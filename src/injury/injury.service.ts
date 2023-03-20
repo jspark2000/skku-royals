@@ -18,6 +18,7 @@ export class InjuryService {
           ]
         },
         select: {
+          id: true,
           description: true,
           startDate: true,
           endDate: true,
@@ -27,11 +28,15 @@ export class InjuryService {
               studentNo: true
             }
           }
+        },
+        orderBy: {
+          endDate: 'asc'
         }
       })
       .then((results) =>
         results.map((result) => {
           return {
+            id: result.id,
             name: result.People.name,
             studentNo: result.People.studentNo,
             description: result.description,
@@ -45,9 +50,21 @@ export class InjuryService {
   }
 
   async registerInjury(injuryDTO: RegisterInjuryDTO): Promise<Injury> {
+    const peopleId = await this.prismaService.people
+      .findFirstOrThrow({
+        where: {
+          name: injuryDTO.name,
+          studentNo: injuryDTO.studentNo
+        },
+        select: {
+          id: true
+        }
+      })
+      .then((result) => result.id)
+
     const check = await this.prismaService.injury.findFirst({
       where: {
-        peopleId: injuryDTO.peopleId,
+        peopleId,
         OR: [
           {
             AND: [
@@ -73,14 +90,17 @@ export class InjuryService {
 
     if (check) {
       throw new HttpException(
-        { message: '이미 부상정보가 등록되어있습니다', code: 100 },
+        { message: '이미 부상자 정보가 등록되어있습니다', code: 100 },
         HttpStatus.CONFLICT
       )
     }
 
     return await this.prismaService.injury.create({
       data: {
-        ...injuryDTO
+        peopleId,
+        description: injuryDTO.description,
+        startDate: injuryDTO.startDate,
+        endDate: injuryDTO.endDate
       }
     })
   }
@@ -97,7 +117,7 @@ export class InjuryService {
 
     if (!check) {
       throw new HttpException(
-        { message: '부상정보가 존재하지 않습니다', code: 100 },
+        { message: '부상자 정보가 존재하지 않습니다', code: 100 },
         HttpStatus.NOT_FOUND
       )
     }
