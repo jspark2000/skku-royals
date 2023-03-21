@@ -65,7 +65,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ) {
     const refreshToken = req.cookies['refresh_token']
-    if (!refreshToken) throw new UnauthorizedException('Invalid Token')
+    if (!refreshToken) throw new BadRequestException('Invalid Token')
     try {
       const newJwtTokens: JwtTokens = await this.authService.updateJwtTokens(
         refreshToken
