@@ -1,7 +1,6 @@
 import { Controller, Get } from '@nestjs/common'
-import { Role } from '@prisma/client'
+import { People, Role } from '@prisma/client'
 import { Roles } from 'src/common/decorators/roles.decorator'
-import { PeopleListResponseDTO } from './dto/peopleListResponse.dto'
 import { PeopleService } from './people.service'
 
 @Controller('people')
@@ -10,7 +9,7 @@ export class PeopleController {
   constructor(private readonly peopleService: PeopleService) {}
 
   @Get('list')
-  async getPeopleList(): Promise<PeopleListResponseDTO[]> {
+  async getPeopleList(): Promise<People[]> {
     return await this.peopleService.getPeopleList()
   }
 }

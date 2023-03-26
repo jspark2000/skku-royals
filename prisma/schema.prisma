@@ -47,6 +47,11 @@ enum RecordEvent {
   YardDash
 }
 
+enum AttendanceType {
+  Integrated
+  Dispersion
+}
+
 enum AttendanceStatus {
   Present
   Tardy
@@ -109,6 +114,7 @@ model People {
   uid              String       @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name             String       @db.VarChar(20)
   studentNo        Int
+  studentId        String?      @unique
   teamRole         TeamRole     @default(Athlete)
   attendanceTarget Boolean      @default(true)
   newbie           Boolean      @default(false)
@@ -152,4 +158,18 @@ model Injury {
   startDate   DateTime @db.Timestamp(6)
   endDate     DateTime @db.Timestamp(6)
   others      String?
+}
+
+model SurveyGroup {
+  id      Int      @id @default(autoincrement())
+  name    String
+  surveys Survey[]
+}
+
+model Survey {
+  id          Int            @id @default(autoincrement())
+  surveyGroup SurveyGroup    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId     Int
+  date        DateTime       @db.Timestamp(6)
+  type        AttendanceType
 }

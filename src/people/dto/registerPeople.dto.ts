@@ -8,4 +8,7 @@ export class RegisterPeopleDTO {
   @IsNumber()
   @Type(() => Number)
   studentNo: number
+
+  @IsString()
+  studentId: string
 }

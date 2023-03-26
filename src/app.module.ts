@@ -20,6 +20,7 @@ import { RolesGuard } from './common/guards/roles.guard'
 import { RecordModule } from './record/record.module'
 import { InjuryModule } from './injury/injury.module'
 import { CacheConfigService } from './common/cache/cacheConfig.service'
+import { SurveyModule } from './survey/survey.module'
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { CacheConfigService } from './common/cache/cacheConfig.service'
     ApiModule,
     BandModule,
     RecordModule,
-    InjuryModule
+    InjuryModule,
+    SurveyModule
   ],
   controllers: [AppController],
   providers: [

@@ -1,11 +1,6 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnprocessableEntityException
-} from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { People } from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { PeopleListResponseDTO } from './dto/peopleListResponse.dto'
 import { PeopleUpdateDTO } from './dto/peopleUpdate.dto'
 import { RegisterPeopleDTO } from './dto/registerPeople.dto'
 
@@ -13,48 +8,28 @@ import { RegisterPeopleDTO } from './dto/registerPeople.dto'
 export class PeopleService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getPeopleModal(id: number) {
+  async getPeopleModal(id: number): Promise<People> {
     const peopleModal = await this.prismaService.people.findUnique({
       where: {
         id
-      },
-      select: {
-        id: true,
-        name: true,
-        studentNo: true,
-        attendanceTarget: true,
-        year: true,
-        newbie: true,
-        absence: true,
-        offPosition: true,
-        defPosition: true,
-        splPosition: true
       }
     })
 
     if (!peopleModal) {
-      throw new UnprocessableEntityException(
-        '해당하는 부원이 존재하지 않습니다.'
+      throw new HttpException(
+        {
+          message: '해당하는 부원이 존재하지 않습니다.',
+          code: 100
+        },
+        HttpStatus.NOT_FOUND
       )
     }
 
     return peopleModal
   }
 
-  async getPeopleList(): Promise<PeopleListResponseDTO[]> {
+  async getPeopleList(): Promise<People[]> {
     const peopleList = await this.prismaService.people.findMany({
-      select: {
-        id: true,
-        name: true,
-        studentNo: true,
-        attendanceTarget: true,
-        year: true,
-        newbie: true,
-        absence: true,
-        offPosition: true,
-        defPosition: true,
-        splPosition: true
-      },
       orderBy: [{ newbie: 'asc' }, { studentNo: 'asc' }, { name: 'asc' }]
     })
 
@@ -122,8 +97,7 @@ export class PeopleService {
 
     const result = await this.prismaService.people.create({
       data: {
-        name: peopleDTO.name,
-        studentNo: peopleDTO.studentNo,
+        ...peopleDTO,
         newbie: true,
         attendanceTarget: true,
         absence: false,

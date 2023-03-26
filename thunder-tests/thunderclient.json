@@ -817,5 +817,170 @@
         }
       ]
     }
+  },
+  {
+    "_id": "1ea0cfa7-2f6f-4559-9898-20b0d1469e93",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "b6726b99-cc83-4398-b189-936c233b6694",
+    "name": "succeed",
+    "url": "/admin/survey/create",
+    "method": "POST",
+    "sortNum": 270000,
+    "created": "2023-03-26T14:36:40.889Z",
+    "modified": "2023-03-26T14:44:40.153Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"3월 1주차 출석조사\",\n  \"surveys\": [\n    {\n      \"date\": \"2023-03-01\",\n      \"type\": \"Integrated\"\n    },\n    {\n      \"date\": \"2023-03-03\",\n      \"type\": \"Dispersion\"\n    },\n    {\n      \"date\": \"2023-03-05\",\n      \"type\": \"Dispersion\"\n    },\n    {\n      \"date\": \"2023-03-06\",\n      \"type\": \"Integrated\"\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      },
+      {
+        "type": "json-query",
+        "custom": "json.name",
+        "action": "equal",
+        "value": "3월 1주차 출석조사"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "196ff1d2-a763-4d60-8ee6-6cec49fd3c9f",
+          "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "d59260c8-1ef9-479f-95e2-4bc85cfe0fdd",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "b6726b99-cc83-4398-b189-936c233b6694",
+    "name": "409: CONFLICT",
+    "url": "/admin/survey/create",
+    "method": "POST",
+    "sortNum": 280000,
+    "created": "2023-03-26T14:43:03.194Z",
+    "modified": "2023-03-26T14:44:04.794Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"3월 1주차 출석조사\",\n  \"surveys\": [\n    {\n      \"date\": \"2023-03-01\",\n      \"type\": \"Integrated\"\n    },\n    {\n      \"date\": \"2023-03-03\",\n      \"type\": \"Dispersion\"\n    },\n    {\n      \"date\": \"2023-03-05\",\n      \"type\": \"Dispersion\"\n    },\n    {\n      \"date\": \"2023-03-06\",\n      \"type\": \"Integrated\"\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "409"
+      },
+      {
+        "type": "json-query",
+        "custom": "json.code",
+        "action": "equal",
+        "value": "100"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "1ea0cfa7-2f6f-4559-9898-20b0d1469e93",
+          "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "06d5bd0c-5f09-4ff7-931a-1ae410ed3be0",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "7e3ab56d-7b76-4253-a6c9-33f3cb5067f7",
+    "name": "succeed",
+    "url": "/admin/survey/1/not-submitted",
+    "method": "GET",
+    "sortNum": 300000,
+    "created": "2023-03-26T14:55:34.951Z",
+    "modified": "2023-03-26T15:10:02.360Z",
+    "headers": [],
+    "params": [],
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "196ff1d2-a763-4d60-8ee6-6cec49fd3c9f",
+          "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "df890508-5d96-44bd-aa30-47994de97df9",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "ab0b03a8-e602-4e27-a5fb-6dfadb2145e4",
+    "name": "succeed",
+    "url": "/survey/list",
+    "method": "GET",
+    "sortNum": 310000,
+    "created": "2023-03-26T15:00:00.569Z",
+    "modified": "2023-03-26T15:00:11.118Z",
+    "headers": [],
+    "params": [],
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "c6d517f3-0882-41d1-9715-91947a18e7cd",
+          "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "b7172dcb-0138-4a1a-a422-680734d48fe8",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "dc7e4716-ff47-4101-a4aa-531821f24c07",
+    "name": "succeed",
+    "url": "/survey/submit",
+    "method": "POST",
+    "sortNum": 320000,
+    "created": "2023-03-26T15:00:24.788Z",
+    "modified": "2023-03-26T15:10:31.070Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"studentId\": \"2023310001\",\n  \"surveys\": [\n    {\n      \"date\": \"2023-03-01\",\n      \"location\": \"Integrated\",\n      \"survey\": \"Present\"\n    },\n    {\n      \"date\": \"2023-03-03\",\n      \"location\": \"Seoul\",\n      \"survey\": \"Present\"\n    },\n    {\n      \"date\": \"2023-03-05\",\n      \"location\": \"Integrated\",\n      \"survey\": \"Absent\",\n      \"reason\": \"선약\"\n    },\n    {\n      \"date\": \"2023-03-06\",\n      \"location\": \"Integrated\",\n      \"survey\": \"Present\"\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "728efa82-d93f-430b-a751-59dc653e81e4",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "a9aa31b7-a1d1-4db3-95e0-e506400648e2",
+    "name": "succeed",
+    "url": "/survey/1",
+    "method": "GET",
+    "sortNum": 330000,
+    "created": "2023-03-26T15:00:32.257Z",
+    "modified": "2023-03-26T15:10:24.880Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
