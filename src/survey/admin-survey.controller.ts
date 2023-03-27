@@ -12,6 +12,7 @@ import {
 import { Prisma, Role, SurveyGroup } from '@prisma/client'
 import { Roles } from 'src/common/decorators/roles.decorator'
 import { NotSubmittedDTO } from './dto/notSubmitted.dto'
+import { RegisterSeparateSurveyDTO } from './dto/registerSeparateSurvey.dto'
 import { registerSurveysDTO } from './dto/registerSurveys.dto'
 import { SurveyService } from './survey.service'
 
@@ -35,6 +36,22 @@ export class AdminSurveyController {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new HttpException(
           { message: '존재하지 않는 출석조사 정보입니다.', code: 100 },
+          HttpStatus.NOT_FOUND
+        )
+      } else {
+        throw error
+      }
+    }
+  }
+
+  @Post('separate')
+  async registerSeparateSurvey(@Body() surveyDTO: RegisterSeparateSurveyDTO) {
+    try {
+      return await this.surveyService.registerSeparateSurvey(surveyDTO)
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new HttpException(
+          { message: '존재하지 않는 부원 정보입니다.', code: 100 },
           HttpStatus.NOT_FOUND
         )
       } else {

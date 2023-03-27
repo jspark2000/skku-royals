@@ -1,15 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { Survey, SurveyGroup } from '@prisma/client'
+import { Attendance, Survey, SurveyGroup } from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { NotSubmittedDTO } from './dto/notSubmitted.dto'
+import { RegisterSeparateSurveyDTO } from './dto/registerSeparateSurvey.dto'
 import { registerSurveysDTO } from './dto/registerSurveys.dto'
 import { SubmitSurveyDTO } from './dto/submitSurvey.dto'
+import { UpdateSurveySubmitDTO } from './dto/updateSurveySubmit.dto'
 
 @Injectable()
 export class SurveyService {
+  KR_DIFF: number = 9 * 60 * 60 * 1000
+
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getSurveyList(): Promise<SurveyGroup[]> {
+  async getSurveyGroupList(): Promise<SurveyGroup[]> {
     return await this.prismaService.surveyGroup.findMany({
       orderBy: { id: 'desc' },
       take: 10
@@ -160,9 +164,144 @@ export class SurveyService {
         ]
       },
       select: {
+        id: true,
         name: true,
-        studentNo: true
+        studentNo: true,
+        Attendance: {
+          where: {
+            date: {
+              in: dateList.map((data) => data.date)
+            }
+          },
+          select: {
+            date: true
+          }
+        }
       }
     })
+  }
+
+  async getSubmitResultsByStudentId(studentId: string): Promise<Attendance[]> {
+    const user = await this.prismaService.people.findUniqueOrThrow({
+      where: {
+        studentId
+      },
+      select: {
+        id: true
+      }
+    })
+
+    const surveys = await this.prismaService.surveyGroup.findMany({
+      orderBy: {
+        id: 'desc'
+      },
+      select: {
+        surveys: {
+          select: {
+            date: true
+          }
+        }
+      },
+      take: 3
+    })
+
+    const dates: Array<Date> = []
+
+    surveys.forEach((item) => {
+      item.surveys.forEach((survey) => dates.push(survey.date))
+    })
+
+    return await this.prismaService.attendance.findMany({
+      where: {
+        AND: [
+          {
+            date: {
+              in: dates
+            }
+          },
+          {
+            People: {
+              id: user.id
+            }
+          }
+        ]
+      }
+    })
+  }
+
+  async updateSurveySubmit(
+    attendanceId: number,
+    surveyDTO: UpdateSurveySubmitDTO
+  ): Promise<Attendance> {
+    const check = await this.prismaService.attendance.findUniqueOrThrow({
+      where: {
+        id: attendanceId
+      },
+      select: {
+        date: true
+      }
+    })
+
+    if (check.date.getTime() - this.KR_DIFF < this.getUTC(new Date())) {
+      throw new HttpException(
+        {
+          message: '출석 변경은 운동당일 전날까지만 가능합니다.',
+          code: '100'
+        },
+        HttpStatus.NOT_ACCEPTABLE
+      )
+    }
+
+    return await this.prismaService.attendance.update({
+      where: {
+        id: attendanceId
+      },
+      data: {
+        ...surveyDTO
+      }
+    })
+  }
+
+  async registerSeparateSurvey(
+    surveyDTO: RegisterSeparateSurveyDTO
+  ): Promise<{ id: number }> {
+    const user = await this.prismaService.people.findUniqueOrThrow({
+      where: {
+        id: surveyDTO.peopleId
+      },
+      select: {
+        uid: true
+      }
+    })
+
+    return await this.prismaService.attendance.upsert({
+      where: {
+        uid_date: {
+          uid: user.uid,
+          date: surveyDTO.date
+        }
+      },
+      create: {
+        date: surveyDTO.date,
+        survey: surveyDTO.survey,
+        reason: surveyDTO.reason,
+        People: {
+          connect: {
+            uid: user.uid
+          }
+        }
+      },
+      update: {
+        survey: surveyDTO.survey,
+        reason: surveyDTO.reason
+      },
+      select: {
+        id: true
+      }
+    })
+  }
+
+  private getUTC(date: Date): number {
+    return date.getTime() + date.getTimezoneOffset() * 60 * 1000
   }
 }
