@@ -1,5 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { Attendance, Survey, SurveyGroup } from '@prisma/client'
+import {
+  Attendance,
+  AttendanceStatus,
+  AttendanceType,
+  Location,
+  Survey,
+  SurveyGroup
+} from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { NotSubmittedDTO } from './dto/notSubmitted.dto'
 import { RegisterSeparateSurveyDTO } from './dto/registerSeparateSurvey.dto'
@@ -262,7 +269,7 @@ export class SurveyService {
     })
   }
 
-  async registerSeparateSurvey(
+  async upsertSeparateSurvey(
     surveyDTO: RegisterSeparateSurveyDTO
   ): Promise<{ id: number }> {
     const user = await this.prismaService.people.findUniqueOrThrow({
@@ -273,6 +280,42 @@ export class SurveyService {
         uid: true
       }
     })
+
+    const survey = await this.prismaService.survey.findFirst({
+      where: {
+        date: surveyDTO.date
+      },
+      select: {
+        type: true
+      }
+    })
+
+    if (!survey) {
+      throw new HttpException(
+        { message: '존재하지 않는 출석 날짜입니다.', code: 100 },
+        HttpStatus.NOT_FOUND
+      )
+    }
+
+    if (surveyDTO.survey !== AttendanceStatus.Absent) {
+      if (
+        survey.type === AttendanceType.Integrated &&
+        surveyDTO.location !== Location.Integrated
+      ) {
+        throw new HttpException(
+          { message: '잘못된 캠퍼스 선택입니다.', code: 100 },
+          HttpStatus.BAD_REQUEST
+        )
+      } else if (
+        survey.type === AttendanceType.Dispersion &&
+        surveyDTO.location === Location.Integrated
+      ) {
+        throw new HttpException(
+          { message: '잘못된 캠퍼스 선택입니다.', code: 100 },
+          HttpStatus.BAD_REQUEST
+        )
+      }
+    }
 
     return await this.prismaService.attendance.upsert({
       where: {

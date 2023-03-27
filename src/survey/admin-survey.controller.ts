@@ -45,9 +45,9 @@ export class AdminSurveyController {
   }
 
   @Post('separate')
-  async registerSeparateSurvey(@Body() surveyDTO: RegisterSeparateSurveyDTO) {
+  async upsertSeparateSurvey(@Body() surveyDTO: RegisterSeparateSurveyDTO) {
     try {
-      return await this.surveyService.registerSeparateSurvey(surveyDTO)
+      return await this.surveyService.upsertSeparateSurvey(surveyDTO)
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new HttpException(

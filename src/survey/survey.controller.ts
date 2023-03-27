@@ -9,7 +9,7 @@ import {
   Patch,
   Post
 } from '@nestjs/common'
-import { Attendance, Prisma, SurveyGroup } from '@prisma/client'
+import { Attendance, Prisma, Survey, SurveyGroup } from '@prisma/client'
 import { Public } from 'src/auth/decorators/public.decorator'
 import { SubmitSurveyDTO } from './dto/submitSurvey.dto'
 import { UpdateSurveySubmitDTO } from './dto/updateSurveySubmit.dto'
@@ -33,7 +33,9 @@ export class SurveyController {
   }
 
   @Get(':id')
-  async getSurveyModal(@Param('id', ParseIntPipe) id: number) {
+  async getSurveyModal(
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<Survey[]> {
     try {
       return await this.surveyService.getSurveyModal(id)
     } catch (error) {
