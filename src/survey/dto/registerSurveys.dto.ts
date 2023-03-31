@@ -18,4 +18,7 @@ export class SurveyInfo {
 
   @IsEnum(AttendanceType)
   type: AttendanceType
+
+  @IsString()
+  description: string
 }

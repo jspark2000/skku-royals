@@ -37,7 +37,8 @@ export class SurveyService {
               id: true,
               date: true,
               type: true,
-              groupId: true
+              groupId: true,
+              description: true
             },
             orderBy: { date: 'asc' }
           }
@@ -240,7 +241,7 @@ export class SurveyService {
     attendanceId: number,
     surveyDTO: UpdateSurveySubmitDTO
   ): Promise<Attendance> {
-    const check = await this.prismaService.attendance.findUniqueOrThrow({
+    await this.prismaService.attendance.findUniqueOrThrow({
       where: {
         id: attendanceId
       },
@@ -248,16 +249,6 @@ export class SurveyService {
         date: true
       }
     })
-
-    if (check.date.getTime() - this.KR_DIFF < this.getUTC(new Date())) {
-      throw new HttpException(
-        {
-          message: '출석 변경은 운동당일 전날까지만 가능합니다.',
-          code: '100'
-        },
-        HttpStatus.NOT_ACCEPTABLE
-      )
-    }
 
     return await this.prismaService.attendance.update({
       where: {
@@ -342,9 +333,5 @@ export class SurveyService {
         id: true
       }
     })
-  }
-
-  private getUTC(date: Date): number {
-    return date.getTime() + date.getTimezoneOffset() * 60 * 1000
   }
 }

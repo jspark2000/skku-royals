@@ -169,6 +169,7 @@ model SurveyGroup {
 model Survey {
   id          Int            @id @default(autoincrement())
   surveyGroup SurveyGroup    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  description String
   groupId     Int
   date        DateTime       @db.Timestamp(6)
   type        AttendanceType

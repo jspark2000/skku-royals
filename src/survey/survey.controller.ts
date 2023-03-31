@@ -6,13 +6,11 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
-  Patch,
   Post
 } from '@nestjs/common'
 import { Attendance, Prisma, Survey, SurveyGroup } from '@prisma/client'
 import { Public } from 'src/auth/decorators/public.decorator'
 import { SubmitSurveyDTO } from './dto/submitSurvey.dto'
-import { UpdateSurveySubmitDTO } from './dto/updateSurveySubmit.dto'
 import { SurveyService } from './survey.service'
 
 @Public()
@@ -56,28 +54,6 @@ export class SurveyController {
   ): Promise<Attendance[]> {
     try {
       return await this.surveyService.getSubmitResultsByStudentId(studentId)
-    } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        throw new HttpException(
-          { message: '존재하지 않는 부원입니다.', code: 100 },
-          HttpStatus.NOT_FOUND
-        )
-      } else {
-        throw error
-      }
-    }
-  }
-
-  @Patch('/update/:attendanceId')
-  async updateSurveySubmit(
-    @Param('attendanceId', ParseIntPipe) attendanceId: number,
-    @Body() surveyDTO: UpdateSurveySubmitDTO
-  ): Promise<Attendance> {
-    try {
-      return await this.surveyService.updateSurveySubmit(
-        attendanceId,
-        surveyDTO
-      )
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new HttpException(
