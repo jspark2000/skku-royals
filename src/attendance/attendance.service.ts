@@ -6,13 +6,14 @@ import {
   NotFoundException,
   UnprocessableEntityException
 } from '@nestjs/common'
-import { GoogleSheet, Location } from '@prisma/client'
+import { Attendance, GoogleSheet, Location } from '@prisma/client'
 import { Positions } from 'src/common/enums/position.enum'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { AttendanceCheckDTO } from './dto/attendanceCheck.dto'
 import { AttendanceDateDTO } from './dto/attendanceDate.dto'
 import { AttendanceDeleteDTO } from './dto/attendanceDelete.dto'
 import { RegisterAttendancesDTO } from './dto/attendanceRegister.dto'
+import { AttendanceUpdateDTO } from './dto/attendanceUpdate.dto'
 
 @Injectable()
 export class AttendanceService {
@@ -39,6 +40,72 @@ export class AttendanceService {
     }
 
     return result
+  }
+
+  async getCurrentAttendances(): Promise<
+    (Attendance & { People: { name: string; studentNo: number } })[]
+  > {
+    const dates = await this.prismaService.attendance
+      .findMany({
+        select: {
+          date: true
+        },
+        orderBy: {
+          date: 'desc'
+        },
+        take: 8,
+        distinct: ['date']
+      })
+      .then((results) => results.map((result) => result.date))
+
+    return await this.prismaService.attendance.findMany({
+      where: {
+        date: {
+          in: dates
+        }
+      },
+      include: {
+        People: {
+          select: {
+            name: true,
+            studentNo: true
+          }
+        }
+      },
+      orderBy: [
+        {
+          date: 'desc'
+        },
+        {
+          People: {
+            newbie: 'asc'
+          }
+        },
+        {
+          People: {
+            studentNo: 'asc'
+          }
+        },
+        {
+          People: {
+            name: 'asc'
+          }
+        }
+      ]
+    })
+  }
+
+  async updateAttendance(
+    attendanceDTO: AttendanceUpdateDTO
+  ): Promise<Attendance> {
+    return await this.prismaService.attendance.update({
+      where: {
+        id: attendanceDTO.id
+      },
+      data: {
+        ...attendanceDTO
+      }
+    })
   }
 
   async getAttendances(attendanceDTO: AttendanceDateDTO) {

@@ -7,7 +7,11 @@ export class PeopleUpdateDTO {
 
   @IsNumber()
   @Type(() => Number)
-  studentNo: number
+  year: number
+
+  @IsString()
+  @Type(() => String)
+  studentId: string
 
   @IsBoolean()
   attendanceTarget: boolean
