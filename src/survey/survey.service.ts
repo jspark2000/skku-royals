@@ -185,7 +185,8 @@ export class SurveyService {
             date: true
           }
         }
-      }
+      },
+      orderBy: [{ newbie: 'asc' }, { studentNo: 'asc' }, { name: 'asc' }]
     })
   }
 
@@ -265,7 +266,10 @@ export class SurveyService {
   ): Promise<{ id: number }> {
     const user = await this.prismaService.people.findUniqueOrThrow({
       where: {
-        id: surveyDTO.peopleId
+        name_studentNo: {
+          name: surveyDTO.name,
+          studentNo: surveyDTO.studentNo
+        }
       },
       select: {
         uid: true
@@ -283,7 +287,7 @@ export class SurveyService {
 
     if (!survey) {
       throw new HttpException(
-        { message: '존재하지 않는 출석 날짜입니다.', code: 100 },
+        { message: '해당하는 날짜에는 운동이 없습니다.', code: 100 },
         HttpStatus.NOT_FOUND
       )
     }

@@ -52,7 +52,8 @@ export class PeopleService {
         id
       },
       data: {
-        ...peopleDTO
+        ...peopleDTO,
+        studentNo: parseInt(peopleDTO.studentId.substring(0, 4), 10)
       },
       select: {
         id: true
