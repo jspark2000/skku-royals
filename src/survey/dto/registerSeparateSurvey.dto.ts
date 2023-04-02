@@ -1,11 +1,14 @@
 import { AttendanceStatus, Location } from '@prisma/client'
 import { Type } from 'class-transformer'
-import { IsDate, IsEnum, IsNumber, IsString } from 'class-validator'
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
 
 export class RegisterSeparateSurveyDTO {
+  @IsString()
+  name: string
+
   @IsNumber()
   @Type(() => Number)
-  peopleId: number
+  studentNo: number
 
   @IsDate()
   @Type(() => Date)
@@ -18,5 +21,6 @@ export class RegisterSeparateSurveyDTO {
   location: Location
 
   @IsString()
+  @IsOptional()
   reason?: string
 }
