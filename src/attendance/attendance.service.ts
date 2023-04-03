@@ -254,7 +254,8 @@ export class AttendanceService {
           },
           update: {
             location: Location[attendance.location],
-            survey: attendance.survey
+            survey: attendance.survey,
+            reason: attendance.reason
           }
         })
 
