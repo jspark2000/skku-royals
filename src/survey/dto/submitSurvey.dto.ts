@@ -9,10 +9,6 @@ import {
 } from 'class-validator'
 
 export class SubmitSurveyDTO {
-  @IsNumber()
-  @Type(() => Number)
-  id: number
-
   @IsNumberString()
   studentId: string
 
