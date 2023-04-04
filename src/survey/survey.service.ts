@@ -28,7 +28,7 @@ export class SurveyService {
   }
 
   async getSurveyModal(id: number): Promise<Survey[]> {
-    return await this.prismaService.surveyGroup
+    const result = await this.prismaService.surveyGroup
       .findUniqueOrThrow({
         where: { id },
         select: {
@@ -45,6 +45,18 @@ export class SurveyService {
         }
       })
       .then((result) => result.surveys)
+
+    if (
+      result[0].date.getTime() <=
+      new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000
+    ) {
+      throw new HttpException(
+        { message: '출석조사가 마감되었습니다.', code: 100 },
+        HttpStatus.NOT_ACCEPTABLE
+      )
+    }
+
+    return result
   }
 
   async submitSurveys(surveyDTO: SubmitSurveyDTO): Promise<{ count: number }> {
