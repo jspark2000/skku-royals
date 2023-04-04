@@ -48,7 +48,7 @@ export class SurveyService {
 
     if (
       result[0].date.getTime() <=
-      new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000
+      new Date().getTime() -540 * 60 * 1000
     ) {
       throw new HttpException(
         { message: '출석조사가 마감되었습니다.', code: 100 },
