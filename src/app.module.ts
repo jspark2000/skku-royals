@@ -21,6 +21,7 @@ import { RecordModule } from './record/record.module'
 import { InjuryModule } from './injury/injury.module'
 import { CacheConfigService } from './common/cache/cacheConfig.service'
 import { SurveyModule } from './survey/survey.module'
+import { ChatGptModule } from './chat-gpt/chat-gpt.module'
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { SurveyModule } from './survey/survey.module'
     BandModule,
     RecordModule,
     InjuryModule,
-    SurveyModule
+    SurveyModule,
+    ChatGptModule
   ],
   controllers: [AppController],
   providers: [
