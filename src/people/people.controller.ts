@@ -12,4 +12,9 @@ export class PeopleController {
   async getPeopleList(): Promise<People[]> {
     return await this.peopleService.getPeopleList()
   }
+
+  @Get('coaching-staff/list')
+  async getCoachingStaffList() {
+    return await this.peopleService.getCoachingStaffList()
+  }
 }

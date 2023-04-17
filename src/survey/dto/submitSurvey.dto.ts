@@ -1,12 +1,6 @@
 import { AttendanceStatus, Location } from '@prisma/client'
 import { Type } from 'class-transformer'
-import {
-  IsArray,
-  IsDate,
-  IsEnum,
-  IsNumber,
-  IsNumberString
-} from 'class-validator'
+import { IsArray, IsDate, IsEnum, IsNumberString } from 'class-validator'
 
 export class SubmitSurveyDTO {
   @IsNumberString()
