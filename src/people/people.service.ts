@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { People } from '@prisma/client'
+import { CoachingStaff, People } from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { PeopleUpdateDTO } from './dto/peopleUpdate.dto'
 import { RegisterPeopleDTO } from './dto/registerPeople.dto'
+import { RegisterCoachingStaffDTO } from './dto/registerCoachingStaff.dto'
+import { UpdateCoachingStaffDTO } from './dto/updateCoachingStaff.dto'
 
 @Injectable()
 export class PeopleService {
@@ -117,5 +119,55 @@ export class PeopleService {
     }
 
     return result
+  }
+
+  async getCoachingStaffList(): Promise<CoachingStaff[]> {
+    return await this.prismaService.coachingStaff.findMany({
+      orderBy: [{ admissionYear: 'asc' }, { name: 'asc' }]
+    })
+  }
+
+  async registerCoachingStaff(peopleDTO: RegisterCoachingStaffDTO) {
+    const check = await this.prismaService.coachingStaff.findFirst({
+      where: {
+        name: peopleDTO.name,
+        admissionYear: peopleDTO.admissionYear
+      }
+    })
+
+    if (check) {
+      throw new HttpException(
+        { message: '이미 존재하는 코칭스태프 입니다.', code: 100 },
+        HttpStatus.CONFLICT
+      )
+    }
+
+    return await this.prismaService.coachingStaff.create({
+      data: {
+        ...peopleDTO
+      }
+    })
+  }
+
+  async updateCoachingStaff(
+    id: number,
+    peopleDTO: UpdateCoachingStaffDTO
+  ): Promise<CoachingStaff> {
+    return await this.prismaService.coachingStaff.update({
+      where: {
+        id
+      },
+      data: {
+        ...peopleDTO
+      }
+    })
+  }
+
+  async deleteCoachingStaff(id: number): Promise<CoachingStaff> {
+    return await this.prismaService.coachingStaff.delete({
+      where: {
+        id
+      }
+    })
   }
 }

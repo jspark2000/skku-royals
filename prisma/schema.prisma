@@ -143,11 +143,11 @@ model Record {
 }
 
 model CoachingStaff {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(20)
-  studentNo Int
-  teamRole  TeamRole @default(Athlete)
-  position  String
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(20)
+  admissionYear Int
+  teamRole      TeamRole @default(Athlete)
+  position      String
 }
 
 model Injury {

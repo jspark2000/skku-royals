@@ -154,14 +154,12 @@
       }
     ],
     "settings": {
-      "headers": [],
       "auth": {
         "type": "bearer",
         "bearer": "{{bearer_token}}"
       },
-      "tests": [],
       "options": {
-        "baseUrl": "http://localhost:3000"
+        "baseUrl": "http://localhost:4000"
       },
       "runOptions": {
         "delay": 10,
