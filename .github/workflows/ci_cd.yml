@@ -16,19 +16,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: pnpm prisma generate
 
       - name: Build
-        run: npm run build
+        run: pnpm build
 
       - name: Cache dist
         uses: actions/cache@v3
@@ -46,19 +49,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
       - name: Check style
-        run: npm run format:check
+        run: pnpm format:check
 
   test:
     runs-on: ${{ matrix.os }}
@@ -80,32 +86,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: pnpm prisma generate
 
       - name: Check Prisma Migration
         env:
           DATABASE_URL: postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public
         run: |
-          npx prisma migrate diff \
+          pnpm prisma migrate diff \
             --from-migrations ./prisma/migrations \
             --to-schema-datamodel ./prisma/schema.prisma \
             --shadow-database-url postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public \
             --exit-code
 
       - name: Check types in Typescript
-        run: npx tsc --noEmit
+        run: pnpm tsc --noEmit
 
       - name: Test
-        run: npm run test
+        run: pnpm test
 
   SSH:
     needs: [build, lint, test]
@@ -136,16 +145,17 @@ jobs:
           script: |
             . ~/.nvm/nvm.sh
             nvm use 19
+            npm install -g pnpm
             cd nest/royals-staff
             git reset --hard
             git fetch
             git pull
-            npm install
-            npm install -g dotenv-cli
-            npm run migrate:prod
-            npx prisma generate
-            npm run build
-            npm run start:reload
+            pnpm install
+            pnpm install -g dotenv-cli
+            pnpm migrate:prod
+            pnpm prisma generate
+            pnpm build
+            pnpm start:reload
 
       - name: Run scripts in sub_server_1
         uses: appleboy/ssh-action@master
@@ -156,14 +166,15 @@ jobs:
           script: |
             . ~/.nvm/nvm.sh
             nvm use 19
+            npm install -g pnpm
             cd nest/royals-staff
             git reset --hard
             git fetch
             git pull
-            npm install
-            npx prisma generate
-            npm run build
-            npm run start:reload
+            pnpm install
+            pnpm prisma generate
+            pnpm build
+            pnpm start:reload
 
       - name: Run scripts in sub_server_2
         uses: appleboy/ssh-action@master
@@ -174,14 +185,15 @@ jobs:
           script: |
             . ~/.nvm/nvm.sh
             nvm use 19
+            npm install -g pnpm
             cd nest/royals-staff
             git reset --hard
             git fetch
             git pull
-            npm install
-            npx prisma generate
-            npm run build
-            npm run start:reload
+            pnpm install
+            pnpm prisma generate
+            pnpm build
+            pnpm start:reload
 
       - name: Remove Github Actions IP From Security Group
         run: |
