@@ -51,8 +51,10 @@ echo "OPENAI_API_KEY=YOUR_OPENAI_API_KEY_HERE" >> .env
 # Since environment variable changes frequently, let git ignore actual environment variables
 cp thunder-tests/thunderEnvironmentBase.json thunder-tests/thunderEnvironment.json
 
-# Install packages
-npm install
+# Install pnpm
+pnpm --version || sudo corepack enable
+corepack prepare pnpm@7.2.1 --activate
+pnpm install
 
 # Install lefthook for git hook
 npx lefthook install
@@ -60,11 +62,11 @@ npx lefthook install
 # Apply database migration
 for i in {1..5}
 do
-  cd $BASEDIR
-  npx prisma migrate dev && break # break if migration succeed
+  pnpm prisma generate &&
+  pnpm prisma migrate dev && break # break if migration succeed
   echo -e '\n⚠️ Failed to migrate. Waiting for db to be ready...\n'
   sleep 5
 done
 
-cd $BASEDIR
-npx prisma migrate reset -f # seeding database
+# seeding database
+pnpm prisma migrate reset -f
