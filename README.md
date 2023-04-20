@@ -13,15 +13,15 @@ $ npm install
 
 ```bash
 # watch mode
-$ npm run start:dev
+$ pnpm run start:dev
 
 # production mode
-$ npm run start:prod
+$ pnpm run start:prod
 
 # seeding database (prisma)
-$ npx prisma migrate reset
+$ pnpm prisma migrate reset
 ```
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is [MIT licensed](LICENSE).
