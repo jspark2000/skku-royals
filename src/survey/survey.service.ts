@@ -86,10 +86,12 @@ export class SurveyService {
           uid: user.uid,
           date: surveys[i].date,
           survey: surveys[i].survey,
+          location: surveys[i].location,
           reason: surveys[i].reason
         },
         update: {
           survey: surveys[i].survey,
+          location: surveys[i].location,
           reason: surveys[i].reason
         },
         select: {
