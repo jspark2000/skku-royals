@@ -92,4 +92,4 @@ jobs:
         run: pnpm --filter "frontend/survey" install
 
       - name: Check types in Typescript
-        run: pnpm --filter "frontend/survey" exec tsc --noEmit
+        run: pnpm --filter "frontend/survey" type-check
