@@ -3,8 +3,8 @@ name: CI_BACK
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
-  paths:
-    - 'backend/**'
+    paths:
+      - 'backend/**'
 
   push:
     branches:
