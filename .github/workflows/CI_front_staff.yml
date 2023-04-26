@@ -1,8 +1,16 @@
-name: CI
+name: CI_FRONT_STAFF
 
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
+    paths:
+      - 'frontend/staff/**'
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/staff/**'
 
 jobs:
   build:
@@ -24,19 +32,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: Generate Prisma Client
-        run: pnpm --filter backend exec prisma generate
+        run: pnpm --filter "frontend/staff" install
 
       - name: Build
-        run: pnpm -r build
+        run: pnpm --filter "frontend/staff" build
 
       - name: Cache dist
         uses: actions/cache@v3
         with:
           path: ./*/dist
-          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}-staff
 
   lint:
     runs-on: ${{ matrix.os }}
@@ -57,13 +62,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm --filter "frontend/staff" install
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm --filter "frontend/staff" lint
 
       - name: Check style
-        run: pnpm format:check
+        run: pnpm --filter "frontend/staff" format:check
 
   test:
     runs-on: ${{ matrix.os }}
@@ -72,16 +77,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [19]
-
-    services:
-      postgres:
-        image: postgres:14-alpine
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
-          POSTGRES_DB: royals
 
     steps:
       - uses: actions/checkout@v3
@@ -94,23 +89,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: Generate Prisma Client
-        run: pnpm --filter backend exec prisma generate
-
-      - name: Check Prisma Migration
-        env:
-          DATABASE_URL: postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public
-        run: |
-          pnpm --filter backend exec prisma migrate diff \
-            --from-migrations ./prisma/migrations \
-            --to-schema-datamodel ./prisma/schema.prisma \
-            --shadow-database-url postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public \
-            --exit-code
+        run: pnpm --filter "frontend/staff" install
 
       - name: Check types in Typescript
-        run: pnpm --filter backend exec tsc --noEmit
-
-      - name: Test
-        run: pnpm -r test
+        run: pnpm --filter "frontend/staff" exec tsc --noEmit

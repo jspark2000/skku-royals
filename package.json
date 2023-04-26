@@ -2,7 +2,9 @@
   "scripts": {
     "lint": "eslint . --ext .js,.ts,.vue",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "dev:staff": "pnpm --filter=!frontend/survey -r dev",
+    "dev:survey": "pnpm --filter=!frontend/staff -r dev"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.58.0",

@@ -1,0 +1,127 @@
+name: CD_FRONT_SURVEY
+
+on:
+  workflow_run:
+    workflows: [CI_FRONT_SURVEY]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm --filter "frontend/survey" install
+
+      - name: Build
+        run: pnpm --filter "frontend/survey" build
+
+      - name: Cache dist
+        uses: actions/cache@v3
+        with:
+          path: ./*/dist
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}-survey
+
+  lint:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm --filter "frontend/survey" install
+
+      - name: Lint
+        run: pnpm --filter "frontend/survey" lint
+
+      - name: Check style
+        run: pnpm --filter "frontend/survey" format:check
+
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm --filter "frontend/survey" install
+
+      - name: Check types in Typescript
+        run: pnpm --filter "frontend/survey" exec tsc --noEmit
+
+  deploy-to-s3:
+    needs: [build, lint, test]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm --filter "frontend/survey" install
+
+      - name: Cache dist
+        uses: actions/cache@v3
+        with:
+          path: ./*/dist
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}-survey
+
+      - name: deploy
+        env:
+          AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            frontend/survey/dist s3://survey.skku-royals.football
