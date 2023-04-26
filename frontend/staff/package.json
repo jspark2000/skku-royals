@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vite preview",
-    "build": "vite build",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "build:prod": "vue-tsc --noEmit && vite build --mode production",
-    "build-only": "vite build",
+    "build": "vue-tsc --noEmit && vite build --mode production",
     "dev": "vite",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
