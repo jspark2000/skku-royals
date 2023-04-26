@@ -103,7 +103,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public
         run: |
-          pnpm prisma migrate diff \
+          pnpm --filter backend exec prisma migrate diff \
             --from-migrations ./prisma/migrations \
             --to-schema-datamodel ./prisma/schema.prisma \
             --shadow-database-url postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public \
