@@ -12,6 +12,13 @@
       "runtimeArgs": ["run", "start:debug"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Frontend (Vue.js)",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/frontend/src"
     }
   ]
 }

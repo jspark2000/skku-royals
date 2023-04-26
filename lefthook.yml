@@ -3,10 +3,10 @@ pre-commit:
   commands:
     eslint:
       glob: '*.{js,ts}'
-      run: npx eslint {staged_files}
+      run: pnpm eslint {staged_files}
     prettier:
       glob: '*.{js,ts,yaml,yml}'
-      run: npx prettier --check {staged_files}
+      run: pnpm prettier --check {staged_files}
 
 post-checkout:
   commands:

@@ -6,16 +6,16 @@ cd $BASEDIR
 pnpm install
 
 # delete empty migration folders git has left
-find $BASEDIR/prisma/migrations -empty -type d -delete
+find $BASEDIR/backend/prisma/migrations -empty -type d -delete
 
 # load database url
-source $BASEDIR/.env
+source $BASEDIR/backend/.env
 
-if ! pnpm prisma migrate diff \
+if ! pnpm --filter backend exec prisma migrate diff \
   --from-url $DATABASE_URL \
   --to-migrations prisma/migrations \
   --shadow-database-url $DATABASE_URL \
   --exit-code
 then
-  pnpm prisma migrate reset -f
+  pnpm --filter backend exec prisma migrate reset -f
 fi
