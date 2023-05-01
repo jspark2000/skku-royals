@@ -1,25 +1,24 @@
 ## Description
 
-성균관대학교 미식축구부 부원관리 플랫폼입니다. 현재 개발중입니다.<br>
-프론트엔드 repository 링크: https://github.com/jspark2000/royals-staff-frontend
+성균관대학교 미식축구부 부원관리 플랫폼입니다. 현재 개발중입니다<br>
 
 ## Installation
 
 ```bash
-$ npm install
+$ pnpm install
 ```
 
 ## Running the app
 
 ```bash
-# watch mode
-$ pnpm run start:dev
+# watch mode 1 (staff_page & server)
+$ pnpm dev:staff
 
-# production mode
-$ pnpm run start:prod
+# watch mode 2 (survey_page & server)
+$ pnpm dev:survey
 
 # seeding database (prisma)
-$ pnpm prisma migrate reset
+$ pnpm --filter backend exec prisma migrate reset
 ```
 
 ## License
