@@ -1,9 +1,10 @@
-name: CI/CD
+name: CD_FRONT_SURVEY
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [CI_BACK]
+    types: [completed]
+    branches: [main]
 
 jobs:
   build:
@@ -28,10 +29,10 @@ jobs:
         run: pnpm install
 
       - name: Generate Prisma Client
-        run: pnpm prisma generate
+        run: pnpm --filter backend exec prisma generate
 
       - name: Build
-        run: pnpm build
+        run: pnpm --filter backend build
 
       - name: Cache dist
         uses: actions/cache@v3
@@ -61,10 +62,10 @@ jobs:
         run: pnpm install
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm --filter backend lint
 
       - name: Check style
-        run: pnpm format:check
+        run: pnpm --filter format:check
 
   test:
     runs-on: ${{ matrix.os }}
@@ -98,23 +99,23 @@ jobs:
         run: pnpm install
 
       - name: Generate Prisma Client
-        run: pnpm prisma generate
+        run: pnpm --filter backend exec prisma generate
 
       - name: Check Prisma Migration
         env:
           DATABASE_URL: postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public
         run: |
-          pnpm prisma migrate diff \
+          pnpm prisma --filter backend exec migrate diff \
             --from-migrations ./prisma/migrations \
             --to-schema-datamodel ./prisma/schema.prisma \
             --shadow-database-url postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public \
             --exit-code
 
       - name: Check types in Typescript
-        run: pnpm tsc --noEmit
+        run: pnpm --filter backend exec tsc --noEmit
 
       - name: Test
-        run: pnpm test
+        run: pnpm -filter backend test
 
   SSH:
     needs: [build, lint, test]
@@ -152,10 +153,10 @@ jobs:
             git pull
             pnpm install
             pnpm install -g dotenv-cli
-            pnpm migrate:prod
-            pnpm prisma generate
-            pnpm build
-            pnpm start:reload
+            pnpm --filter backend exec migrate:prod
+            pnpm --filter backend exec prisma generate
+            pnpm --filter backend build
+            pnpm --filter backend start:reload
 
       - name: Run scripts in sub_server_1
         uses: appleboy/ssh-action@master
@@ -172,9 +173,9 @@ jobs:
             git fetch
             git pull
             pnpm install
-            pnpm prisma generate
-            pnpm build
-            pnpm start:reload
+            pnpm --filter backend exec prisma generate
+            pnpm --filter backend build
+            pnpm --filter backend start:reload
 
       - name: Run scripts in sub_server_2
         uses: appleboy/ssh-action@master
@@ -191,9 +192,9 @@ jobs:
             git fetch
             git pull
             pnpm install
-            pnpm prisma generate
-            pnpm build
-            pnpm start:reload
+            pnpm --filter backend exec prisma generate
+            pnpm --filter backend build
+            pnpm --filter backend start:reload
 
       - name: Remove Github Actions IP From Security Group
         run: |
