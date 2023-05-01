@@ -1,200 +1,201 @@
-# name: CD_BACK
+name: CD_FRONT_SURVEY
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  workflow_run:
+    workflows: [CI_BACK]
+    types: [completed]
+    branches: [main]
 
-# jobs:
-#   build:
-#     runs-on: ${{ matrix.os }}
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
 
-#     strategy:
-#       matrix:
-#         os: [ubuntu-latest]
-#         node: [19]
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
 
-#     steps:
-#       - uses: actions/checkout@v3
-#       - uses: pnpm/action-setup@v2
-#         with:
-#           version: 7
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node }}
-#           cache: 'pnpm'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
 
-#       - name: Install dependencies
-#         run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-#       - name: Generate Prisma Client
-#         run: pnpm prisma generate
+      - name: Generate Prisma Client
+        run: pnpm --filter backend exec prisma generate
 
-#       - name: Build
-#         run: pnpm build
+      - name: Build
+        run: pnpm --filter backend build
 
-#       - name: Cache dist
-#         uses: actions/cache@v3
-#         with:
-#           path: ./*/dist
-#           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+      - name: Cache dist
+        uses: actions/cache@v3
+        with:
+          path: ./*/dist
+          key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
 
-#   lint:
-#     runs-on: ${{ matrix.os }}
+  lint:
+    runs-on: ${{ matrix.os }}
 
-#     strategy:
-#       matrix:
-#         os: [ubuntu-latest]
-#         node: [19]
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
 
-#     steps:
-#       - uses: actions/checkout@v3
-#       - uses: pnpm/action-setup@v2
-#         with:
-#           version: 7
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node }}
-#           cache: 'pnpm'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
 
-#       - name: Install dependencies
-#         run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-#       - name: Lint
-#         run: pnpm lint
+      - name: Lint
+        run: pnpm --filter backend lint
 
-#       - name: Check style
-#         run: pnpm format:check
+      - name: Check style
+        run: pnpm --filter format:check
 
-#   test:
-#     runs-on: ${{ matrix.os }}
+  test:
+    runs-on: ${{ matrix.os }}
 
-#     strategy:
-#       matrix:
-#         os: [ubuntu-latest]
-#         node: [19]
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
 
-#     services:
-#       postgres:
-#         image: postgres:14-alpine
-#         ports:
-#           - 5432:5432
-#         env:
-#           POSTGRES_USER: postgres
-#           POSTGRES_PASSWORD: 1234
-#           POSTGRES_DB: royals
+    services:
+      postgres:
+        image: postgres:14-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
+          POSTGRES_DB: royals
 
-#     steps:
-#       - uses: actions/checkout@v3
-#       - uses: pnpm/action-setup@v2
-#         with:
-#           version: 7
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node }}
-#           cache: 'pnpm'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
 
-#       - name: Install dependencies
-#         run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-#       - name: Generate Prisma Client
-#         run: pnpm prisma generate
+      - name: Generate Prisma Client
+        run: pnpm --filter backend exec prisma generate
 
-#       - name: Check Prisma Migration
-#         env:
-#           DATABASE_URL: postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public
-#         run: |
-#           pnpm prisma migrate diff \
-#             --from-migrations ./prisma/migrations \
-#             --to-schema-datamodel ./prisma/schema.prisma \
-#             --shadow-database-url postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public \
-#             --exit-code
+      - name: Check Prisma Migration
+        env:
+          DATABASE_URL: postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public
+        run: |
+          pnpm prisma --filter backend exec migrate diff \
+            --from-migrations ./prisma/migrations \
+            --to-schema-datamodel ./prisma/schema.prisma \
+            --shadow-database-url postgresql://postgres:1234@127.0.0.1:5432/royals?schema=public \
+            --exit-code
 
-#       - name: Check types in Typescript
-#         run: pnpm tsc --noEmit
+      - name: Check types in Typescript
+        run: pnpm --filter backend exec tsc --noEmit
 
-#       - name: Test
-#         run: pnpm test
+      - name: Test
+        run: pnpm -filter backend test
 
-#   SSH:
-#     needs: [build, lint, test]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get Github Actions IP
-#         id: ip
-#         uses: haythem/public-ip@v1.3
+  SSH:
+    needs: [build, lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Github Actions IP
+        id: ip
+        uses: haythem/public-ip@v1.3
 
-#       - name: Configure AWS Credentials
-#         uses: aws-actions/configure-aws-credentials@v2
-#         with:
-#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           aws-region: ap-northeast-2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
 
-#       - name: Add Github Actions IP to Security group
-#         run: |
-#           aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Add Github Actions IP to Security group
+        run: |
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
-#       - uses: actions/checkout@v3
-#       - name: Run scripts in main_server
-#         uses: appleboy/ssh-action@master
-#         with:
-#           key: ${{ secrets.SSH_KEY }}
-#           host: ${{ secrets.HOST }}
-#           username: ${{ secrets.USER }}
-#           script: |
-#             . ~/.nvm/nvm.sh
-#             nvm use 19
-#             npm install -g pnpm
-#             cd nest/royals-staff
-#             git reset --hard
-#             git fetch
-#             git pull
-#             pnpm install
-#             pnpm install -g dotenv-cli
-#             pnpm migrate:prod
-#             pnpm prisma generate
-#             pnpm build
-#             pnpm start:reload
+      - uses: actions/checkout@v3
+      - name: Run scripts in main_server
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          script: |
+            . ~/.nvm/nvm.sh
+            nvm use 19
+            npm install -g pnpm
+            cd nest/royals-staff
+            git reset --hard
+            git fetch
+            git pull
+            pnpm install
+            pnpm install -g dotenv-cli
+            pnpm --filter backend exec migrate:prod
+            pnpm --filter backend exec prisma generate
+            pnpm --filter backend build
+            pnpm --filter backend start:reload
 
-#       - name: Run scripts in sub_server_1
-#         uses: appleboy/ssh-action@master
-#         with:
-#           key: ${{ secrets.SSH_KEY }}
-#           host: ${{ secrets.HOST_2 }}
-#           username: ${{ secrets.USER }}
-#           script: |
-#             . ~/.nvm/nvm.sh
-#             nvm use 19
-#             npm install -g pnpm
-#             cd nest/royals-staff
-#             git reset --hard
-#             git fetch
-#             git pull
-#             pnpm install
-#             pnpm prisma generate
-#             pnpm build
-#             pnpm start:reload
+      - name: Run scripts in sub_server_1
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.HOST_2 }}
+          username: ${{ secrets.USER }}
+          script: |
+            . ~/.nvm/nvm.sh
+            nvm use 19
+            npm install -g pnpm
+            cd nest/royals-staff
+            git reset --hard
+            git fetch
+            git pull
+            pnpm install
+            pnpm --filter backend exec prisma generate
+            pnpm --filter backend build
+            pnpm --filter backend start:reload
 
-#       - name: Run scripts in sub_server_2
-#         uses: appleboy/ssh-action@master
-#         with:
-#           key: ${{ secrets.SSH_KEY }}
-#           host: ${{ secrets.HOST_3 }}
-#           username: ${{ secrets.USER }}
-#           script: |
-#             . ~/.nvm/nvm.sh
-#             nvm use 19
-#             npm install -g pnpm
-#             cd nest/royals-staff
-#             git reset --hard
-#             git fetch
-#             git pull
-#             pnpm install
-#             pnpm prisma generate
-#             pnpm build
-#             pnpm start:reload
+      - name: Run scripts in sub_server_2
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.HOST_3 }}
+          username: ${{ secrets.USER }}
+          script: |
+            . ~/.nvm/nvm.sh
+            nvm use 19
+            npm install -g pnpm
+            cd nest/royals-staff
+            git reset --hard
+            git fetch
+            git pull
+            pnpm install
+            pnpm --filter backend exec prisma generate
+            pnpm --filter backend build
+            pnpm --filter backend start:reload
 
-#       - name: Remove Github Actions IP From Security Group
-#         run: |
-#           aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Remove Github Actions IP From Security Group
+        run: |
+          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
