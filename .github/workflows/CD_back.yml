@@ -1,4 +1,4 @@
-name: CD_FRONT_SURVEY
+name: CD_BACK
 
 on:
   workflow_run:
@@ -65,7 +65,7 @@ jobs:
         run: pnpm --filter backend lint
 
       - name: Check style
-        run: pnpm --filter format:check
+        run: pnpm --filter backend format:check
 
   test:
     runs-on: ${{ matrix.os }}
