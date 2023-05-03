@@ -18,14 +18,14 @@
               variant="outlined"
               label="이름"
               clearable
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="studentId"
               variant="outlined"
               type="number"
               label="학번 (10자리)"
-              :rules="[(v) => !!(v.length === 10) || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!(v.length === 10) || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-btn type="submit" block class="bg-amber-lighten-2">
               등록하기

@@ -17,7 +17,7 @@
               v-model="name"
               variant="outlined"
               label="이름"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="studentNo"
@@ -25,13 +25,13 @@
               type="number"
               label="학번"
               class="my-3"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="description"
               variant="outlined"
               label="부상내용"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="startDate"
@@ -39,14 +39,14 @@
               type="date"
               label="부상시점"
               class="my-3"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="endDate"
               variant="outlined"
               type="date"
               label="복귀시점"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-btn type="submit" block class="mt-5 bg-amber-lighten-2">
               등록하기

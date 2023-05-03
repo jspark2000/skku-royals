@@ -48,7 +48,7 @@
           <v-text-field
             v-model="checkInput"
             variant="outlined"
-            :rules="[(v) => v === targetDate || '날짜를 정확하게 입력해주세요']"
+            :rules="[(v: any) => v === targetDate || '날짜를 정확하게 입력해주세요']"
             :label="targetDate"
           ></v-text-field>
           <v-btn type="submit" class="bg-red-darken-2 mt-3">삭제하기</v-btn>

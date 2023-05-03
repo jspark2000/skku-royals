@@ -10,8 +10,5 @@ module.exports = {
   ],
   rules: {
     'vue/multi-word-component-names': 'off'
-  },
-  parserOptions: {
-    parser: '@typescript-eslint/parser' //"parser": "babel-eslint"
   }
 }

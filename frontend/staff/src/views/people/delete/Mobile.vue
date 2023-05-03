@@ -52,7 +52,7 @@
             v-model="validation"
             variant="outlined"
             :label="name"
-            :rules="[(v) => v === name || '이름을 정확하게 입력해주세요']"
+            :rules="[(v: any) => v === name || '이름을 정확하게 입력해주세요']"
           ></v-text-field>
           <v-btn type="submit" block class="bg-red-darken-2 mt-3">
             삭제하기

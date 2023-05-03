@@ -18,28 +18,28 @@
               variant="outlined"
               label="이름"
               clearable
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="admissionYear"
               variant="outlined"
               type="number"
               label="입학년도 (ex 2020)"
-              :rules="[(v) => !!(v.length === 4) || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!(v.length === 4) || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="position"
               variant="outlined"
               label="담당 포지션"
               clearable
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-select
               v-model="teamRole"
               variant="outlined"
               label="직책"
               :items="teamRoles"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-select>
             <v-btn type="submit" block class="bg-amber-lighten-2">
               등록하기
