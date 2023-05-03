@@ -9,7 +9,7 @@
               v-model="name"
               variant="outlined"
               label="출석조사 이름 (ex x월 y주차 출석조사)"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
               clearable
             ></v-text-field>
           </v-card>
@@ -26,7 +26,7 @@
                   variant="outlined"
                   type="date"
                   label="운동날짜"
-                  :rules="[(v) => !!v || '필수 입력 항목입니다']"
+                  :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
                   clearable
                 ></v-text-field>
               </v-col>
@@ -36,7 +36,7 @@
                   variant="outlined"
                   label="종류"
                   :items="['통합운동', '개별운동']"
-                  :rules="[(v) => !!v || '필수 입력 항목입니다']"
+                  :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
                   clearable
                 ></v-select>
               </v-col>
@@ -45,7 +45,7 @@
                   v-model="item.description"
                   variant="outlined"
                   label="설명 (ex x요일, 명륜 통합훈련/캠퍼스별 훈련, x시 ~ y시)"
-                  :rules="[(v) => !!v || '필수 입력 항목입니다']"
+                  :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
                   clearable
                 ></v-text-field>
               </v-col>

@@ -79,7 +79,7 @@
             variant="outlined"
             :label="name"
             :rules="[
-              (v) => v === name || '밴드 닉네임을 정확하게 입력해주세요'
+              (v: any) => v === name || '밴드 닉네임을 정확하게 입력해주세요'
             ]"
           ></v-text-field>
           <v-btn type="submit" block class="bg-red-darken-2">삭제하기</v-btn>

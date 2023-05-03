@@ -17,7 +17,7 @@
               v-model="name"
               variant="outlined"
               label="이름"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
               clearable
             ></v-text-field>
             <v-text-field
@@ -26,7 +26,7 @@
               variant="outlined"
               type="number"
               label="입학년도"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
               clearable
             ></v-text-field>
             <v-text-field
@@ -34,21 +34,21 @@
               variant="outlined"
               type="date"
               label="날짜"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-select
               v-model="location"
               class="my-5"
               variant="outlined"
               :items="['통합', '명륜', '율전']"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
               label="위치"
             ></v-select>
             <v-select
               v-model="survey"
               variant="outlined"
               :items="['참석', '늦참', '불참']"
-              :rules="[(v) => !!v || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
               label="응답"
             ></v-select>
             <v-text-field

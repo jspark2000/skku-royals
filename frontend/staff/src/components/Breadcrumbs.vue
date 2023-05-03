@@ -39,7 +39,7 @@ import { useDisplay } from 'vuetify'
 const props = defineProps({
   icon: String,
   title: String,
-  items: Array
+  items: Array<{ title: string }>
 })
 
 const { mobile } = useDisplay()
