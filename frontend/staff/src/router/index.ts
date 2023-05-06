@@ -5,8 +5,6 @@ import DefaultView from '@/layouts/default/Default.vue'
 import LandingView from '@/views/index.vue'
 import LoginView from '@/views/login.vue'
 import CallbackView from '@/views/auth/index.vue'
-import RecruitingView from '@/views/recruiting/index.vue'
-import FBTIView from '@/views/recruiting/fbti/index.vue'
 import Swal from 'sweetalert2'
 
 const routes = [
@@ -41,7 +39,7 @@ const routes = [
       {
         path: '/recruiting',
         name: 'recruitingPage',
-        component: RecruitingView,
+        component: () => import('@/views/recruiting/index.vue'),
         meta: {
           roles: ['Public', 'Newbie', 'Normal', 'Admin', 'SuperAdmin']
         }
@@ -49,7 +47,7 @@ const routes = [
       {
         path: '/recruiting/fbti',
         name: 'FBTIPage',
-        component: FBTIView,
+        component: () => import('@/views/recruiting/fbti/index.vue'),
         meta: {
           roles: ['Public', 'Newbie', 'Normal', 'Admin', 'SuperAdmin']
         }
@@ -242,6 +240,14 @@ const routes = [
         path: 'list',
         name: 'game-list',
         component: () => import('@/views/game/list/index.vue'),
+        meta: {
+          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+        }
+      },
+      {
+        path: 'list/:id',
+        name: 'game-detail',
+        component: () => import('@/views/game/list/[id]/index.vue'),
         meta: {
           roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
         }

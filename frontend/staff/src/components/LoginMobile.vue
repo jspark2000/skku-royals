@@ -8,11 +8,6 @@
           class="mb-5 mx-auto"
         />
 
-        <v-form fast-fail @submit.prevent class="w-75 mx-auto">
-          <v-text-field label="이름" hide-details="auto"></v-text-field>
-          <v-text-field label="학번(입학년도)"></v-text-field>
-        </v-form>
-
         <v-btn
           color="green-darken-3"
           width="75%"

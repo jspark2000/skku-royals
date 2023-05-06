@@ -22,6 +22,18 @@
           </v-row>
         </v-alert>
       </v-dialog>
+      <v-dialog v-model="loading" :scrim="false" persistent width="auto">
+        <v-card color="primary">
+          <v-card-text>
+            로그인하는중
+            <v-progress-linear
+              indeterminate
+              color="white"
+              class="mb-0"
+            ></v-progress-linear>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-responsive>
 </template>
@@ -38,24 +50,24 @@ const logoutTitle = ref('')
 const logoutText = ref('')
 const router = useRouter()
 const success = ref(false)
+const loading = ref(false)
 
 onMounted(async () => {
+  loading.value = true
   const authStore = useAuthStore()
   const route = useRoute()
   const code: any = route.query.code
   try {
     await authStore.login(code)
-    logoutResult.value = 'success'
-    logoutTitle.value = '로그인 성공'
-    logoutText.value = '성공적으로 로그인 했습니다.'
     success.value = true
+    login()
   } catch (error) {
-    console.log(error)
     logoutResult.value = 'error'
     logoutTitle.value = '로그인 실패'
     logoutText.value = '로그인하지 못했습니다.'
-  } finally {
     is_show.value = true
+  } finally {
+    loading.value = false
   }
 })
 
