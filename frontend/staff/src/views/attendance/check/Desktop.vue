@@ -91,7 +91,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="6">
         <v-card class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             출석 날짜 선택 테이블
@@ -112,6 +112,9 @@
             >
               <template #item-date="item">
                 {{ item.date.slice(0, 10) }}
+              </template>
+              <template #item-isGame="item">
+                {{ item.isGame ? 'O' : 'X' }}
               </template>
               <template #item-select="item">
                 <v-btn
@@ -221,7 +224,6 @@ import { ref, Ref } from 'vue'
 import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { axiosInstance } from '@/common/store/auth'
 import { Header } from 'vue3-easy-data-table'
-import EasyDataTable from 'vue3-easy-data-table'
 import ExcelJS from 'exceljs'
 
 const invalid = ref(false)

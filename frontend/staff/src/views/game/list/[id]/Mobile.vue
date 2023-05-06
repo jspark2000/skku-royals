@@ -38,8 +38,9 @@
           :headers="statisticHeaders"
           :items="peopleNum"
           :rows-per-page="2"
-          table-class-name="game-attendance-table"
+          table-class-name="game-attendance-table-mo"
           theme-color="#1d90ff"
+          class="font-weight-medium"
           alternating
         ></EasyDataTable>
       </v-col>
@@ -49,8 +50,9 @@
           :headers="statisticHeaders"
           :items="statistic"
           :rows-per-page="20"
-          table-class-name="game-attendance-table"
+          table-class-name="game-attendance-table-mo"
           theme-color="#1d90ff"
+          class="font-weight-medium"
           alternating
         ></EasyDataTable>
       </v-col>
@@ -64,6 +66,7 @@
               :rows-per-page="20"
               table-class-name="game-attendance-table-mo"
               theme-color="#1d90ff"
+              class="font-weight-medium"
               show-index
               alternating
             >
@@ -83,6 +86,7 @@
               :rows-per-page="20"
               table-class-name="game-attendance-table-mo"
               theme-color="#1d90ff"
+              class="font-weight-medium"
               show-index
               alternating
             >
