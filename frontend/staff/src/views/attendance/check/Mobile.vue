@@ -113,6 +113,9 @@
               <template #item-date="item">
                 {{ item.date.slice(0, 10) }}
               </template>
+              <template #item-isGame="item">
+                {{ item.isGame ? 'O' : 'X' }}
+              </template>
               <template #item-select="item">
                 <v-btn
                   class="bg-green-darken-2"
@@ -220,7 +223,6 @@ import { ref, Ref } from 'vue'
 import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { axiosInstance } from '@/common/store/auth'
 import { Header } from 'vue3-easy-data-table'
-import EasyDataTable from 'vue3-easy-data-table'
 import ExcelJS from 'exceljs'
 
 const invalid = ref(false)

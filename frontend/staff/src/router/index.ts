@@ -169,6 +169,14 @@ const routes = [
         }
       },
       {
+        path: 'list/:date',
+        name: 'attendance-detail',
+        component: () => import('@/views/attendance/list/[date]/index.vue'),
+        meta: {
+          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+        }
+      },
+      {
         path: 'check',
         name: 'attendance-check',
         component: () => import('@/views/attendance/check/index.vue'),
@@ -256,6 +264,14 @@ const routes = [
         path: 'register',
         name: 'game-register',
         component: () => import('@/views/game/register/index.vue'),
+        meta: {
+          roles: ['Admin', 'SuperAdmin']
+        }
+      },
+      {
+        path: 'delete',
+        name: 'game-delete',
+        component: () => import('@/views/game/delete/index.vue'),
         meta: {
           roles: ['Admin', 'SuperAdmin']
         }

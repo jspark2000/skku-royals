@@ -299,7 +299,10 @@ const surveyAdmin = ref([
 
 const game = ref([['시합정보 조회', '/game/list']])
 
-const gameAdmin = ref([['시합정보 등록', '/game/register']])
+const gameAdmin = ref([
+  ['시합정보 등록', '/game/register'],
+  ['시합정보삭제', '/game/delete']
+])
 
 const role = ref([['권한변경', '/role/update']])
 

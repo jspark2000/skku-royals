@@ -40,6 +40,7 @@
           :rows-per-page="10"
           table-class-name="game-attendance-table"
           theme-color="#1d90ff"
+          class="font-weight-medium"
           alternating
         ></EasyDataTable>
       </v-col>
@@ -51,6 +52,7 @@
           :rows-per-page="2"
           table-class-name="game-attendance-table"
           theme-color="#1d90ff"
+          class="font-weight-medium"
           alternating
         ></EasyDataTable>
       </v-col>
@@ -64,6 +66,7 @@
               :rows-per-page="50"
               table-class-name="game-attendance-table"
               theme-color="#1d90ff"
+              class="font-weight-medium"
               show-index
               alternating
             >
@@ -83,6 +86,7 @@
               :rows-per-page="20"
               table-class-name="game-attendance-table"
               theme-color="#1d90ff"
+              class="font-weight-medium"
               show-index
               alternating
             >
