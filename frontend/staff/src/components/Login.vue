@@ -4,11 +4,6 @@
       <v-sheet width="300" class="mx-auto">
         <v-img src="@/assets/royals_logo.png" class="mb-5" />
 
-        <v-form fast-fail @submit.prevent>
-          <v-text-field label="이름" hide-details="auto"></v-text-field>
-          <v-text-field label="학번(입학년도)"></v-text-field>
-        </v-form>
-
         <v-btn
           color="green-darken-3"
           width="100%"

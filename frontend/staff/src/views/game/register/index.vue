@@ -1,21 +1,12 @@
 <template>
-  <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
+  <Mobile v-if="mobile" />
+  <Desktop v-else></Desktop>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import BreadCrumb from '@/components/Breadcrumbs.vue'
+import Desktop from './Desktop.vue'
+import Mobile from './Mobile.vue'
+import { useDisplay } from 'vuetify'
 
-const icon = ref('fas fa-football')
-const title = ref('시합정보 등록')
-const breadcumbs = ref([
-  {
-    title: '시합관리',
-    disabled: false
-  },
-  {
-    title: '시합정보 등록',
-    disabled: false
-  }
-])
+const { mobile } = useDisplay()
 </script>

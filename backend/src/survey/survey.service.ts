@@ -23,7 +23,7 @@ export class SurveyService {
   async getSurveyGroupList(): Promise<SurveyGroup[]> {
     return await this.prismaService.surveyGroup.findMany({
       orderBy: { id: 'desc' },
-      take: 10
+      take: 5
     })
   }
 

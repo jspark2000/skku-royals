@@ -207,6 +207,9 @@
         ></v-list-item>
       </v-list-group>
 
+      <v-list-subheader class="font-weight-bold mt-3">
+        실험실
+      </v-list-subheader>
       <v-list-group value="chat-gpt">
         <template v-slot:activator="{ props }">
           <v-list-item v-bind="props">
@@ -228,7 +231,7 @@
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block color="grey-lighten-3">Version 1.0.1</v-btn>
+        <v-btn block class="bg-amber-lighten-2 text-white">Version 1.0.1</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
@@ -252,14 +255,11 @@ async function logout() {
   const authStore = useAuthStore()
   try {
     await authStore.logout()
-    logoutResult.value = 'success'
-    logoutTitle.value = '로그아웃 성공'
-    logoutText.value = '성공적으로 로그아웃 하였습니다.'
+    close()
   } catch (error) {
     logoutResult.value = 'error'
     logoutTitle.value = '로그아웃 실패'
     logoutText.value = '로그아웃 과정에서 에러가 발생했습니다.'
-  } finally {
     is_show.value = true
   }
 }

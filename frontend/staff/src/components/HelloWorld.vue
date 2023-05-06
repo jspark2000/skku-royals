@@ -12,7 +12,7 @@
       <v-row class="d-flex align-center justify-center">
         <v-col cols="12" md="auto">
           <v-btn
-            href="https://docs.royals-staff.team"
+            href="https://docs.skku-royals.football"
             min-width="164"
             rel="noopener noreferrer"
             target="_blank"

@@ -92,7 +92,7 @@
                     : '명륜'
                 }}
               </template>
-              <template #item-response="item">
+              <template #item-survey="item">
                 <v-chip
                   class="font-weight-bold"
                   :class="
@@ -273,7 +273,7 @@ type AttendanceDTO = {
   actual: string
   studentNo: number
   location: string
-  survey: boolean
+  survey: string
   reason: string
   offPosition: string
   defPosition: string
@@ -357,7 +357,7 @@ const attendanceHeaders: Header[] = [
   { text: '부상', value: 'injured' },
   { text: '구분', value: 'newbie' },
   { text: '위치', value: 'location', sortable: true },
-  { text: '응답', value: 'response', sortable: true },
+  { text: '응답', value: 'survey', sortable: true },
   { text: '실제출석', value: 'actual', sortable: true }
 ]
 
@@ -399,6 +399,10 @@ async function issueDailySurveyReport() {
       {
         header: '학번',
         key: 'studentNo'
+      },
+      {
+        header: '부상',
+        key: 'injured'
       },
       {
         header: '오펜스',

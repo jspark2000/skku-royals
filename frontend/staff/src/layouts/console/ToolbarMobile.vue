@@ -169,44 +169,9 @@
         ></v-list-item>
       </v-list-group>
 
-      <v-list-group value="gameAdmin">
-        <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props">
-            <template v-slot:prepend>
-              <v-icon icon="fas fa-football" size="16px"></v-icon>
-            </template>
-            <v-list-item-title class="font-weight-medium">
-              시합관리
-            </v-list-item-title>
-          </v-list-item>
-        </template>
-        <v-list-item
-          v-for="([title, url], i) in gameAdmin"
-          :key="i"
-          :title="title"
-          :to="url"
-        ></v-list-item>
-      </v-list-group>
-
-      <v-list-group value="role">
-        <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props">
-            <template v-slot:prepend>
-              <v-icon icon="fas fa-lock" size="16px"></v-icon>
-            </template>
-            <v-list-item-title class="font-weight-medium">
-              권한관리
-            </v-list-item-title>
-          </v-list-item>
-        </template>
-        <v-list-item
-          v-for="([title, url], i) in role"
-          :key="i"
-          :title="title"
-          :to="url"
-        ></v-list-item>
-      </v-list-group>
-
+      <v-list-subheader class="font-weight-bold mt-3">
+        실험실
+      </v-list-subheader>
       <v-list-group value="chat-gpt">
         <template v-slot:activator="{ props }">
           <v-list-item v-bind="props">
@@ -228,7 +193,7 @@
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block color="grey-lighten-3">Version 1.0.1</v-btn>
+        <v-btn block class="bg-amber-lighten-2 text-white">Version 1.0.1</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
@@ -252,14 +217,11 @@ async function logout() {
   const authStore = useAuthStore()
   try {
     await authStore.logout()
-    logoutResult.value = 'success'
-    logoutTitle.value = '로그아웃 성공'
-    logoutText.value = '성공적으로 로그아웃 하였습니다.'
+    close()
   } catch (error) {
     logoutResult.value = 'error'
     logoutTitle.value = '로그아웃 실패'
     logoutText.value = '로그아웃 과정에서 에러가 발생했습니다.'
-  } finally {
     is_show.value = true
   }
 }
@@ -273,12 +235,11 @@ const people = ref([
 const peopleAdmin = ref([
   ['부원정보수정', '/people/update'],
   ['부원등록', '/people/register'],
-  ['부원삭제', '/people/delete'],
-  ['부상자 등록', '/people/injury/register'],
-  ['부상정보 수정', '/people/injury/update'],
   ['코칭스태프 등록', '/people/coaching-staff/register'],
   ['코칭스태프 수정', '/people/coaching-staff/update']
 ])
+
+const game = ref([['시합정보 조회', '/game/list']])
 
 const attendance = ref([
   ['출석명단 조회', '/attendance/list'],
@@ -290,18 +251,7 @@ const attendanceAdmin = ref([
   ['출석삭제', '/attendance/delete']
 ])
 
-const surveyAdmin = ref([
-  ['출석조사 등록', '/survey/register'],
-  ['미응답자 확인', '/survey/not-submitted'],
-  ['개별 등록', '/survey/register/separate'],
-  ['출석조사 삭제', '/survey/delete']
-])
-
-const game = ref([['시합정보 조회', '/game/list']])
-
-const gameAdmin = ref([['시합정보 등록', '/game/register']])
-
-const role = ref([['권한변경', '/role/update']])
+const surveyAdmin = ref([['미응답자 확인', '/survey/not-submitted']])
 
 const chatGPT = ref([['ChatGPT', '/chat-gpt/main']])
 </script>
