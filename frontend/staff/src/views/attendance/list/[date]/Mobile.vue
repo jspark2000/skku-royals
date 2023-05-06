@@ -348,9 +348,14 @@ onMounted(async () => {
         ? route.params.date
         : route.params.date[0]
     attendanceItems.value = attendances
-    filteredAttendanceItems.value = [...attendances]
+    filteredAttendanceItems.value = attendanceItems.value.filter(
+      (item) => item.offPosition !== 'STAFF'
+    )
     attendanceItemsStaff.value = attendanceItems.value.filter(
       (item) => item.offPosition === 'STAFF'
+    )
+    attendanceItems.value = attendanceItems.value.filter(
+      (item) => item.offPosition !== 'STAFF'
     )
   }
 
