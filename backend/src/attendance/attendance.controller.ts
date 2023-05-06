@@ -17,12 +17,6 @@ export class AttendanceController {
     return await this.attendanceService.getAttendanceDateList()
   }
 
-  @Get('register')
-  @Roles(Role.Admin)
-  async getGoogleSheetList() {
-    return await this.attendanceService.getGoogleSheetList()
-  }
-
   @Post('register')
   @Roles(Role.Admin)
   async registerAttendances(@Body() attendanceDTO: RegisterAttendancesDTO) {

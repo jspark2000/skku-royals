@@ -399,6 +399,36 @@ export class AttendanceService {
       })
     )
 
+    result
+      .filter((item) => item.location === Location.Integrated)
+      .forEach((item) => {
+        item.current =
+          item.current +
+          result.filter(
+            (target) =>
+              target.position === item.position &&
+              target.location === Location.Seoul
+          )[0].current +
+          result.filter(
+            (target) =>
+              target.position === item.position &&
+              target.location === Location.Suwon
+          )[0].current
+
+        item.newbie =
+          item.newbie +
+          result.filter(
+            (target) =>
+              target.position === item.position &&
+              target.location === Location.Seoul
+          )[0].newbie +
+          result.filter(
+            (target) =>
+              target.position === item.position &&
+              target.location === Location.Suwon
+          )[0].newbie
+      })
+
     return result
   }
 
@@ -437,7 +467,15 @@ export class AttendanceService {
             studentNo: true,
             newbie: true,
             offPosition: true,
-            defPosition: true
+            defPosition: true,
+            Injury: {
+              where: {
+                AND: [
+                  { startDate: { lte: new Date(date) } },
+                  { endDate: { gte: new Date(date) } }
+                ]
+              }
+            }
           }
         },
         survey: true,
@@ -483,7 +521,8 @@ export class AttendanceService {
             ? '늦참'
             : 'O',
         staff: attendance.People.offPosition === 'STAFF' ? true : false,
-        reason: attendance.reason
+        reason: attendance.reason,
+        injured: attendance.People.Injury.length > 0 ? 'O' : 'X'
       }
     })
   }
