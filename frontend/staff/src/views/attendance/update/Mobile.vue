@@ -164,7 +164,6 @@ import { axiosInstance } from '@/common/store/auth'
 import { Location } from '@/common/enums/location.enum'
 import { AttendanceStatus } from '@/common/enums/attendanceStatus.enum'
 import { Header } from 'vue3-easy-data-table'
-import EasyDataTable from 'vue3-easy-data-table'
 
 const icon = ref('fas fa-table-list')
 const title = ref('출석내용 변경')
