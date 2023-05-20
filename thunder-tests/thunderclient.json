@@ -982,5 +982,40 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "58fbc5c4-80f6-44dd-9b54-95024ab1837c",
+    "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+    "containerId": "",
+    "name": "test",
+    "url": "/statistic/people/1?start=2022-01-01&end=2024-01-01",
+    "method": "GET",
+    "sortNum": 340000,
+    "created": "2023-05-11T13:16:05.631Z",
+    "modified": "2023-05-11T13:41:55.459Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "start",
+        "value": "2022-01-01",
+        "isPath": false
+      },
+      {
+        "name": "end",
+        "value": "2024-01-01",
+        "isPath": false
+      }
+    ],
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "c6d517f3-0882-41d1-9715-91947a18e7cd",
+          "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   }
 ]

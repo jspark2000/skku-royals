@@ -95,6 +95,26 @@
               </template>
             </EasyDataTable>
           </v-col>
+          <v-col cols="12">
+            <h5 class="text-subtitle-1 font-weight-bold mb-3">불참인원</h5>
+            <EasyDataTable
+              :headers="absentHeaders"
+              :items="absent"
+              :rows-per-page="50"
+              table-class-name="game-attendance-table-mo"
+              theme-color="#1d90ff"
+              class="font-weight-medium"
+              show-index
+              alternating
+            >
+              <template #item-injured="item">
+                {{ item.injured ? 'O' : 'X' }}
+              </template>
+              <template #item-newbie="item">
+                {{ item.newbie ? '신입생' : '재학생' }}
+              </template>
+            </EasyDataTable>
+          </v-col>
         </v-row>
       </v-col>
       <v-col>
@@ -185,9 +205,16 @@ const statisticHeaders: Header[] = [
   { text: '재학생', value: 'current' },
   { text: '신입생', value: 'newbie' }
 ]
+const absentHeaders: Header[] = [
+  { text: '이름', value: 'name' },
+  { text: '학번', value: 'studentNo' },
+  { text: '구분', value: 'newbie', sortable: true },
+  { text: '불참사유', value: 'reason' }
+]
 const items: Ref<Partial<AttendanceDTO>[]> = ref([])
 const athelete: Ref<Partial<AttendanceDTO>[]> = ref([])
 const staff: Ref<Partial<AttendanceDTO>[]> = ref([])
+const absent: Ref<Partial<AttendanceDTO>[]> = ref([])
 const statistic: Ref<AttendanceStatisticDTO[]> = ref([])
 const peopleNum: Ref<AttendanceStatisticDTO[]> = ref([])
 
@@ -201,8 +228,12 @@ onMounted(async () => {
     .then((result) => (items.value = result.data))
 
   await axiosInstance
-    .get(`/api/attendance/count/position/${gameData.value.gameDate}`)
+    .get(`/api/statistic/position/${gameData.value.gameDate}`)
     .then((result) => (statistic.value = result.data))
+
+  absent.value = items.value.filter(
+    (item) => item.survey === AttendanceStatus.Absent
+  )
 
   items.value = items.value.filter(
     (item) => item.survey !== AttendanceStatus.Absent

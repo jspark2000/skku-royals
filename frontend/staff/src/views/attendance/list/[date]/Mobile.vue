@@ -334,7 +334,7 @@ onMounted(async () => {
     })
 
   const positionStatistic: AttendanceStatisticDTO[] = await axiosInstance
-    .get(`/api/attendance/count/position/${route.params.date}`)
+    .get(`/api/statistic/position/${route.params.date}`)
     .then((result) => result.data)
     .catch((error) => {
       console.log(error)
@@ -429,7 +429,7 @@ const filteredAttendanceStatisticItems: Ref<AttendanceStatisticDTO[]> = ref([])
 
 async function issueDailySurveyReport() {
   const result = await axiosInstance
-    .get(`/api/attendance/report/survey/${attendanceDate.value}`)
+    .get(`/api/statistic/survey/${attendanceDate.value}`)
     .then((result) => result.data)
     .catch((error) => {
       if (error.response.status === 404) {

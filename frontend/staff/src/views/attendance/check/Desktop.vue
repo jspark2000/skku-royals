@@ -339,9 +339,9 @@ async function getCheckModal(item: AttendanceDTO) {
       ? '명륜'
       : '율전'
   actualAttendance.value =
-    item.actual === 'Present'
+    item.survey === 'Present'
       ? '참석'
-      : item.actual === 'Tardy'
+      : item.survey === 'Tardy'
       ? '늦참'
       : '불참'
   checkModal.value = true
@@ -428,7 +428,7 @@ function filterLocation(location: string) {
 
 async function issueDailyReport() {
   const result = await axiosInstance
-    .get(`/api/attendance/report/${attendanceDate.value}`)
+    .get(`/api/statistic/${attendanceDate.value}`)
     .then((result) => result.data)
     .catch((error) => {
       if (error.response.status === 400) {

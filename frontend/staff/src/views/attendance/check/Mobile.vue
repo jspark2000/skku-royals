@@ -426,7 +426,7 @@ function filterLocation(location: string) {
 
 async function issueDailyReport() {
   const result = await axiosInstance
-    .get(`/api/attendance/report/${attendanceDate.value}`)
+    .get(`/api/statistic/${attendanceDate.value}`)
     .then((result) => result.data)
     .catch((error) => {
       if (error.response.status === 400) {

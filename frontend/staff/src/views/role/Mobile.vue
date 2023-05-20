@@ -135,7 +135,6 @@
 import { ref, Ref, watchEffect } from 'vue'
 import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { Header } from 'vue3-easy-data-table'
-import EasyDataTable from 'vue3-easy-data-table'
 import { axiosInstance } from '@/common/store/auth'
 
 const icon = ref('fas fa-lock')

@@ -109,6 +109,25 @@
         ></v-list-item>
       </v-list-group>
 
+      <v-list-group value="statistic">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props">
+            <template v-slot:prepend>
+              <v-icon icon="fas fa-chart-simple" size="16px"></v-icon>
+            </template>
+            <v-list-item-title class="font-weight-medium">
+              출석통계
+            </v-list-item-title>
+          </v-list-item>
+        </template>
+        <v-list-item
+          v-for="([title, url], i) in statistic"
+          :key="i"
+          :title="title"
+          :to="url"
+        ></v-list-item>
+      </v-list-group>
+
       <v-list-subheader class="font-weight-bold mt-3">
         관리자 기능
       </v-list-subheader>
@@ -307,6 +326,11 @@ const gameAdmin = ref([
 const role = ref([['권한변경', '/role/update']])
 
 const chatGPT = ref([['ChatGPT', '/chat-gpt/main']])
+
+const statistic = ref([
+  ['전체 출석 통계', '/statistic/all'],
+  ['개별 출석 통계', '/statistic/personal']
+])
 </script>
 
 <style>
