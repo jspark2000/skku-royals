@@ -86,7 +86,6 @@ import { ref, Ref } from 'vue'
 import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { axiosInstance } from '@/common/store/auth'
 import { Header } from 'vue3-easy-data-table'
-import EasyDataTable from 'vue3-easy-data-table'
 
 axiosInstance
   .get('/api/attendance/date-list')

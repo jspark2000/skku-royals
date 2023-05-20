@@ -305,6 +305,36 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/statistic',
+    component: () => import('@/layouts/console/Default.vue'),
+    children: [
+      {
+        path: 'all',
+        name: 'statistic/all',
+        component: () => import('@/views/statistic/all/index.vue'),
+        meta: {
+          roles: ['Normal', 'Admin', 'SuperAdmin']
+        }
+      },
+      {
+        path: 'personal',
+        name: 'statistic/personal',
+        component: () => import('@/views/statistic/personal/index.vue'),
+        meta: {
+          roles: ['Normal', 'Admin', 'SuperAdmin']
+        }
+      },
+      {
+        path: 'personal/:id',
+        name: 'statistic/personal/id',
+        component: () => import('@/views/statistic/personal/[id]/index.vue'),
+        meta: {
+          roles: ['Normal', 'Admin', 'SuperAdmin']
+        }
+      }
+    ]
   }
 ]
 

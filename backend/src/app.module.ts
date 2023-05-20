@@ -12,7 +12,6 @@ import { AuthModule } from './auth/auth.module'
 import { PeopleModule } from './people/people.module'
 import { LoggerMiddleware } from './common/middlewares/logger.middleware'
 import { AttendanceModule } from './attendance/attendance.module'
-import { ApiModule } from './api/api.module'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 import { BandModule } from './band/band.module'
@@ -23,6 +22,7 @@ import { CacheConfigService } from './common/cache/cacheConfig.service'
 import { SurveyModule } from './survey/survey.module'
 import { ChatGptModule } from './chat-gpt/chat-gpt.module'
 import { GameModule } from './game/game.module'
+import { StatisticModule } from './statistic/statistic.module'
 
 @Module({
   imports: [
@@ -37,13 +37,13 @@ import { GameModule } from './game/game.module'
     AuthModule,
     PeopleModule,
     AttendanceModule,
-    ApiModule,
     BandModule,
     RecordModule,
     InjuryModule,
     SurveyModule,
     ChatGptModule,
-    GameModule
+    GameModule,
+    StatisticModule
   ],
   controllers: [AppController],
   providers: [

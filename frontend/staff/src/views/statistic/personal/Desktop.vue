@@ -5,10 +5,7 @@
       <v-col cols="12">
         <v-card class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
-            부원 명단 테이블
-            <v-card-subtitle class="d-inline px-0">
-              | {{ season }} season
-            </v-card-subtitle>
+            통계를 확인할 부원 선택
           </v-card-title>
           <v-text-field
             v-model="searchValue"
@@ -18,27 +15,14 @@
             class="ms-4 mt-3 w-25"
             clearable
           ></v-text-field>
-          <v-tabs v-model="tab" class="ms-4" bg-color="white">
-            <v-tab value="ALL" @click="filterPeople('ALL')">전체</v-tab>
-            <v-tab value="Present" @click="filterPeople('Present')">
-              재학생
-            </v-tab>
-            <v-tab value="Newbie" @click="filterPeople('Newbie')">신입생</v-tab>
-            <v-tab value="Absence" @click="filterPeople('Absence')">
-              휴학생
-            </v-tab>
-            <v-tab value="No" @click="filterPeople('No')">
-              출석체크 비대상자
-            </v-tab>
-          </v-tabs>
           <v-card-text class="font-weight-medium">
             <EasyDataTable
               ref="peopleTable"
               :headers="headers"
               :items="filteredPeople"
-              :rows-per-page="10"
+              :rows-per-page="100"
               :search-value="searchValue"
-              table-class-name="attendance-table"
+              table-class-name="people-table"
               theme-color="#1d90ff"
               show-index
               alternating
@@ -49,6 +33,15 @@
               <template #item-absence="item">
                 {{ item.absence ? '휴학' : '재학' }}
               </template>
+              <template #item-select="item">
+                <v-btn
+                  class="bg-green-darken-1"
+                  @click="getAttendanceStatistic(item.id)"
+                  icon="fas fa-right-long"
+                  rounded="lg"
+                  size="x-small"
+                ></v-btn>
+              </template>
             </EasyDataTable>
           </v-card-text>
         </v-card>
@@ -58,24 +51,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, Ref } from 'vue'
+import { ref, Ref, onMounted } from 'vue'
 import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { axiosInstance } from '@/common/store/auth'
 import { Header } from 'vue3-easy-data-table'
+import { useRouter } from 'vue-router'
 
 const searchValue = ref()
-const tab = ref('ALL')
 const peopleTable = ref()
-const season = ref(new Date().getFullYear())
-const icon = ref('fas fa-people-group')
-const title = ref('부원명단')
+const router = useRouter()
+const icon = ref('fas fa-simple-chart')
+const title = ref('개별 출석 통계')
 const breadcumbs = ref([
   {
-    title: '부원관리',
+    title: '출석통계',
     disabled: false
   },
   {
-    title: '부원명단',
+    title: '개별 출석 통계',
     disabled: false
   }
 ])
@@ -83,13 +76,11 @@ const breadcumbs = ref([
 const items: Ref<PeopleResponseDTO[]> = ref([])
 const headers: Header[] = [
   { text: '이름', value: 'name', sortable: true },
-  { text: '학번', value: 'studentId', sortable: true },
   { text: '구분', value: 'newbie', sortable: true },
-  { text: '입부년도', value: 'year', sortable: true },
-  { text: '상태', value: 'absence', sortable: true },
+  { text: '입학년도', value: 'studentNo', sortable: true },
   { text: '오펜스', value: 'offPosition', sortable: true },
   { text: '디펜스', value: 'defPosition', sortable: true },
-  { text: '스페셜', value: 'splPosition', sortable: true }
+  { text: '선택', value: 'select' }
 ]
 
 const filteredPeople: Ref<PeopleResponseDTO[]> = ref([])
@@ -108,11 +99,13 @@ type PeopleResponseDTO = {
   splPosition: string
 }
 
-watchEffect(async () => {
+onMounted(async () => {
   const attendances: PeopleResponseDTO[] = await axiosInstance
     .get('/api/people/list')
     .then((result) => {
-      return result.data
+      return result.data.filter(
+        (item: PeopleResponseDTO) => item.attendanceTarget
+      )
     })
     .catch((error) => {
       console.log(error)
@@ -125,28 +118,13 @@ watchEffect(async () => {
   }
 })
 
-function filterPeople(value: string) {
-  peopleTable.value.updatePage(1)
-  if (value === 'ALL') {
-    filteredPeople.value = items.value.filter((item) => item.attendanceTarget)
-  } else if (value === 'Present') {
-    filteredPeople.value = items.value.filter(
-      (item) => item.attendanceTarget && !item.newbie
-    )
-  } else if (value === 'Newbie') {
-    filteredPeople.value = items.value.filter(
-      (item) => item.attendanceTarget && item.newbie
-    )
-  } else if (value === 'Absence') {
-    filteredPeople.value = items.value.filter((item) => item.absence)
-  } else if (value === 'No') {
-    filteredPeople.value = items.value.filter((item) => !item.attendanceTarget)
-  }
+function getAttendanceStatistic(id: number) {
+  router.push(`/statistic/personal/${id}`)
 }
 </script>
 
 <style>
-.attendance-table {
+.people-table {
   --easy-table-header-font-size: 15px;
   --easy-table-header-height: 50px;
   --easy-table-header-item-padding: 10px 15px;
