@@ -16,7 +16,7 @@
               :headers="peopleHeaders"
               :items="people"
               :rows-per-page="10"
-              table-class-name="attendance-date-table"
+              table-class-name="not-submitted-table-mo"
               theme-color="#1d90ff"
               show-index
               alternating
@@ -35,7 +35,7 @@
               :headers="headers"
               :items="items"
               :rows-per-page="10"
-              table-class-name="attendance-date-table"
+              table-class-name="not-submitted-table-mo"
               theme-color="#1d90ff"
               show-index
               alternating
@@ -125,3 +125,23 @@ async function getNotSubmitted(item: SurveyGroup) {
     })
 }
 </script>
+<style>
+.not-submitted-table-mo {
+  --easy-table-header-font-size: 12px;
+  --easy-table-header-height: 50px;
+  --easy-table-header-item-padding: 10px 10px;
+
+  --easy-table-body-row-height: 50px;
+  --easy-table-body-row-font-size: 11px;
+  --easy-table-body-row-font-weight: 700;
+
+  --easy-table-body-row-hover-font-color: #e8eaf6;
+  --easy-table-body-row-hover-background-color: #3949ab;
+
+  --easy-table-body-item-padding: 10px 10px;
+
+  --easy-table-rows-per-page-selector-width: 70px;
+  --easy-table-rows-per-page-selector-option-padding: 10px;
+  --easy-table-rows-per-page-selector-z-index: 1;
+}
+</style>
