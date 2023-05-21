@@ -23,6 +23,7 @@ import {
 } from './constants/jwt.constants'
 import { Cache } from 'cache-manager'
 import { refreshTokenCacheKey } from 'src/common/cache/keys'
+import { InviteCodeDTO } from './dto/inviteCode.dto'
 
 @Injectable()
 export class AuthService {
@@ -127,19 +128,82 @@ export class AuthService {
   async loginOrRegister(code: string) {
     const token = await this.getAccessToken(code)
     const userProfile = await this.getUserProfile(token)
-    const isWhiteList = await this.checkWhiteList(token)
-    if (!isWhiteList) {
+    const isRegistered = await this.checkRegistration(userProfile)
+
+    if (!isRegistered) {
+      const isWhiteList = await this.checkWhiteList(token)
+
+      if (!isWhiteList) {
+        throw new HttpException(
+          {
+            message: '성균관대 미식축구부 밴드에 가입되어있지 않습니다.',
+            code: 101
+          },
+          HttpStatus.BAD_REQUEST
+        )
+      }
+
+      const registerResult = await this.registerUser(userProfile)
+
+      if (!registerResult) {
+        throw new HttpException(
+          { message: 'DB 오류', code: 100 },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        )
+      }
+    }
+
+    const { profileUrl, userNickname } =
+      await this.prismaService.bandUser.findUnique({
+        where: {
+          userKey: userProfile.result_data.user_key
+        },
+        select: {
+          role: true,
+          profileUrl: true,
+          userNickname: true
+        }
+      })
+
+    const access_token = await this.createJwtTokens({
+      userKey: userProfile.result_data.user_key,
+      userProfileUrl: profileUrl,
+      userNickname
+    })
+
+    return {
+      ...access_token
+    }
+  }
+
+  async register(authDTO: InviteCodeDTO) {
+    const { inviteCode, code } = authDTO
+    const valid = await this.verifyInviteCode(inviteCode)
+
+    if (!valid) {
       throw new HttpException(
-        '성균관대 미식축구부 밴드에 가입되어있지 않습니다.',
+        { message: '유효하지 않은 초대 코드입니다.', code: 100 },
         HttpStatus.BAD_REQUEST
       )
     }
-    const isRegistered = await this.checkRegistration(userProfile)
-    if (!isRegistered) {
-      const registerResult = await this.registerUser(userProfile)
-      if (!registerResult) {
-        throw new HttpException('DB 오류', HttpStatus.INTERNAL_SERVER_ERROR)
-      }
+
+    const token: AccessToken = await this.cacheManager.get(code)
+
+    if (!token) {
+      throw new HttpException(
+        { message: '인증정보가 만료되었습니다.', code: 100 },
+        HttpStatus.NOT_FOUND
+      )
+    }
+
+    const userProfile = await this.getUserProfile(token)
+    const registerResult = await this.registerUser(userProfile)
+
+    if (!registerResult) {
+      throw new HttpException(
+        { message: 'DB 오류', code: 100 },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
     }
 
     const { profileUrl, userNickname } =
@@ -177,9 +241,18 @@ export class AuthService {
       method: 'get',
       url: accessTokenURL,
       headers
-    }).then((response) => {
-      return response.data
     })
+      .then((response) => {
+        return response.data
+      })
+      .catch(() => {
+        throw new HttpException(
+          { message: 'BAND API ERROR', code: 101 },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        )
+      })
+
+    await this.cacheManager.set(code, token, 10 * 60 * 1000)
 
     return token
   }
@@ -326,6 +399,26 @@ export class AuthService {
 
   async deleteRefreshToken(userKey: string) {
     return await this.cacheManager.del(refreshTokenCacheKey(userKey))
+  }
+
+  async getInviteCode(): Promise<string> {
+    let inviteCode: string = await this.cacheManager.get('invite-code')
+
+    if (!inviteCode) {
+      inviteCode = Math.random().toString(36).substring(2, 12)
+      await this.cacheManager.set(
+        'invite-code',
+        inviteCode,
+        24 * 60 * 60 * 1000
+      )
+    }
+
+    return inviteCode
+  }
+
+  private async verifyInviteCode(inviteCode: string): Promise<boolean> {
+    const origin = await this.cacheManager.get('invite-code')
+    return inviteCode === origin
   }
 
   // only used for thunder-client test

@@ -226,6 +226,25 @@
         ></v-list-item>
       </v-list-group>
 
+      <v-list-group value="inviteCode">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props">
+            <template v-slot:prepend>
+              <v-icon icon="fas fa-envelope" size="16px"></v-icon>
+            </template>
+            <v-list-item-title class="font-weight-medium">
+              초대코드
+            </v-list-item-title>
+          </v-list-item>
+        </template>
+        <v-list-item
+          v-for="([title, url], i) in inviteCode"
+          :key="i"
+          :title="title"
+          :to="url"
+        ></v-list-item>
+      </v-list-group>
+
       <v-list-subheader class="font-weight-bold mt-3">
         실험실
       </v-list-subheader>
@@ -331,6 +350,8 @@ const statistic = ref([
   ['전체 출석 통계', '/statistic/all'],
   ['개별 출석 통계', '/statistic/personal']
 ])
+
+const inviteCode = ref([['초대코드 조회', '/invite-code/main']])
 </script>
 
 <style>

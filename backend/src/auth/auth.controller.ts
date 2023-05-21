@@ -22,6 +22,7 @@ import {
 import { Public } from './decorators/public.decorator'
 import { AuthenticatedRequest } from './interfaces/authenticated-request.interface'
 import { JwtTokens } from './interfaces/jwt.interface'
+import { InviteCodeDTO } from './dto/inviteCode.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -49,13 +50,18 @@ export class AuthController {
     @Body('code') code: string,
     @Res({ passthrough: true }) res: Response
   ) {
-    try {
-      const token: JwtTokens = await this.authService.loginOrRegister(code)
-      this.setJwtResponse(res, token)
-    } catch (error) {
-      console.log(error)
-      throw new HttpException('로그인 실패', HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    const token: JwtTokens = await this.authService.loginOrRegister(code)
+    this.setJwtResponse(res, token)
+  }
+
+  @Public()
+  @Post('register')
+  async register(
+    @Body() authDTO: InviteCodeDTO,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    const token: JwtTokens = await this.authService.register(authDTO)
+    this.setJwtResponse(res, token)
   }
 
   @Public()
@@ -99,6 +105,12 @@ export class AuthController {
   @Roles(Role.Newbie)
   async getRole(@Req() req: AuthenticatedRequest) {
     return { role: req.user.role }
+  }
+
+  @Get('invite-code')
+  @Roles(Role.SuperAdmin)
+  async getInviteCode(): Promise<string> {
+    return await this.authService.getInviteCode()
   }
 
   // only used for thunder-client test
