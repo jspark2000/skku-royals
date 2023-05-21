@@ -5,6 +5,7 @@ import DefaultView from '@/layouts/default/Default.vue'
 import LandingView from '@/views/index.vue'
 import LoginView from '@/views/login.vue'
 import CallbackView from '@/views/auth/index.vue'
+import RegisterView from '@/views/auth/register/index.vue'
 import Swal from 'sweetalert2'
 
 const routes = [
@@ -32,6 +33,14 @@ const routes = [
         path: '/login/callback',
         name: 'callbackPage',
         component: CallbackView,
+        meta: {
+          roles: ['Public', 'Newbie', 'Normal', 'Admin', 'SuperAdmin']
+        }
+      },
+      {
+        path: '/register/:code',
+        name: 'registerPage',
+        component: RegisterView,
         meta: {
           roles: ['Public', 'Newbie', 'Normal', 'Admin', 'SuperAdmin']
         }
@@ -332,6 +341,20 @@ const routes = [
         component: () => import('@/views/statistic/personal/[id]/index.vue'),
         meta: {
           roles: ['Normal', 'Admin', 'SuperAdmin']
+        }
+      }
+    ]
+  },
+  {
+    path: '/invite-code',
+    component: () => import('@/layouts/console/Default.vue'),
+    children: [
+      {
+        path: 'main',
+        name: 'invite-code',
+        component: () => import('@/views/invite-code/index.vue'),
+        meta: {
+          roles: ['SuperAdmin']
         }
       }
     ]

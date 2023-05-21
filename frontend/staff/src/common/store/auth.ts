@@ -48,8 +48,25 @@ export const useAuthStore = defineStore('auth', {
         axiosInstance.defaults.headers.common.authorization =
           res.headers.authorization
         this.isLoggedIn = true
-      } catch (e) {
-        throw new Error('Login failed')
+      } catch (error: any) {
+        this.isLoggedIn = false
+        throw error
+      }
+    },
+
+    async register(code: string, inviteCode: string) {
+      try {
+        const registerDTO = {
+          code,
+          inviteCode
+        }
+        const res = await axiosInstance.post('/api/auth/register', registerDTO)
+        axiosInstance.defaults.headers.common.authorization =
+          res.headers.authorization
+        this.isLoggedIn = true
+      } catch (error: any) {
+        this.isLoggedIn = false
+        throw error
       }
     },
 

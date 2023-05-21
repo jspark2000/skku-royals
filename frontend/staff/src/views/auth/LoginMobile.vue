@@ -11,9 +11,9 @@
           :type="logoutResult"
           :title="logoutTitle"
           :text="logoutText"
-          width="100%"
+          width="60%"
           border
-          class="align-self-center px-10"
+          class="align-self-center"
         >
           <v-row class="mt-2">
             <v-col>
@@ -61,10 +61,15 @@ onMounted(async () => {
     await authStore.login(code)
     success.value = true
     login()
-  } catch (error) {
+  } catch (error: any) {
     logoutResult.value = 'error'
     logoutTitle.value = '로그인 실패'
-    logoutText.value = '로그인하지 못했습니다.'
+    logoutText.value = error.response.data.message ?? '알 수 없는 오류 발생'
+
+    if (error.response.data.code === 101 && error.response.status === 400) {
+      router.push(`/register/${code}`)
+    }
+
     is_show.value = true
   } finally {
     loading.value = false
