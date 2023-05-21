@@ -1,13 +1,66 @@
 name: CD_FRONT_SURVEY
 
 on:
-  workflow_run:
-    workflows: [CI_FRONT_SURVEY]
-    types: [completed]
-    branches: [main]
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/survey/**'
 
 jobs:
+  lint:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm --filter "frontend/staff" install
+
+      - name: Lint
+        run: pnpm --filter "frontend/staff" lint
+
+      - name: Check style
+        run: pnpm --filter "frontend/staff" format:check
+
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm --filter "frontend/staff" install
+
+      - name: Check types in Typescript
+        run: pnpm --filter "frontend/staff" type-check
+
   deploy-to-s3:
+    needs: [lint, test]
     runs-on: ${{ matrix.os }}
 
     strategy:

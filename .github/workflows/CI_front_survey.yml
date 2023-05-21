@@ -6,12 +6,6 @@ on:
     paths:
       - 'frontend/survey/**'
 
-  push:
-    branches:
-      - main
-    paths:
-      - 'frontend/survey/**'
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
