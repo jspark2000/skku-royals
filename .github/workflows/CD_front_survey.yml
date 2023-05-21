@@ -27,13 +27,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm --filter "frontend/staff" install
+        run: pnpm --filter "frontend/survey" install
 
       - name: Lint
-        run: pnpm --filter "frontend/staff" lint
+        run: pnpm --filter "frontend/survey" lint
 
       - name: Check style
-        run: pnpm --filter "frontend/staff" format:check
+        run: pnpm --filter "frontend/survey" format:check
 
   test:
     runs-on: ${{ matrix.os }}
@@ -54,10 +54,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm --filter "frontend/staff" install
+        run: pnpm --filter "frontend/survey" install
 
       - name: Check types in Typescript
-        run: pnpm --filter "frontend/staff" type-check
+        run: pnpm --filter "frontend/survey" type-check
 
   deploy-to-s3:
     needs: [lint, test]
