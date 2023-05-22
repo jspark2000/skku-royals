@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height" :class="{ 'd-none': landing }">
-    <v-responsive class="d-flex align-center text-center fill-height">
+    <v-responsive class="align-center text-center fill-height">
       <v-img contain height="160" src="@/assets/intro.svg" />
 
       <div class="text-h5 font-weight-bold mt-3 mb-1">출석 조사</div>
@@ -42,7 +42,7 @@
     </v-responsive>
   </v-container>
   <v-container class="fill-height" :class="{ 'd-none': !landing }">
-    <v-responsive class="d-flex align-center text-center fill-height px-5">
+    <v-responsive class="align-center text-center fill-height px-5">
       <div class="text-h5 font-weight-bold mt-3 mb-10">출석조사 목록</div>
       <v-row>
         <v-col>

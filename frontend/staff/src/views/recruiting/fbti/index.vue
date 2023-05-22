@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height" :class="{ 'd-none': landing }">
-    <v-responsive class="d-flex align-center text-center fill-height">
+    <v-responsive class="align-center text-center fill-height">
       <v-img contain height="160" src="@/assets/intro.svg" />
 
       <div class="text-h5 font-weight-bold mt-3 mb-1">풋볼 성격유형 검사</div>
@@ -32,7 +32,7 @@
   <v-container class="fill-height" :class="{ 'd-none': !landing }">
     <v-responsive
       :class="{ 'd-none': landing }"
-      class="d-flex align-center text-center fill-height"
+      class="align-center text-center fill-height"
     >
       <div class="text-h6 font-weight-bold mt-3 mb-10">
         풋볼 성격유형 검사 (FBTI)

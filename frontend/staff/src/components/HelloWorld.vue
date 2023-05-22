@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive class="d-flex align-center text-center fill-height">
+    <v-responsive class="align-center text-center fill-height">
       <v-img contain height="300" src="@/assets/intro.svg" />
 
       <div class="text-body-1 font-weight-medium mb-1">SKKU ROYALS</div>

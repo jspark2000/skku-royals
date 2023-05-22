@@ -1,6 +1,6 @@
 <template>
   <v-responsive class="chat-container">
-    <v-container class="d-flex py-5 w-75">
+    <v-container class="py-5 w-75">
       <v-row class="overflow-y-auto">
         <v-col cols="12">
           <v-col cols="12">

@@ -1,5 +1,5 @@
 <template>
-  <v-responsive v-if="mobile" class="d-flex px-5 py-3">
+  <v-responsive v-if="mobile" class="px-4 py-3">
     <v-row align="center">
       <v-col cols="4" class="font-weight-bold text-body-1">
         {{ props.title }}
@@ -17,7 +17,7 @@
       </v-col>
     </v-row>
   </v-responsive>
-  <v-responsive v-else class="d-flex px-10 py-5">
+  <v-responsive v-else class="px-10 py-5">
     <v-row align="center">
       <v-col cols="4" class="font-weight-bold text-h6">
         {{ props.title }}

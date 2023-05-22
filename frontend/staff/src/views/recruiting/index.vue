@@ -1,7 +1,7 @@
 <template>
   <v-parallax height="1000" src="/recruiting/background.jpeg">
     <v-container class="fill-height px-5 pt-10">
-      <v-responsive class="d-flex text-center fill-height mt-3">
+      <v-responsive class="text-center fill-height mt-3">
         <v-avatar size="75px">
           <v-img src="/recruiting/logo.png"></v-img>
         </v-avatar>
