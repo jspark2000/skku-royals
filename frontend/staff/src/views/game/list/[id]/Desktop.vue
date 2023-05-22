@@ -64,6 +64,7 @@
               :headers="headers"
               :items="athelete"
               :rows-per-page="50"
+              :filter-options="filterOptions"
               table-class-name="game-attendance-table"
               theme-color="#1d90ff"
               class="font-weight-medium"
@@ -75,6 +76,52 @@
               </template>
               <template #item-newbie="item">
                 {{ item.newbie ? '신입생' : '재학생' }}
+              </template>
+              <template #header-offPosition="headers">
+                <div class="filter-column">
+                  <v-icon
+                    icon="fas fa-filter"
+                    size="x-small"
+                    @click.stop="offPositionFilter = !offPositionFilter"
+                  />
+                  {{ headers.text }}
+                  <div v-if="offPositionFilter" class="filter-menu">
+                    <select
+                      class="selector"
+                      v-model="offPositionCriteria"
+                      name="offPosition"
+                    >
+                      <option value="all">전체</option>
+                      <option value="QB">QB</option>
+                      <option value="OL">OL</option>
+                      <option value="WR">WR</option>
+                      <option value="RB">RB</option>
+                    </select>
+                  </div>
+                </div>
+              </template>
+              <template #header-defPosition="attendanceHeaders">
+                <div class="filter-column">
+                  <v-icon
+                    icon="fas fa-filter"
+                    size="x-small"
+                    @click.stop="defPositionFilter = !defPositionFilter"
+                  />
+                  {{ attendanceHeaders.text }}
+                  <div v-if="defPositionFilter" class="filter-menu">
+                    <select
+                      class="selector"
+                      v-model="defPositionCriteria"
+                      name="defPosition"
+                    >
+                      <option value="all">전체</option>
+                      <option value="DL">DL</option>
+                      <option value="LB">LB</option>
+                      <option value="HYB">HYB</option>
+                      <option value="DB">DB</option>
+                    </select>
+                  </div>
+                </div>
               </template>
             </EasyDataTable>
           </v-col>
@@ -134,9 +181,10 @@ import { Ref } from 'vue'
 import { axiosInstance } from '@/common/store/auth'
 import { onMounted } from 'vue'
 import router from '@/router'
-import { Header } from 'vue3-easy-data-table'
+import { FilterOption, Header } from 'vue3-easy-data-table'
 import { Location } from '@/common/enums/location.enum'
 import { AttendanceStatus } from '@/common/enums/attendanceStatus.enum'
+import { computed } from 'vue'
 
 const icon = ref('fas fa-football')
 const title = ref('시합정보 조회')
@@ -197,8 +245,8 @@ const headers: Header[] = [
   { text: '학번', value: 'studentNo' },
   { text: '구분', value: 'newbie', sortable: true },
   { text: '부상여부', value: 'injured', sortable: true },
-  { text: '오펜스', value: 'offPosition', sortable: true },
-  { text: '디펜스', value: 'defPosition', sortable: true }
+  { text: '오펜스', value: 'offPosition' },
+  { text: '디펜스', value: 'defPosition' }
 ]
 const statisticHeaders: Header[] = [
   { text: '포지션', value: 'position' },
@@ -217,6 +265,31 @@ const staff: Ref<Partial<AttendanceDTO>[]> = ref([])
 const absent: Ref<Partial<AttendanceDTO>[]> = ref([])
 const statistic: Ref<AttendanceStatisticDTO[]> = ref([])
 const peopleNum: Ref<AttendanceStatisticDTO[]> = ref([])
+
+const offPositionFilter = ref(false)
+const offPositionCriteria = ref('all')
+
+const defPositionFilter = ref(false)
+const defPositionCriteria = ref('all')
+
+const filterOptions = computed((): FilterOption[] => {
+  const filterOptionsArray: FilterOption[] = []
+  if (offPositionCriteria.value !== 'all') {
+    filterOptionsArray.push({
+      field: 'offPosition',
+      comparison: '=',
+      criteria: offPositionCriteria.value
+    })
+  }
+  if (defPositionCriteria.value !== 'all') {
+    filterOptionsArray.push({
+      field: 'defPosition',
+      comparison: '=',
+      criteria: defPositionCriteria.value
+    })
+  }
+  return filterOptionsArray
+})
 
 onMounted(async () => {
   await axiosInstance

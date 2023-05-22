@@ -270,7 +270,7 @@
     <template v-slot:append>
       <div class="pa-2">
         <v-btn block class="bg-amber-lighten-2 text-white mb-2"
-          >Version 1.0.1</v-btn
+          >Version 1.0.1(Beta)</v-btn
         >
       </div>
     </template>

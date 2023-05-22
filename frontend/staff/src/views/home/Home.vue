@@ -3,7 +3,7 @@
   <v-responsive class="px-10 pb-5">
     <v-row class="pb-15">
       <v-col cols="4">
-        <v-card class="pa-2 fill-height" rounded="lg" elevation="3">
+        <v-card class="pa-2" rounded="lg" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             Profile
             <v-card-subtitle class="d-inline px-0">| 내 프로필</v-card-subtitle>
@@ -33,7 +33,7 @@
           <v-card-title class="text-indigo-darken-4">
             패치노트
             <v-card-subtitle class="d-inline px-0"
-              >| 2023-05-21</v-card-subtitle
+              >| 1.0.1(Beta)-b</v-card-subtitle
             >
           </v-card-title>
           <v-card-text class="mt-0">
@@ -49,6 +49,19 @@
             </p>
             <li class="ms-1">관리자 기능 > 초대코드 > 초대코드 조회</li>
             <li class="ms-1">필요권한: SuperAdmin</li>
+            <p class="text-subtitle-1 font-weight-bold mt-4">
+              출석명단 필터기능 추가
+            </p>
+            <p class="mb-2">
+              데스크탑 버전에서 출석명단 & 시합정보 테이블에 필터를 사용할 수
+              있습니다.
+            </p>
+            <li class="ms-1">
+              컬럼명 옆에
+              <span><v-icon icon="fas fa-filter" size="x-small"></v-icon></span>
+              아이콘을 클릭하여 필터 적용
+            </li>
+            <li class="ms-1">필요권한: All</li>
           </v-card-text>
         </v-card>
       </v-col>
@@ -193,7 +206,7 @@
                 <v-row
                   class="font-weight-bold text-h6 mt-7"
                   justify="center"
-                  :class="{ 'text-brown-accent-3': isHovering }"
+                  :class="{ 'text-brown-darken-1': isHovering }"
                 >
                   사용가이드
                 </v-row>

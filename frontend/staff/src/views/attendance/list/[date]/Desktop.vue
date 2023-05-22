@@ -135,27 +135,14 @@
             class="ms-4 mt-3 w-25"
             clearable
           ></v-text-field>
-          <v-tabs v-model="tab" class="ms-4" bg-color="white">
-            <v-tab value="ALL" @click="filterPosition('ALL')">전체</v-tab>
-            <v-tab value="Newbie" @click="filterPosition('Newbie')">
-              신입생
-            </v-tab>
-            <v-tab value="QB" @click="filterPosition('QB')">QB</v-tab>
-            <v-tab value="OL" @click="filterPosition('OL')">OL</v-tab>
-            <v-tab value="WR" @click="filterPosition('WR')">WR</v-tab>
-            <v-tab value="RB" @click="filterPosition('RB')">RB</v-tab>
-            <v-tab value="DL" @click="filterPosition('DL')">DL</v-tab>
-            <v-tab value="LB" @click="filterPosition('LB')">LB</v-tab>
-            <v-tab value="HYB" @click="filterPosition('HYB')">HYB</v-tab>
-            <v-tab value="DB" @click="filterPosition('DB')">DB</v-tab>
-          </v-tabs>
-          <v-card-text class="font-weight-medium mt-lg-3">
+          <v-card-text class="font-weight-medium mt-1">
             <EasyDataTable
               ref="attendanceListTable"
               :headers="attendanceHeaders"
               :items="filteredAttendanceItems"
               :rows-per-page="10"
               :search-value="searchValue"
+              :filter-options="filterOptions"
               table-class-name="attendance-date-table"
               theme-color="#1d90ff"
               show-index
@@ -225,6 +212,52 @@
                   }}
                 </v-chip>
               </template>
+              <template #header-offPosition="attendanceHeaders">
+                <div class="filter-column">
+                  <v-icon
+                    icon="fas fa-filter"
+                    size="x-small"
+                    @click.stop="offPositionFilter = !offPositionFilter"
+                  />
+                  {{ attendanceHeaders.text }}
+                  <div v-if="offPositionFilter" class="filter-menu">
+                    <select
+                      class="selector"
+                      v-model="offPositionCriteria"
+                      name="offPosition"
+                    >
+                      <option value="all">전체</option>
+                      <option value="QB">QB</option>
+                      <option value="OL">OL</option>
+                      <option value="WR">WR</option>
+                      <option value="RB">RB</option>
+                    </select>
+                  </div>
+                </div>
+              </template>
+              <template #header-defPosition="attendanceHeaders">
+                <div class="filter-column">
+                  <v-icon
+                    icon="fas fa-filter"
+                    size="x-small"
+                    @click.stop="defPositionFilter = !defPositionFilter"
+                  />
+                  {{ attendanceHeaders.text }}
+                  <div v-if="defPositionFilter" class="filter-menu">
+                    <select
+                      class="selector"
+                      v-model="defPositionCriteria"
+                      name="defPosition"
+                    >
+                      <option value="all">전체</option>
+                      <option value="DL">DL</option>
+                      <option value="LB">LB</option>
+                      <option value="HYB">HYB</option>
+                      <option value="DB">DB</option>
+                    </select>
+                  </div>
+                </div>
+              </template>
             </EasyDataTable>
             <v-btn
               prepend-icon="fas fa-print"
@@ -269,12 +302,12 @@
 import { ref, Ref } from 'vue'
 import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { axiosInstance } from '@/common/store/auth'
-import { Header } from 'vue3-easy-data-table'
+import { FilterOption, Header } from 'vue3-easy-data-table'
 import ExcelJS from 'exceljs'
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted } from 'vue'
+import { computed } from 'vue'
 
-const tab = ref()
 const tabStatistic = ref()
 
 const route = useRoute()
@@ -370,23 +403,6 @@ onMounted(async () => {
   }
 })
 
-function filterPosition(position: string) {
-  attendanceListTable.value.updatePage(1)
-  if (position === 'ALL') {
-    filteredAttendanceItems.value = attendanceItems.value
-  } else if (position === 'Newbie') {
-    filteredAttendanceItems.value = attendanceItems.value.filter(
-      (attendance) => attendance.newbie
-    )
-  } else {
-    filteredAttendanceItems.value = attendanceItems.value.filter(
-      (attendance) =>
-        attendance.offPosition === position ||
-        attendance.defPosition === position
-    )
-  }
-}
-
 function filterLocation(location: string) {
   positionStatisticTable.value.updatePage(1)
   filteredAttendanceStatisticItems.value =
@@ -395,6 +411,31 @@ function filterLocation(location: string) {
     )
 }
 
+const offPositionFilter = ref(false)
+const offPositionCriteria = ref('all')
+
+const defPositionFilter = ref(false)
+const defPositionCriteria = ref('all')
+
+const filterOptions = computed((): FilterOption[] => {
+  const filterOptionsArray: FilterOption[] = []
+  if (offPositionCriteria.value !== 'all') {
+    filterOptionsArray.push({
+      field: 'offPosition',
+      comparison: '=',
+      criteria: offPositionCriteria.value
+    })
+  }
+  if (defPositionCriteria.value !== 'all') {
+    filterOptionsArray.push({
+      field: 'defPosition',
+      comparison: '=',
+      criteria: defPositionCriteria.value
+    })
+  }
+  return filterOptionsArray
+})
+
 const attendanceDate = ref('')
 const filteredAttendanceItems: Ref<AttendanceDTO[]> = ref([])
 const attendanceItems: Ref<AttendanceDTO[]> = ref([])
@@ -402,10 +443,12 @@ const attendanceItemsStaff: Ref<AttendanceDTO[]> = ref([])
 const attendanceHeaders: Header[] = [
   { text: '이름', value: 'name' },
   { text: '학번', value: 'studentNo' },
-  { text: '부상', value: 'injured' },
-  { text: '구분', value: 'newbie' },
+  { text: '부상', value: 'injured', sortable: true },
+  { text: '구분', value: 'newbie', sortable: true },
   { text: '위치', value: 'location', sortable: true },
   { text: '응답', value: 'survey', sortable: true },
+  { text: '오펜스', value: 'offPosition' },
+  { text: '디펜스', value: 'defPosition' },
   { text: '실제출석', value: 'actual', sortable: true }
 ]
 
@@ -532,5 +575,33 @@ async function issueDailySurveyReport() {
   --easy-table-rows-per-page-selector-width: 70px;
   --easy-table-rows-per-page-selector-option-padding: 10px;
   --easy-table-rows-per-page-selector-z-index: 1;
+}
+.filter-column {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+}
+.filter-icon {
+  cursor: pointer;
+  display: inline-block;
+  width: 15px !important;
+  height: 15px !important;
+  margin-right: 4px;
+}
+.filter-menu {
+  padding: 15px 30px;
+  z-index: 1;
+  position: absolute;
+  top: 30px;
+  width: 200px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+}
+.slider {
+  margin-top: 36px;
+}
+.selector {
+  width: 100%;
 }
 </style>
