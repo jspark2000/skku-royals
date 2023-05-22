@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive class="d-flex align-center text-center fill-height">
+    <v-responsive class="align-center text-center fill-height">
       <v-sheet width="300" class="mx-auto">
         <v-img src="@/assets/royals_logo.png" class="mb-5" />
 

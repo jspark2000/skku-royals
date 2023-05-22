@@ -1,9 +1,9 @@
 <template>
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
-  <v-responsive class="d-flex px-10 py-5">
+  <v-responsive class="px-10 pb-5">
     <v-row>
       <v-col cols="12" md="4">
-        <v-card class="pa-2" elevation="3">
+        <v-card class="pa-2" rounded="lg" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             Profile
             <v-card-subtitle class="d-inline px-0">| 내 프로필</v-card-subtitle>
@@ -33,6 +33,7 @@
           <v-card
             class="pa-2 transition-swing"
             v-bind="props"
+            rounded="lg"
             to="/attendance/check"
             :elevation="isHovering ? 16 : 3"
             :class="{ 'on-hover': isHovering }"
@@ -74,6 +75,7 @@
           <v-card
             class="pa-2 transition-swing"
             v-bind="props"
+            rounded="lg"
             to="/attendance/list"
             :elevation="isHovering ? 16 : 3"
             :class="{ 'on-hover': isHovering }"

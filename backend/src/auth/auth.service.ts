@@ -264,9 +264,16 @@ export class AuthService {
     const userProfile: UserProfile = await axios({
       method: 'get',
       url: profileURL
-    }).then((response) => {
-      return response.data
     })
+      .then((response) => {
+        return response.data
+      })
+      .catch(() => {
+        throw new HttpException(
+          { message: 'CANNOT ACCESS PROFILE', code: 101 },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        )
+      })
 
     if (userProfile.result_data.profile_image_url === '')
       userProfile.result_data.profile_image_url =

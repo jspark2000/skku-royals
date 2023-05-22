@@ -1,6 +1,6 @@
 <template>
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
-  <v-responsive class="d-flex px-5 pb-10"></v-responsive>
+  <v-responsive class="px-4 pb-10"></v-responsive>
 </template>
 
 <script lang="ts" setup>
