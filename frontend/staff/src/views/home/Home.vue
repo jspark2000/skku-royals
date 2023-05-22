@@ -1,14 +1,14 @@
 <template>
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
   <v-responsive class="px-10 pb-5">
-    <v-row>
-      <v-col cols="12" md="4">
-        <v-card class="pa-2" rounded="lg" elevation="3">
+    <v-row class="pb-15">
+      <v-col cols="4">
+        <v-card class="pa-2 fill-height" rounded="lg" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             Profile
             <v-card-subtitle class="d-inline px-0">| 내 프로필</v-card-subtitle>
           </v-card-title>
-          <v-card-text>
+          <v-card-text class="mt-3">
             <v-container>
               <v-row justify="center">
                 <v-avatar size="100px">
@@ -28,6 +28,30 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <v-col cols="8">
+        <v-card class="pa-2 fill-height" rounded="lg" elevation="3">
+          <v-card-title class="text-indigo-darken-4">
+            패치노트
+            <v-card-subtitle class="d-inline px-0"
+              >| 2023-05-21</v-card-subtitle
+            >
+          </v-card-title>
+          <v-card-text class="mt-0">
+            <p class="text-subtitle-1 font-weight-bold">출석통계 기능 추가</p>
+            <p class="mb-2">출석통계 기능이 추가되었습니다.</p>
+            <li class="ms-1">일반 기능 > 출석통계 > 전체 출석 통계</li>
+            <li class="ms-1">일반 기능 > 출석통계 > 개별 출석 통계</li>
+            <p class="text-subtitle-1 font-weight-bold mt-4">
+              회원가입 기능 추가
+            </p>
+            <p class="mb-2">
+              이제 초대코드 입력을 통한 회원 가입이 가능합니다.
+            </p>
+            <li class="ms-1">관리자 기능 > 초대코드 > 초대코드 조회</li>
+            <li class="ms-1">필요권한: SuperAdmin</li>
+          </v-card-text>
+        </v-card>
+      </v-col>
       <v-col cols="12" md="4">
         <v-hover v-slot="{ isHovering, props }">
           <v-card
@@ -38,9 +62,6 @@
             :elevation="isHovering ? 16 : 3"
             :class="{ 'on-hover': isHovering }"
           >
-            <v-card-title class="text-indigo-darken-4">
-              <v-card-subtitle class="d-inline px-0"></v-card-subtitle>
-            </v-card-title>
             <v-card-text>
               <v-container>
                 <v-row justify="center">
@@ -80,15 +101,12 @@
             :elevation="isHovering ? 16 : 3"
             :class="{ 'on-hover': isHovering }"
           >
-            <v-card-title class="text-indigo-darken-4">
-              <v-card-subtitle class="d-inline px-0"></v-card-subtitle>
-            </v-card-title>
             <v-card-text>
               <v-container>
                 <v-row justify="center">
                   <v-avatar size="70px" class="bg-amber-lighten-4">
                     <v-icon
-                      icon="fas fa-check"
+                      icon="fas fa-table-list"
                       size="40px"
                       class="text-amber"
                     ></v-icon>
@@ -106,6 +124,84 @@
                   justify="center"
                 >
                   출석명단 페이지로 이동합니다
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-hover>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card
+            class="pa-2 transition-swing"
+            v-bind="props"
+            rounded="lg"
+            to="/game/list"
+            :elevation="isHovering ? 16 : 3"
+            :class="{ 'on-hover': isHovering }"
+          >
+            <v-card-text>
+              <v-container>
+                <v-row justify="center">
+                  <v-avatar size="70px" class="bg-indigo-lighten-4">
+                    <v-icon
+                      icon="fas fa-football"
+                      size="40px"
+                      class="text-indigo"
+                    ></v-icon>
+                  </v-avatar>
+                </v-row>
+                <v-row
+                  class="font-weight-bold text-h6 mt-7"
+                  justify="center"
+                  :class="{ 'text-indigo-accent-3': isHovering }"
+                >
+                  시합정보
+                </v-row>
+                <v-row
+                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  justify="center"
+                >
+                  시합정보 페이지로 이동합니다
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-hover>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card
+            class="pa-2 transition-swing"
+            v-bind="props"
+            rounded="lg"
+            href="https://docs.skku-royals.football"
+            :elevation="isHovering ? 16 : 3"
+            :class="{ 'on-hover': isHovering }"
+          >
+            <v-card-text>
+              <v-container>
+                <v-row justify="center">
+                  <v-avatar size="70px" class="bg-brown-lighten-4">
+                    <v-icon
+                      icon="fas fa-book"
+                      size="40px"
+                      class="text-brown"
+                    ></v-icon>
+                  </v-avatar>
+                </v-row>
+                <v-row
+                  class="font-weight-bold text-h6 mt-7"
+                  justify="center"
+                  :class="{ 'text-brown-accent-3': isHovering }"
+                >
+                  사용가이드
+                </v-row>
+                <v-row
+                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  justify="center"
+                >
+                  사용가이드 페이지(외부링크)로 이동합니다
                 </v-row>
               </v-container>
             </v-card-text>

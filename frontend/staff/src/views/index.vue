@@ -1,11 +1,11 @@
 <template>
-  <HelloWorldMobile v-if="mobile" />
-  <HelloWorld v-else />
+  <LandingMobile v-if="mobile" />
+  <Landing v-else />
 </template>
 
 <script lang="ts" setup>
-import HelloWorld from '@/components/HelloWorld.vue'
-import HelloWorldMobile from '@/components/HelloWorldMobile.vue'
+import Landing from '@/components/Landing.vue'
+import LandingMobile from '@/components/LandingMobile.vue'
 import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()

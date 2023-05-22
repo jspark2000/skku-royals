@@ -2,7 +2,7 @@
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
   <v-responsive class="px-4 pb-10">
     <v-row>
-      <v-col cols="6">
+      <v-col cols="12">
         <v-card class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             코칭스태프 등록하기

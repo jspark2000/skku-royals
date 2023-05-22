@@ -1,9 +1,9 @@
 <template>
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
-  <v-responsive class="px-10 py-5">
+  <v-responsive class="px-10 pb-10">
     <v-row>
       <v-col cols="5">
-        <v-card class="pa-2" elevation="3">
+        <v-card rounded="lg" class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             출석 테이블(통계)
             <v-card-subtitle class="d-inline px-0">
@@ -32,7 +32,7 @@
         </v-card>
       </v-col>
       <v-col cols="7">
-        <v-card class="pa-2" elevation="3">
+        <v-card rounded="lg" class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             출석 테이블 (스태프)
             <v-card-subtitle class="d-inline px-0">
@@ -120,7 +120,7 @@
         </v-card>
       </v-col>
       <v-col cols="12">
-        <v-card class="pa-2" elevation="3">
+        <v-card class="pa-2" rounded="lg" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             출석 테이블 (선수단)
             <v-card-subtitle class="d-inline px-0">

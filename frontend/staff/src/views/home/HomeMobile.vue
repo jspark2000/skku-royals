@@ -8,7 +8,7 @@
             Profile
             <v-card-subtitle class="d-inline px-0">| 내 프로필</v-card-subtitle>
           </v-card-title>
-          <v-card-text>
+          <v-card-text class="mt-3">
             <v-container>
               <v-row justify="center">
                 <v-avatar size="100px">
@@ -88,7 +88,7 @@
                 <v-row justify="center">
                   <v-avatar size="70px" class="bg-amber-lighten-4">
                     <v-icon
-                      icon="fas fa-check"
+                      icon="fas fa-table-list"
                       size="40px"
                       class="text-amber"
                     ></v-icon>
@@ -106,6 +106,45 @@
                   justify="center"
                 >
                   출석명단 페이지로 이동합니다
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-hover>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card
+            class="pa-2 transition-swing"
+            v-bind="props"
+            rounded="lg"
+            to="/game/list"
+            :elevation="isHovering ? 16 : 3"
+            :class="{ 'on-hover': isHovering }"
+          >
+            <v-card-text>
+              <v-container>
+                <v-row justify="center">
+                  <v-avatar size="70px" class="bg-indigo-lighten-4">
+                    <v-icon
+                      icon="fas fa-football"
+                      size="40px"
+                      class="text-indigo"
+                    ></v-icon>
+                  </v-avatar>
+                </v-row>
+                <v-row
+                  class="font-weight-bold text-h6 mt-7"
+                  justify="center"
+                  :class="{ 'text-indigo-accent-3': isHovering }"
+                >
+                  시합정보
+                </v-row>
+                <v-row
+                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  justify="center"
+                >
+                  시합정보 페이지로 이동합니다
                 </v-row>
               </v-container>
             </v-card-text>
