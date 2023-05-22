@@ -2,7 +2,7 @@
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
   <v-responsive class="px-4 pb-10">
     <v-row>
-      <v-col cols="12">
+      <v-col cols="6">
         <v-card class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             코칭스태프 등록하기
@@ -16,6 +16,7 @@
             <v-text-field
               v-model="name"
               variant="outlined"
+              class="pb-5"
               label="이름"
               clearable
               :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
@@ -23,13 +24,15 @@
             <v-text-field
               v-model="admissionYear"
               variant="outlined"
+              class="pb-5"
               type="number"
               label="입학년도 (ex 2020)"
-              :rules="[(v: any) => !!(v.length === 4) || '필수 입력 항목입니다']"
+              :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
             <v-text-field
               v-model="position"
               variant="outlined"
+              class="pb-5"
               label="담당 포지션"
               clearable
               :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
@@ -37,6 +40,7 @@
             <v-select
               v-model="teamRole"
               variant="outlined"
+              class="pb-5"
               label="직책"
               :items="teamRoles"
               :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
@@ -101,9 +105,11 @@ async function registerPeople() {
     const registerDTO = {
       name: name.value.trim(),
       admissionYear: admissionYear.value,
-      postion: position.value,
+      position: position.value,
       teamRole: teamRole.value
     }
+
+    console.log(registerDTO)
 
     const result = await axiosInstance
       .post('/api/admin/people/coaching-staff', registerDTO)
