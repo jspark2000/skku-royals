@@ -1,9 +1,9 @@
 <template>
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
-  <v-responsive class="px-10 py-5">
+  <v-responsive class="px-10 pb-10">
     <v-row>
       <v-col cols="12">
-        <v-card class="pa-2" elevation="3">
+        <v-card rounded="lg" class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             통계를 확인할 부원 선택
           </v-card-title>

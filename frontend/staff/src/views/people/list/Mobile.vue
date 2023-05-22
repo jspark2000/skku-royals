@@ -3,7 +3,7 @@
   <v-responsive class="d-flex px-4 pb-10">
     <v-row>
       <v-col cols="12">
-        <v-card class="pa-2" elevation="3">
+        <v-card rounded="lg" class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             부원 명단 테이블
             <v-card-subtitle class="d-inline px-0">

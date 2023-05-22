@@ -1,6 +1,6 @@
 <template>
   <bread-crumb :title="title" :items="breadcumbs" :icon="icon" />
-  <v-responsive class="px-10 py-5">
+  <v-responsive class="px-10 pb-10">
     <v-row>
       <v-col cols="4">
         <h5 class="text-subtitle-1 font-weight-bold mb-3">부원 정보</h5>
