@@ -3,6 +3,7 @@ import App from './App.vue'
 import VueSweetalert2 from 'vue-sweetalert2'
 import { createPinia } from 'pinia'
 import { registerPlugins } from '@/plugins'
+import './input.css'
 
 const app = createApp(App)
 

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/index.vue'
+import HomeView from '@/views/home/pages/index.vue'
 import DefaultView from '@/layouts/Default.vue'
 import AthletesAndStaffView from '@/views/Submit.vue'
 
@@ -8,7 +8,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: DefaultView,
       children: [
         {
