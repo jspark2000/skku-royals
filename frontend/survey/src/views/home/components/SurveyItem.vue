@@ -1,5 +1,8 @@
 <template>
-  <div class="flex mx-auto p-6 font-mono">
+  <div
+    v-if="props.currentPage === props.index as number - 1"
+    class="flex mx-auto p-6 font-mono"
+  >
     <form class="pb-6 rounded-lg shadow-lg bg-white" @submit.prevent="submit">
       <div
         class="relative flex flex-wrap justify-center py-6 bg-black rounded-t-xl pb-6"
@@ -7,7 +10,7 @@
         <h1
           class="relative text-center w-full flex-none mb-2 text-2xl font-semibold text-white"
         >
-          수요일, 명륜 통합 운동
+          수요일, 명륜 통합 운동 {{ props.currentPage }}
         </h1>
         <div class="relative text-lg text-white">05/23</div>
         <div class="relative text-teal-400 ml-3">통합운동</div>
@@ -69,25 +72,30 @@
             placeholder="불참 혹은 늦참 사유"
             :disabled="show"
           />
-          <p
-            v-if="!valid"
-            class="transition ease-in-out mt-1 ml-4 text-red-500 text-sm font-semibold"
-          >
-            필수 입력 항목입니다.
-          </p>
+          <Transition name="slide-fade">
+            <p
+              v-if="!valid"
+              class="transition ease-in-out mt-1 ml-4 text-red-500 text-sm font-semibold"
+            >
+              필수 입력 항목입니다.
+            </p>
+          </Transition>
         </label>
       </div>
       <div class="flex justify-center space-x-4 mb-4 text-sm font-medium">
         <div class="flex">
           <button
-            class="px-6 h-12 uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            v-if="props.currentPage as number !== 0"
+            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            @click="decrement"
           >
             뒤로가기
           </button>
         </div>
         <div class="flex">
           <button
-            class="px-6 h-12 uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            v-if="currentPage !== props.totalPages as number - 1"
+            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
             type="submit"
           >
             다음으로
@@ -101,17 +109,27 @@
 import { AttendanceStatus } from '@/common/enums/attendanceStatus.enum'
 import { ref, watch } from 'vue'
 
+const props = defineProps({
+  currentPage: Number,
+  totalPages: Number,
+  index: Number
+})
+
+const emit = defineEmits({
+  currentPage: Number
+})
+
 const show = ref(true)
 const valid = ref(true)
-const survey = ref()
+const survey = ref(AttendanceStatus.Present)
 const reason = ref()
 
 watch(survey, () => {
   survey.value !== AttendanceStatus.Present
     ? (show.value = false)
     : (show.value = true)
-
   survey.value === AttendanceStatus.Present ? (reason.value = '') : undefined
+  survey.value === AttendanceStatus.Present ? (valid.value = true) : undefined
 })
 
 function submit() {
@@ -119,7 +137,26 @@ function submit() {
     valid.value = false
   } else {
     valid.value = true
+    emit('currentPage', (props.currentPage as number) + 1)
   }
 }
+
+function decrement() {
+  emit('currentPage', (props.currentPage as number) - 1)
+}
 </script>
-<style></style>
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+</style>
