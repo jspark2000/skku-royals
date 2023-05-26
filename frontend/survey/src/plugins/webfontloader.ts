@@ -11,7 +11,7 @@ export async function loadFonts() {
 
   webFontLoader.load({
     custom: {
-      families: ['NanumSquareNeo'],
+      families: ['NanumSquareNeo', 'Pretandard'],
       urls: ['./styles/fonts.css']
     }
   })

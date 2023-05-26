@@ -20,8 +20,26 @@ export class SurveyService {
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getSurveyGroupList(): Promise<SurveyGroup[]> {
+  async getSurveyGroupList(): Promise<
+    {
+      id: number
+      name: string
+      surveys: { date: Date }[]
+    }[]
+  > {
     return await this.prismaService.surveyGroup.findMany({
+      select: {
+        id: true,
+        name: true,
+        surveys: {
+          orderBy: {
+            date: 'asc'
+          },
+          select: {
+            date: true
+          }
+        }
+      },
       orderBy: { id: 'desc' },
       take: 5
     })

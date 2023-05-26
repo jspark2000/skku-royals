@@ -8,7 +8,7 @@ import {
   ParseIntPipe,
   Post
 } from '@nestjs/common'
-import { Attendance, Prisma, Survey, SurveyGroup } from '@prisma/client'
+import { Attendance, Prisma, Survey } from '@prisma/client'
 import { Public } from 'src/auth/decorators/public.decorator'
 import { SubmitSurveyDTO } from './dto/submitSurvey.dto'
 import { SurveyService } from './survey.service'
@@ -26,7 +26,13 @@ export class SurveyController {
   }
 
   @Get('list')
-  async getSurveyGroupList(): Promise<SurveyGroup[]> {
+  async getSurveyGroupList(): Promise<
+    {
+      id: number
+      name: string
+      surveys: { date: Date }[]
+    }[]
+  > {
     return await this.surveyService.getSurveyGroupList()
   }
 

@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         mono: ['NanumSquareNeo'],
-        sans: ['NanumSquareNeo']
+        sans: ['Pretendard']
       }
     }
   },

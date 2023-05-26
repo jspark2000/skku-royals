@@ -1,3 +1,4 @@
+/* NanumSquareNeo */
 @font-face {
   font-family: 'NanumSquareNeo';
   font-weight: 300;
@@ -73,3 +74,6 @@
       format('truetype');
   font-display: swap;
 }
+
+/* Pretendard */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css');

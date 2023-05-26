@@ -1,19 +1,27 @@
 <template>
   <div
-    v-if="props.currentPage === props.index as number - 1"
+    v-if="props.pageInfo?.currentPage === props.pageInfo?.index as number - 1"
     class="flex mx-auto p-6 font-mono"
   >
-    <form class="pb-6 rounded-lg shadow-lg bg-white" @submit.prevent="submit">
+    <div class="pb-6 rounded-lg shadow-lg bg-white">
       <div
         class="relative flex flex-wrap justify-center py-6 bg-black rounded-t-xl pb-6"
       >
         <h1
           class="relative text-center w-full flex-none mb-2 text-2xl font-semibold text-white"
         >
-          수요일, 명륜 통합 운동 {{ props.currentPage }}
+          {{ props.surveyData?.description }}
         </h1>
-        <div class="relative text-lg text-white">05/23</div>
-        <div class="relative text-teal-400 ml-3">통합운동</div>
+        <div class="relative text-lg text-white">
+          {{ props.surveyData?.date.toLocaleDateString() }}
+        </div>
+        <div class="relative text-teal-400 ml-3">
+          {{
+            props.surveyData?.type === AttendanceType.Integrated
+              ? '통합훈련'
+              : '개별훈련'
+          }}
+        </div>
       </div>
       <div class="flex justify-center my-6">
         <div class="space-x-6 flex text-sm font-medium">
@@ -62,6 +70,39 @@
           </label>
         </div>
       </div>
+      <div class="flex justify-center my-6">
+        <div class="space-x-6 flex text-sm font-medium">
+          <label>
+            <input
+              class="sr-only peer"
+              name="location"
+              type="radio"
+              :value="AttendanceStatus.Present"
+              v-model="location"
+              checked
+            />
+            <div
+              class="relative rounded-full w-12 h-12 flex items-center justify-center text-black peer-checked:bg-green-500 peer-checked:text-white"
+            >
+              명륜
+            </div>
+          </label>
+          <label>
+            <input
+              class="sr-only peer"
+              name="location"
+              type="radio"
+              :value="AttendanceStatus.Tardy"
+              v-model="location"
+            />
+            <div
+              class="relative rounded-full w-12 h-12 flex items-center justify-center text-black peer-checked:bg-amber-300 peer-checked:text-white"
+            >
+              율전
+            </div>
+          </label>
+        </div>
+      </div>
       <div class="flex justify-center mb-6">
         <label>
           <input
@@ -85,7 +126,7 @@
       <div class="flex justify-center space-x-4 mb-4 text-sm font-medium">
         <div class="flex">
           <button
-            v-if="props.currentPage as number !== 0"
+            v-if="props.pageInfo?.currentPage !== 0"
             class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
             @click="decrement"
           >
@@ -94,33 +135,39 @@
         </div>
         <div class="flex">
           <button
-            v-if="currentPage !== props.totalPages as number - 1"
+            v-if="props.pageInfo?.currentPage !== props.pageInfo?.totalPages as number - 1"
             class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
-            type="submit"
+            @click="increment()"
           >
             다음으로
           </button>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { AttendanceStatus } from '@/common/enums/attendanceStatus.enum'
-import { ref, watch } from 'vue'
+import { Survey } from '../interfaces/survey.interface'
+import { type PropType, ref, watch } from 'vue'
+import { AttendanceType } from '@/common/enums/attendanceType.enum'
+
+type PageInfo = {
+  currentPage: number
+  totalPages: number
+  index: number
+}
 
 const props = defineProps({
-  currentPage: Number,
-  totalPages: Number,
-  index: Number
+  pageInfo: Object as PropType<PageInfo>,
+  surveyData: Object as PropType<Survey>
 })
 
-const emit = defineEmits({
-  currentPage: Number
-})
+const emit = defineEmits(['increment', 'decrement'])
 
 const show = ref(true)
 const valid = ref(true)
+const location = ref()
 const survey = ref(AttendanceStatus.Present)
 const reason = ref()
 
@@ -132,17 +179,21 @@ watch(survey, () => {
   survey.value === AttendanceStatus.Present ? (valid.value = true) : undefined
 })
 
-function submit() {
+function increment() {
   if (survey.value !== AttendanceStatus.Present && !reason.value) {
     valid.value = false
   } else {
     valid.value = true
-    emit('currentPage', (props.currentPage as number) + 1)
+    emit('increment', {
+      id: props.surveyData?.id,
+      survey: survey.value,
+      reason: reason.value
+    })
   }
 }
 
 function decrement() {
-  emit('currentPage', (props.currentPage as number) - 1)
+  emit('decrement')
 }
 </script>
 <style scoped>

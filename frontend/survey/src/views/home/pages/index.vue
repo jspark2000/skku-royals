@@ -1,44 +1,54 @@
 <template>
   <div
-    class="relative flex flex-col min-h-screen justify-center pt-2 pb-10 bg-gray-50"
+    class="relative flex flex-col min-h-screen justify-center overflow-hidden text-center pt-2 pb-10 max-w-screen-sm mx-auto"
   >
-    <div class="flex mx-auto font-mono font-bold text-lg">
-      <p>총 {{ pages }}개중 {{ current }}개 완료</p>
-    </div>
-    <Transition name="slide">
-      <div class="flex flex-row mx-auto">
-        <SurveyItem
-          v-for="page in pages"
-          :key="page"
-          @currentPage="(page) => (current = page)"
-          :totalsPages="pages"
-          :currentPage="current"
-          :index="page"
-        ></SurveyItem>
+    <div class="animate-bounce">
+      <div class="font-black font-mono text-4xl mb-1 pb-0 skew-y-6">
+        로얄스 출석조사
       </div>
-    </Transition>
+      <div
+        class="font-extrabold font-mono ml-32 mt-0 pt-0 text-xl text-yellow-500 skew-y-6"
+      >
+        SEASON {{ year }}
+      </div>
+    </div>
+    <div class="flex flex-col text-center mt-16 px-20">
+      <button
+        class="rounded-lg font-mono drop-shadow-xl w-full p-3 font-bold text-white mb-4 transition ease-in-out delay-150 bg-yellow-400 hover:-translate-y-1 hover:scale-110 active:-translate-y-1 active:scale-110 duration-300"
+        @click="move('athletes-and-staff')"
+      >
+        선수 및 스태프
+      </button>
+      <button
+        class="rounded-lg font-mono drop-shadow-xl w-full p-3 font-bold text-white transition ease-in-out delay-150 bg-indigo-400 hover:-translate-y-1 hover:scale-110 active:-translate-y-1 active:scale-110 duration-300"
+        @click="move('coach')"
+      >
+        코치진(준비중)
+      </button>
+    </div>
+    <div class="img-container absolute flex flex-row">
+      <img src="/atheletes.webp" alt="img" class="img-athlete brightness-150" />
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
-import SurveyItem from '../components/SurveyItem.vue'
+import { useRouter } from 'vue-router'
 
-const pages = ref(5)
-const current = ref(0)
+const router = useRouter()
+const year = new Date().getFullYear()
+
+function move(target: string) {
+  target === 'athletes-and-staff'
+    ? router.push('/survey/athletes-and-staff')
+    : router.push('/survey/coach')
+}
 </script>
-<style scpoed>
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.5s ease-out;
+<style scoped>
+.img-athlete {
+  width: 240px;
 }
-
-.slide-enter-from {
-  opacity: 0;
-  transform: translateX(50%);
-}
-
-.slide-leave-to {
-  opacity: 0;
-  transform: translateX(-50%);
+.img-container {
+  bottom: -30px;
+  left: -10px;
 }
 </style>
