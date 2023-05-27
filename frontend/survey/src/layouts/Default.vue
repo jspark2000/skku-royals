@@ -1,7 +1,5 @@
 <template>
-  <v-app>
-    <default-view />
-  </v-app>
+  <default-view />
 </template>
 
 <script lang="ts" setup>

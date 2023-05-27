@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/index.vue'
+import HomeView from '@/views/home/pages/index.vue'
 import DefaultView from '@/layouts/Default.vue'
-import AthletesAndStaffView from '@/views/Submit.vue'
+import AthletesAndStaffView from '@/views/survey/atheletes-and-staff/pages/index.vue'
+import AthletesAndStaffSubmitView from '@/views/survey/atheletes-and-staff/[id]/pages/index.vue'
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
       component: DefaultView,
       children: [
         {
@@ -17,9 +17,14 @@ const router = createRouter({
           component: HomeView
         },
         {
-          path: '/athletes-and-staff/survey/:id',
+          path: '/survey/athletes-and-staff',
           name: 'athletes-and-staff',
           component: AthletesAndStaffView
+        },
+        {
+          path: '/survey/athletes-and-staff/:id',
+          name: 'athletes-and-staff/:id',
+          component: AthletesAndStaffSubmitView
         }
       ]
     }

@@ -11,8 +11,8 @@ export async function loadFonts() {
 
   webFontLoader.load({
     custom: {
-      families: ['SCoreDream'],
-      urls: ['https://webfontworld.github.io/score/SCoreDream.css']
+      families: ['NanumSquareNeo', 'Pretandard'],
+      urls: ['./styles/fonts.css']
     }
   })
 }
