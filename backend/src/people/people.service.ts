@@ -121,6 +121,15 @@ export class PeopleService {
     return result
   }
 
+  async checkStudentId(studentId: string): Promise<boolean> {
+    const check = await this.prismaService.people.findFirst({
+      where: {
+        studentId
+      }
+    })
+    return check ? true : false
+  }
+
   async getCoachingStaffList(): Promise<CoachingStaff[]> {
     return await this.prismaService.coachingStaff.findMany({
       orderBy: [{ admissionYear: 'asc' }, { name: 'asc' }]

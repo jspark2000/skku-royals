@@ -13,7 +13,7 @@
           {{ props.surveyData?.description }}
         </h1>
         <div class="relative text-lg text-white">
-          {{ props.surveyData?.date.toLocaleDateString() }}
+          {{ props.surveyData?.date.substring(5, 10) }}
         </div>
         <div class="relative text-teal-400 ml-3">
           {{
@@ -23,111 +23,83 @@
           }}
         </div>
       </div>
-      <div class="flex justify-center my-6">
-        <div class="space-x-6 flex text-sm font-medium">
-          <label>
-            <input
-              class="sr-only peer"
-              name="survey"
-              type="radio"
-              :value="AttendanceStatus.Present"
-              v-model="survey"
-              checked
-            />
-            <div
-              class="relative rounded-full w-12 h-12 flex items-center justify-center text-black peer-checked:bg-green-500 peer-checked:text-white"
+      <div class="flex justify-center mb-10">
+        <div
+          class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 font-mono"
+        >
+          <div
+            v-if="props.surveyData?.type === AttendanceType.Dispersion"
+            class="sm:col-span-3"
+          >
+            <label
+              for="location"
+              class="block text-sm font-semibold leading-6 text-gray-900"
+              >캠퍼스</label
             >
-              참석
+            <div class="mt-2">
+              <select
+                id="location"
+                name="location"
+                v-model="location"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              >
+                <option :value="Location.Seoul">명륜</option>
+                <option :value="Location.Suwon">율전</option>
+              </select>
             </div>
-          </label>
-          <label>
-            <input
-              class="sr-only peer"
-              name="survey"
-              type="radio"
-              :value="AttendanceStatus.Tardy"
-              v-model="survey"
-            />
-            <div
-              class="relative rounded-full w-12 h-12 flex items-center justify-center text-black peer-checked:bg-amber-300 peer-checked:text-white"
+          </div>
+
+          <div class="sm:col-span-3">
+            <label
+              for="survey"
+              class="block text-sm font-semibold leading-6 text-gray-900"
+              >출석</label
             >
-              늦참
+            <div class="mt-2">
+              <select
+                id="survey"
+                name="survey"
+                v-model="survey"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              >
+                <option :value="AttendanceStatus.Present">참석</option>
+                <option :value="AttendanceStatus.Tardy">늦참</option>
+                <option :value="AttendanceStatus.Absent">불참</option>
+              </select>
             </div>
-          </label>
-          <label>
-            <input
-              class="sr-only peer"
-              name="survey"
-              type="radio"
-              :value="AttendanceStatus.Absent"
-              v-model="survey"
-            />
-            <div
-              class="relative rounded-full w-12 h-12 flex items-center justify-center text-black peer-checked:bg-red-600 peer-checked:text-white"
+          </div>
+
+          <div class="col-span-full">
+            <label
+              for="reason"
+              class="block text-sm font-semibold leading-6 text-gray-900"
+              >늦참 혹은 불참 사유</label
             >
-              불참
+            <div class="mt-2">
+              <input
+                type="text"
+                name="reason"
+                id="reason"
+                v-model="reason"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
             </div>
-          </label>
+            <Transition name="slide-fade">
+              <p
+                v-if="!valid"
+                class="transition ease-in-out mt-1 text-red-500 text-sm font-semibold"
+              >
+                필수 입력 항목입니다.
+              </p>
+            </Transition>
+          </div>
         </div>
       </div>
-      <div class="flex justify-center my-6">
-        <div class="space-x-6 flex text-sm font-medium">
-          <label>
-            <input
-              class="sr-only peer"
-              name="location"
-              type="radio"
-              :value="AttendanceStatus.Present"
-              v-model="location"
-              checked
-            />
-            <div
-              class="relative rounded-full w-12 h-12 flex items-center justify-center text-black peer-checked:bg-green-500 peer-checked:text-white"
-            >
-              명륜
-            </div>
-          </label>
-          <label>
-            <input
-              class="sr-only peer"
-              name="location"
-              type="radio"
-              :value="AttendanceStatus.Tardy"
-              v-model="location"
-            />
-            <div
-              class="relative rounded-full w-12 h-12 flex items-center justify-center text-black peer-checked:bg-amber-300 peer-checked:text-white"
-            >
-              율전
-            </div>
-          </label>
-        </div>
-      </div>
-      <div class="flex justify-center mb-6">
-        <label>
-          <input
-            type="text"
-            name="reason"
-            class="form-input disabled:opacity-50 px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            v-model="reason"
-            placeholder="불참 혹은 늦참 사유"
-            :disabled="show"
-          />
-          <Transition name="slide-fade">
-            <p
-              v-if="!valid"
-              class="transition ease-in-out mt-1 ml-4 text-red-500 text-sm font-semibold"
-            >
-              필수 입력 항목입니다.
-            </p>
-          </Transition>
-        </label>
-      </div>
-      <div class="flex justify-center space-x-4 mb-4 text-sm font-medium">
+      <div class="flex justify-center mb-4 text-sm font-medium">
         <div class="flex">
           <button
             v-if="props.pageInfo?.currentPage !== 0"
-            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black mr-4"
             @click="decrement"
           >
             뒤로가기
@@ -142,6 +114,15 @@
             다음으로
           </button>
         </div>
+        <div class="flex">
+          <button
+            v-if="props.pageInfo?.currentPage === props.pageInfo?.totalPages as number - 1"
+            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            @click="increment()"
+          >
+            제출하기
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -151,6 +132,7 @@ import { AttendanceStatus } from '@/common/enums/attendanceStatus.enum'
 import { Survey } from '../interfaces/survey.interface'
 import { type PropType, ref, watch } from 'vue'
 import { AttendanceType } from '@/common/enums/attendanceType.enum'
+import { Location } from '@/common/enums/location.enum'
 
 type PageInfo = {
   currentPage: number
@@ -167,7 +149,7 @@ const emit = defineEmits(['increment', 'decrement'])
 
 const show = ref(true)
 const valid = ref(true)
-const location = ref()
+const location = ref(Location.Seoul)
 const survey = ref(AttendanceStatus.Present)
 const reason = ref()
 
@@ -185,9 +167,15 @@ function increment() {
   } else {
     valid.value = true
     emit('increment', {
-      id: props.surveyData?.id,
+      date: props.surveyData?.date,
       survey: survey.value,
-      reason: reason.value
+      reason: reason.value,
+      location:
+        survey.value === AttendanceStatus.Absent
+          ? Location.Integrated
+          : props.surveyData?.type === AttendanceType.Integrated
+          ? Location.Integrated
+          : location.value
     })
   }
 }
