@@ -1,8 +1,7 @@
 #!/bin/bash
-. /home/ec2-user/.nvm/nvm.sh
 nvm install --lts
-npm install -g pnpm
-npm install -g pm2
+npm update -g pnpm
+npm update -g pm2
 
 cd /home/ec2-user/action
 
