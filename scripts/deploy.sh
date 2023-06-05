@@ -1,4 +1,5 @@
 #!/bin/bash
+. ~/.nvm/nvm.sh
 nvm install --lts
 npm update -g pnpm
 npm update -g pm2
