@@ -6,6 +6,11 @@ pnpm install -g pm2
 
 cd /home/ec2-user/action
 
+tar -zxvf target.tar.gz
+rm target.tar.gz
+
+cd target
+
 pnpm migrate:prod
 pnpm build
 
