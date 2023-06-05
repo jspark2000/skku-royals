@@ -81,9 +81,8 @@ jobs:
       - name: Deploy backend dir to S3
         run: |
           aws s3 cp \
-            --recursive \
             --region ap-northeast-2 \
-            ./target.tar.gz s3://royals-api-server/nest/target.tar.gz
+            target.tar.gz s3://royals-api-server/nest/target.tar.gz
 
       - name: code-deploy
         run: |
