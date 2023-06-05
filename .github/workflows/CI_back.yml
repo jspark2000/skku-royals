@@ -83,7 +83,7 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            target.tar.gz s3://royals-api-server
+            ./target.tar.gz s3://royals-api-server
 
       - name: code-deploy
         run: |
