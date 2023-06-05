@@ -11,6 +11,8 @@ rm target.tar.gz
 
 cd target
 
+pnpm install
+pnpm exec prisma generate
 pnpm migrate:prod
 pnpm build
 
