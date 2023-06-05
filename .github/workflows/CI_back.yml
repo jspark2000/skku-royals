@@ -44,6 +44,16 @@ jobs:
           path: backend/dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
 
+  deploy-to-s3:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
       - name: Copy script
         run: cp scripts/deploy.sh backend/deploy.sh
 
@@ -54,7 +64,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_SECRET }}
           aws-region: ap-northeast-2
 
-      - name: Deploy to S3
+      - name: Copy env file from S3
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            s3://royals-api-server-env/.env backend/.env
+
+      - name: Deploy backend dir to S3
         run: |
           aws s3 cp \
             --recursive \
