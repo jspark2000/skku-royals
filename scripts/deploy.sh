@@ -9,8 +9,6 @@ cd /home/ec2-user/action
 tar -zxvf target.tar.gz
 rm target.tar.gz
 
-cd target
-
 pnpm install
 pnpm exec prisma generate
 pnpm migrate:prod

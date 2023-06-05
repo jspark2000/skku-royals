@@ -34,7 +34,6 @@ jobs:
       - name: Copy env file from S3
         run: |
           aws s3 cp \
-            --recursive \
             --region ap-northeast-2 \
             s3://royals-api-server-env/.env backend/.env
 
