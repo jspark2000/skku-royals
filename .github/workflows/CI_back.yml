@@ -46,6 +46,23 @@ jobs:
           path: ./*/dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_SECRET }}
+          aws-region: ap-northeast-2
+
+      - name: Copy script
+        run: cp ./scripts/deploy.sh ./deploy
+
+      - name: Deploy to S3
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            backend/dist s3://royals-api-server
+
   lint:
     runs-on: ${{ matrix.os }}
 
