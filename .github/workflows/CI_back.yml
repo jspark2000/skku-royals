@@ -76,14 +76,14 @@ jobs:
             s3://royals-api-server-env/.env backend/.env
 
       - name: zip file
-        run: tar -cvf target.tar backend
+        run: tar -zcvf target.tar.gz backend
 
       - name: Deploy backend dir to S3
         run: |
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            target.tar s3://royals-api-server
+            ./target.tar.gz s3://royals-api-server/nest/target.tar.gz
 
       - name: code-deploy
         run: |
@@ -92,7 +92,7 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name api_server_auto_scaling \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=royals-api-server,bundleType=tar,key=target.tar \
+          --s3-location bucket=royals-api-server,bundleType=tar.gz,key=nest/target.tar.gz \
           --region ap-northeast-2 \
 
   lint:
