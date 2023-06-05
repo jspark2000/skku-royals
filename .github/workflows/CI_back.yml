@@ -91,7 +91,7 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name api_server_auto_scaling \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=royals-api-server,bundleType=tar.gz,key=nest/target.tar.gz \
+          --s3-location bucket=royals-api-server,bundleType=tgz,key=nest/target.tar.gz \
           --region ap-northeast-2 \
 
   lint:
