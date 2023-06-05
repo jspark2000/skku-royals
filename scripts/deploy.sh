@@ -11,9 +11,10 @@ pnpm exec prisma generate
 pnpm migrate:prod
 pnpm build
 
-PM2=$(pgrep -f pm2)
+PM2=$(pm2 ps | grep royals)
+LEN=${#PM2}
 
-if [ -z $PM2 ]
+if [ ${LEN} -lt 10 ]
 then
   pnpm start:prod
 else
