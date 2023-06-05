@@ -55,18 +55,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Copy deploy script
-        run: cp scripts/deploy.sh backend/deploy.sh
-
-      - name: Copy appspec
-        run: cp appspec.yml backend/appspec.yml
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_SECRET }}
           aws-region: ap-northeast-2
+
+      - name: Copy deploy script
+        run: cp scripts/deploy.sh backend/deploy.sh
+
+      - name: Copy appspec.yml
+        run: cp appspec.yml backend/appspec.yml
 
       - name: Copy env file from S3
         run: |
@@ -76,14 +76,14 @@ jobs:
             s3://royals-api-server-env/.env backend/.env
 
       - name: zip file
-        run: tar -zcvf target.tar.gz backend
+        run: tar -cvf target.tar backend
 
       - name: Deploy backend dir to S3
         run: |
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            ./target.tar.gz s3://royals-api-server
+            target.tar s3://royals-api-server
 
       - name: code-deploy
         run: |
@@ -92,7 +92,7 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name api_server_auto_scaling \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=royals-api-server,bundleType=tar.gz,key=target.tar.gz \
+          --s3-location bucket=royals-api-server,bundleType=tar,key=target.tar \
           --region ap-northeast-2 \
 
   lint:
