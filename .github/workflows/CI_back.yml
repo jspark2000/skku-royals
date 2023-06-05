@@ -41,8 +41,11 @@ jobs:
       - name: Cache dist
         uses: actions/cache@v3
         with:
-          path: ./*/dist
+          path: backend/dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
+
+      - name: Copy script
+        run: cp scripts/deploy.sh backend/deploy.sh
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -51,15 +54,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_SECRET }}
           aws-region: ap-northeast-2
 
-      - name: Copy script
-        run: cp ./scripts/deploy.sh ./deploy
-
       - name: Deploy to S3
         run: |
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            backend/dist s3://royals-api-server
+            backend s3://royals-api-server
 
   lint:
     runs-on: ${{ matrix.os }}
