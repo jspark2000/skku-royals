@@ -4,7 +4,7 @@ nvm install --lts
 npm install -g pnpm
 pnpm install -g pm2
 
-cd /home/ec2-user
+cd /home/ec2-user/action
 
 pnpm migrate:prod
 pnpm build

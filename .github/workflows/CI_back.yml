@@ -54,8 +54,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Copy script
+
+      - name: Copy deploy script
         run: cp scripts/deploy.sh backend/deploy.sh
+
+      - name: Copy appspec
+        run: cp appspec.yml backend/appspec.yml
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -77,6 +81,16 @@ jobs:
             --recursive \
             --region ap-northeast-2 \
             backend s3://royals-api-server
+
+      - name: code-deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name royals_api_deploy \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name api_server_auto_scaling \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=royals-api-server \
+          --region ap-northeast-2 \
 
   lint:
     runs-on: ${{ matrix.os }}
