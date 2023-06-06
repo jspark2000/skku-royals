@@ -1,22 +1,21 @@
 #!/bin/bash
 . ~/.nvm/nvm.sh
 nvm install --lts
-npm install -g pnpm
-npm install -g pm2
+npm update -g
 
 cd /home/ec2-user/action
 
-pnpm install
-pnpm exec prisma generate
-pnpm migrate:prod
-pnpm build
+npm install
+npx prisma generate
+npm run migrate:prod
+npm run build
 
-PM2=$(pm2 ps | grep royals)
+PM2=$(pm2 ls | grep royals)
 LEN=${#PM2}
 
 if [ ${LEN} -lt 10 ]
 then
-  pnpm start:prod
+  npm run start:prod
 else
-  pnpm start:reload
+  npm run start:reload
 fi
