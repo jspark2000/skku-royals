@@ -7,84 +7,51 @@ on:
     branches: [main]
 
 jobs:
-  SSH:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Github Actions IP
-        id: ip
-        uses: haythem/public-ip@v1.3
+  deploy-to-s3:
+    runs-on: ${{ matrix.os }}
 
-      - name: Configure AWS Credentials
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [19]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_S3_AND_CODE_DEPLOY_SECRET }}
           aws-region: ap-northeast-2
 
-      - name: Add Github Actions IP to Security group
+      - name: Copy deploy script
+        run: cp scripts/deploy.sh backend/deploy.sh
+
+      - name: Copy appspec.yml
+        run: cp appspec.yml backend/appspec.yml
+
+      - name: Copy env file from S3
         run: |
-          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws s3 cp \
+            --region ap-northeast-2 \
+            s3://royals-api-server-env/.env backend/.env
 
-      - uses: actions/checkout@v3
-      - name: Run scripts in main_server
-        uses: appleboy/ssh-action@master
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          script: |
-            . ~/.nvm/nvm.sh
-            nvm use 19
-            npm install -g pnpm
-            cd nest/royals-staff
-            git reset --hard
-            git fetch
-            git pull
-            pnpm install
-            pnpm install -g dotenv-cli
-            pnpm --filter backend exec migrate:prod
-            pnpm --filter backend exec prisma generate
-            pnpm --filter backend build
-            pnpm --filter backend start:reload
+      - name: zip file
+        run: tar -zcvf target.tar.gz backend
 
-      - name: Run scripts in sub_server_1
-        uses: appleboy/ssh-action@master
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          host: ${{ secrets.HOST_2 }}
-          username: ${{ secrets.USER }}
-          script: |
-            . ~/.nvm/nvm.sh
-            nvm use 19
-            npm install -g pnpm
-            cd nest/royals-staff
-            git reset --hard
-            git fetch
-            git pull
-            pnpm install
-            pnpm --filter backend exec prisma generate
-            pnpm --filter backend build
-            pnpm --filter backend start:reload
-
-      - name: Run scripts in sub_server_2
-        uses: appleboy/ssh-action@master
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          host: ${{ secrets.HOST_3 }}
-          username: ${{ secrets.USER }}
-          script: |
-            . ~/.nvm/nvm.sh
-            nvm use 19
-            npm install -g pnpm
-            cd nest/royals-staff
-            git reset --hard
-            git fetch
-            git pull
-            pnpm install
-            pnpm --filter backend exec prisma generate
-            pnpm --filter backend build
-            pnpm --filter backend start:reload
-
-      - name: Remove Github Actions IP From Security Group
+      - name: Deploy backend dir to S3
         run: |
-          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws s3 cp \
+            --region ap-northeast-2 \
+            target.tar.gz s3://royals-api-server/nest/target.tar.gz
+
+      - name: code-deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name royals_api_deploy \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name api_server_auto_scaling \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=royals-api-server,bundleType=tgz,key=nest/target.tar.gz \
+          --region ap-northeast-2 \

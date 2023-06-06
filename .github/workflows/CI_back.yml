@@ -43,7 +43,7 @@ jobs:
       - name: Cache dist
         uses: actions/cache@v3
         with:
-          path: ./*/dist
+          path: backend/dist
           key: ${{ matrix.os }}-node-v${{ matrix.node }}-${{ github.sha }}
 
   lint:
