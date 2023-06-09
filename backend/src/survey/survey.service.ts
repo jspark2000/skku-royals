@@ -13,6 +13,7 @@ import { RegisterSeparateSurveyDTO } from './dto/registerSeparateSurvey.dto'
 import { registerSurveysDTO } from './dto/registerSurveys.dto'
 import { SubmitSurveyDTO } from './dto/submitSurvey.dto'
 import { UpdateSurveySubmitDTO } from './dto/updateSurveySubmit.dto'
+import axios from 'axios'
 
 @Injectable()
 export class SurveyService {
@@ -141,7 +142,7 @@ export class SurveyService {
       )
     }
 
-    return await this.prismaService.surveyGroup.create({
+    const result = await this.prismaService.surveyGroup.create({
       data: {
         name: surveyDTO.name,
         surveys: {
@@ -151,6 +152,12 @@ export class SurveyService {
         }
       }
     })
+
+    if (result) {
+      await this.postToSlackChannel(surveyDTO)
+    }
+
+    return result
   }
 
   async deleteSurveys(id: number): Promise<SurveyGroup> {
@@ -366,5 +373,49 @@ export class SurveyService {
         id: true
       }
     })
+  }
+
+  private async postToSlackChannel(surveyDTO: registerSurveysDTO) {
+    const data = {
+      attachments: [
+        {
+          color: '#2eb886',
+          pretext: '새로운 출석 조사가 등록 되었습니다',
+          author_name: 'Survey Page',
+          author_link: 'https://survey.skku-royals.football/',
+          author_icon:
+            'https://s3.ap-northeast-2.amazonaws.com/staff.skku-royals.football/favicon-96x96.png',
+          title: '# ' + surveyDTO.name,
+          title_link: 'https://survey.skku-royals.football/',
+          text: '출석체크 목록',
+          fields: [],
+          footer: 'STAFF Survey page',
+          footer_icon:
+            'https://s3.ap-northeast-2.amazonaws.com/staff.skku-royals.football/favicon-96x96.png',
+          ts: new Date().getTime(),
+          actions: [
+            {
+              text: '출석조사 하러가기',
+              type: 'button',
+              url: 'https://survey.skku-royals.football/',
+              style: 'primary'
+            }
+          ]
+        }
+      ]
+    }
+
+    surveyDTO.surveys.forEach((survey) => {
+      data.attachments[0].fields.push({
+        title: survey.date.toISOString().substring(5, 10),
+        value: survey.description,
+        short: true
+      })
+    })
+
+    await axios
+      .post(process.env.SLACK_WEBHOOK_WRL, { attachments: data.attachments })
+      .then((result) => result.data)
+      .catch((error) => error)
   }
 }
