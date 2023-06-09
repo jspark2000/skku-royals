@@ -331,19 +331,16 @@ async function main() {
         createMany: {
           data: [
             {
-              id: 1,
               date: new Date('2023-05-01'),
               description: '월요일, 명륜 통합운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 2,
               date: new Date('2023-05-01'),
               description: '수요일, 개별운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 3,
               date: new Date('2023-05-01'),
               description: '금요일, 율전 통합운동',
               type: AttendanceType.Integrated
@@ -358,19 +355,16 @@ async function main() {
         createMany: {
           data: [
             {
-              id: 4,
               date: new Date('2023-05-08'),
               description: '월요일, 명륜 통합운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 5,
               date: new Date('2023-05-10'),
               description: '수요일, 개별운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 6,
               date: new Date('2023-05-12'),
               description: '금요일, 율전 통합운동',
               type: AttendanceType.Integrated
@@ -385,19 +379,16 @@ async function main() {
         createMany: {
           data: [
             {
-              id: 7,
               date: new Date('2023-05-15'),
               description: '월요일, 명륜 통합운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 8,
               date: new Date('2023-05-17'),
               description: '수요일, 개별운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 9,
               date: new Date('2023-05-19'),
               description: '금요일, 율전 통합운동',
               type: AttendanceType.Integrated
@@ -412,19 +403,16 @@ async function main() {
         createMany: {
           data: [
             {
-              id: 10,
               date: new Date('2023-05-22'),
               description: '월요일, 명륜 통합운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 11,
               date: new Date('2023-05-24'),
               description: '수요일, 개별운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 12,
               date: new Date('2023-05-26'),
               description: '금요일, 율전 통합운동',
               type: AttendanceType.Integrated
@@ -439,19 +427,16 @@ async function main() {
         createMany: {
           data: [
             {
-              id: 13,
               date: new Date('2023-06-01'),
               description: '월요일, 명륜 통합운동',
               type: AttendanceType.Integrated
             },
             {
-              id: 14,
               date: new Date('2023-06-02'),
               description: '수요일, 개별운동',
               type: AttendanceType.Dispersion
             },
             {
-              id: 15,
               date: new Date('2023-06-03'),
               description: '금요일, 율전 통합운동',
               type: AttendanceType.Integrated
