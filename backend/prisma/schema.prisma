@@ -152,7 +152,7 @@ model CoachingStaff {
 
 model Injury {
   id          Int      @id @default(autoincrement())
-  People      People   @relation(fields: [peopleId], references: [id])
+  People      People   @relation(fields: [peopleId], references: [id], onDelete: Cascade)
   peopleId    Int
   description String
   startDate   DateTime @db.Timestamp(6)
