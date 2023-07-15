@@ -75,10 +75,10 @@ model Attendance {
 
 model BandUser {
   id         Int       @id @default(autoincrement())
-  username   String?   @db.VarChar(30)
-  password   String?   @db.VarChar(200)
-  realname   String?   @db.VarChar(30)
-  email      String?   @db.VarChar(60)
+  username   String    @unique @db.VarChar(30)
+  password   String    @db.VarChar(200)
+  realname   String    @db.VarChar(30)
+  email      String    @unique @db.VarChar(60)
   lastActive DateTime? @map("last_active") @db.Timestamp(6)
   role       Role      @default(Newbie)
   profileUrl String    @default("https://ssl.pstatic.net/cmstatic/webclient/dres/20230622152751/images/template/profile_320x320.png") @db.VarChar(200)

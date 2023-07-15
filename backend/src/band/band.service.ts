@@ -42,7 +42,7 @@ export class BandService {
   }
 
   async getBandProfile(username: string) {
-    const profile = await this.prismaService.bandUser.findFirst({
+    const profile = await this.prismaService.bandUser.findUnique({
       where: {
         username
       },
