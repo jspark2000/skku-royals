@@ -1,27 +1,15 @@
 import { Role } from '@prisma/client'
 
 export class AuthenticatedUser {
-  #userKey: string
-  #userNickname: string
-  #userProfileUrl: string
+  #username: string
   #role: Role
 
-  constructor(userKey: string, userNickname: string, userProfileUrl: string) {
-    this.#userKey = userKey
-    this.#userNickname = userNickname
-    this.#userProfileUrl = userProfileUrl
+  constructor(username: string) {
+    this.#username = username
   }
 
-  get userKey() {
-    return this.#userKey
-  }
-
-  get userNickname() {
-    return this.#userNickname
-  }
-
-  get userProfileUrl() {
-    return this.#userProfileUrl
+  get username() {
+    return this.#username
   }
 
   get role() {

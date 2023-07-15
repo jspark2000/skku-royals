@@ -1,8 +1,5 @@
-import {
-  type CacheModuleOptions,
-  type CacheOptionsFactory,
-  Injectable
-} from '@nestjs/common'
+import { CacheModuleOptions, CacheOptionsFactory } from '@nestjs/cache-manager'
+import { Injectable } from '@nestjs/common'
 import { redisStore } from 'cache-manager-redis-yet'
 
 @Injectable()

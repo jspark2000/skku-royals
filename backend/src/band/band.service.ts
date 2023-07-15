@@ -17,14 +17,15 @@ export class BandService {
       select: {
         id: true,
         profileUrl: true,
-        userNickname: true,
+        realname: true,
+        email: true,
         role: true
       }
     })
 
     if (bandUserList.length === 0) {
       throw new HttpException(
-        '밴드 계정 정보를 불러오는데 실패했습니다.',
+        '계정 정보를 불러오는데 실패했습니다.',
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     }
@@ -33,19 +34,20 @@ export class BandService {
       return {
         id: bandUser.id,
         profileUrl: bandUser.profileUrl,
-        userNickname: bandUser.userNickname,
+        realname: bandUser.realname,
+        email: bandUser.email,
         role: bandUser.role
       }
     })
   }
 
-  async getBandProfile(userKey: string) {
-    const profile = await this.prismaService.bandUser.findUnique({
+  async getBandProfile(username: string) {
+    const profile = await this.prismaService.bandUser.findFirst({
       where: {
-        userKey
+        username
       },
       select: {
-        userNickname: true,
+        realname: true,
         profileUrl: true,
         role: true
       }
@@ -79,9 +81,9 @@ export class BandService {
       }
     })
 
-    if (superAdminCheck.role === Role.SuperAdmin) {
+    if (superAdminCheck.role === Role.SuperAdmin && role !== Role.SuperAdmin) {
       throw new BadRequestException(
-        'SuperAdmin의 권한은 임의로 변경할 수 없습니다.'
+        'SuperAdmin의 권한은 SuperAdmin만 변경할 수 없습니다.'
       )
     }
 
@@ -90,13 +92,13 @@ export class BandService {
         id: bandDTO.id
       },
       data: {
-        userNickname: bandDTO.name,
+        realname: bandDTO.name,
         role: Role[bandDTO.role]
       },
       select: {
         id: true,
         role: true,
-        userNickname: true
+        realname: true
       }
     })
   }
@@ -127,23 +129,6 @@ export class BandService {
       },
       select: {
         id: true
-      }
-    })
-  }
-
-  // only used to test
-  async createFakeBandUser(secret: string) {
-    if (secret !== process.env.JWT_SECRET) {
-      throw new BadRequestException('잘못된 접근입니다.')
-    }
-
-    return await this.prismaService.bandUser.create({
-      data: {
-        id: 100,
-        userKey: 'fakeUser',
-        userNickname: 'fakeUser',
-        profileUrl: '',
-        role: Role.Newbie
       }
     })
   }

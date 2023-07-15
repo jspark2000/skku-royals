@@ -7,78 +7,79 @@ import {
   Role,
   TeamRole
 } from '@prisma/client'
+import { hash } from 'argon2'
 const prisma = new PrismaClient()
 async function main() {
   const bandUsers: Prisma.BandUserCreateManyInput[] = [
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Newbie,
-      userKey: 'newbie',
-      userNickname: 'Newbie'
+      username: 'user01',
+      password: await hash('1234'),
+      email: 'example1@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
-      userKey: 'normal',
-      userNickname: 'Normal'
+      username: 'user02',
+      password: await hash('1234'),
+      email: 'example2@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Admin,
-      userKey: 'admin',
-      userNickname: 'Admin'
+      username: 'user03',
+      password: await hash('1234'),
+      email: 'example3@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.SuperAdmin,
-      userKey: 'superadmin',
-      userNickname: 'SuperAdmin'
+      username: 'user04',
+      password: await hash('1234'),
+      email: 'example4@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
-      userKey: 'user01',
-      userNickname: 'user01'
+      username: 'user05',
+      password: await hash('1234'),
+      email: 'example5@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
-      userKey: 'user02',
-      userNickname: 'user02'
+      username: 'user06',
+      password: await hash('1234'),
+      email: 'example6@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
-      userKey: 'user03',
-      userNickname: 'user03'
+      username: 'user07',
+      password: await hash('1234'),
+      email: 'example7@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
-      userKey: 'user04',
-      userNickname: 'user04'
+      username: 'user08',
+      password: await hash('1234'),
+      email: 'example8@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
-      userKey: 'user05',
-      userNickname: 'user05'
+      username: 'user09',
+      password: await hash('1234'),
+      email: 'example9@example.com',
+      realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
-      userKey: 'user06',
-      userNickname: 'user06'
+      username: 'user10',
+      password: await hash('1234'),
+      email: 'example10@example.com',
+      realname: 'realname'
     }
   ]
 

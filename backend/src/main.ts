@@ -12,7 +12,11 @@ async function bootstrap() {
   app.set('trust proxy', 1)
   app.enableCors({
     credentials: true,
-    origin: [process.env.ORIGIN, /\.skku-royals\.football$/],
+    origin: [
+      process.env.ORIGIN,
+      /\.skku-royals\.football$/,
+      'http://127.0.0.1:5173'
+    ],
     exposedHeaders: ['authorization']
   })
 

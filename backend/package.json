@@ -17,6 +17,7 @@
     "migrate:prod": "npx prisma migrate deploy"
   },
   "dependencies": {
+    "@nestjs/cache-manager": "^2.0.1",
     "@nestjs/common": "^9.4.3",
     "@nestjs/config": "^2.3.4",
     "@nestjs/core": "^9.4.3",
@@ -24,6 +25,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.4.3",
     "@prisma/client": "^4.16.2",
+    "argon2": "^0.30.3",
     "axios": "^1.4.0",
     "cache-manager": "^5.2.3",
     "cache-manager-redis-yet": "^4.1.2",

@@ -10,7 +10,6 @@
             label="아이디"
             required
           ></v-text-field>
-
           <v-text-field
             v-model="password"
             :rules="passwordRules"
@@ -18,27 +17,42 @@
             label="패스워드"
             @click:append="showPassword = !showPassword"
           ></v-text-field>
-
+          <v-text-field
+            v-model="realname"
+            :rules="realnameRules"
+            label="이름"
+          ></v-text-field>
+          <v-text-field
+            v-model="email"
+            :rules="emailRules"
+            label="이메일"
+            type="email"
+          ></v-text-field>
+          <v-text-field
+            v-model="inviteCode"
+            :rules="inviteCodeRules"
+            label="초대코드"
+          ></v-text-field>
           <v-btn
-            block
             class="mb-3 bg-green-lighten-2 text-white"
+            block
             @click="validate"
           >
-            로그인
+            등록하기
           </v-btn>
           <v-btn
-            class="mb-3 bg-amber-lighten-2 text-white"
+            class="mb-3 bg-red-lighten-2 text-white"
             block
-            @click="register"
+            @click="router.back"
           >
-            회원가입
+            뒤로가기
           </v-btn>
         </v-form>
       </v-sheet>
       <v-dialog v-model="loading" :scrim="false" persistent width="auto">
         <v-card color="primary">
           <v-card-text>
-            로그인하는중
+            회원가입 하는중
             <v-progress-linear
               indeterminate
               color="white"
@@ -64,16 +78,36 @@ const valid = ref()
 const showPassword = ref(false)
 const password = ref()
 const username = ref()
+const realname = ref()
+const email = ref()
+const inviteCode = ref()
+
 const loading = ref(false)
 
 const usernameRules = [(v: string) => !!v || '아이디를 입력해주세요']
-const passwordRules = [(v: string) => !!v || '패스워드를 입력해주세요']
+const passwordRules = [
+  (v: string) => !!v || '패스워드를 입력해주세요',
+  (v: string) =>
+    (v && v.length >= 6) || '패스워드는 최소 6글자 이상이어야 합니다.'
+]
+const realnameRules = [(v: string) => !!v || '이름을 입력해주세요']
+const emailRules = [
+  (v: string) => !!v || '이메일을 입력해주세요',
+  (v: string) => /.+@.+\..+/.test(v) || '유효하지 않은 이메일 형식입니다.'
+]
+const inviteCodeRules = [(v: string) => !!v || '초대코드를 입력해주세요']
 
 async function validate() {
   if (valid.value) {
     try {
       loading.value = true
-      await authStore.login(username.value, password.value)
+      await authStore.register(
+        username.value,
+        password.value,
+        email.value,
+        realname.value,
+        inviteCode.value
+      )
       router.push('/home')
     } catch (error: any) {
       alert(error.response.data.message)
@@ -81,9 +115,5 @@ async function validate() {
       loading.value = false
     }
   }
-}
-
-function register() {
-  router.push('/register')
 }
 </script>
