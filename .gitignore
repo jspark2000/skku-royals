@@ -47,4 +47,6 @@ lerna-debug.log*
 
 # Thunder Client
 thunderActivity.json
-thunderEnvironment.json
+thunder-tests/environments
+!thunder-tests/environments/base.json
+thunder-tests/_db-backup

@@ -52,8 +52,7 @@ echo "OPENAI_API_KEY=YOUR_OPENAI_API_KEY_HERE" >> backend/.env
 cp thunder-tests/thunderEnvironmentBase.json thunder-tests/thunderEnvironment.json
 
 # Install pnpm
-pnpm --version || sudo corepack enable
-corepack prepare pnpm@7.2.1 --activate
+npm i -g pnpm
 pnpm install
 
 # Install lefthook for git hook

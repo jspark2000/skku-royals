@@ -1,7 +1,6 @@
 export interface JwtPayload {
-  userKey: string
-  userNickname: string
-  userProfileUrl: string
+  username: string
+  email: string
 }
 
 export interface JwtObject extends JwtPayload {

@@ -3,8 +3,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   InternalServerErrorException,
   Post,
   Req,
@@ -22,7 +20,8 @@ import {
 import { Public } from './decorators/public.decorator'
 import { AuthenticatedRequest } from './interfaces/authenticated-request.interface'
 import { JwtTokens } from './interfaces/jwt.interface'
-import { InviteCodeDTO } from './dto/inviteCode.dto'
+import { LoginUserDto } from './dto/loginUser.dto'
+import { RegisterDTO } from './dto/register.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -38,29 +37,27 @@ export class AuthController {
   }
 
   @Public()
-  @Get('login')
-  getLoginPage(@Res() res: Response) {
-    const oauth2URL: string = this.authService.getOAuth2URL()
-    return res.render('pages/auth/login', { oauth2URL })
-  }
-
-  @Public()
-  @Post('login/callback')
+  @Post('login')
   async login(
-    @Body('code') code: string,
+    @Body() loginUserDto: LoginUserDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    const token: JwtTokens = await this.authService.loginOrRegister(code)
-    this.setJwtResponse(res, token)
+    try {
+      const jwtTokens = await this.authService.issueJwtTokens(loginUserDto)
+      this.setJwtResponse(res, jwtTokens)
+      return
+    } catch (error) {
+      throw new UnauthorizedException(error.message)
+    }
   }
 
   @Public()
   @Post('register')
   async register(
-    @Body() authDTO: InviteCodeDTO,
+    @Body() registerDTO: RegisterDTO,
     @Res({ passthrough: true }) res: Response
   ) {
-    const token: JwtTokens = await this.authService.register(authDTO)
+    const token: JwtTokens = await this.authService.register(registerDTO)
     this.setJwtResponse(res, token)
   }
 
@@ -93,7 +90,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ) {
     try {
-      await this.authService.deleteRefreshToken(req.user.userKey)
+      await this.authService.deleteRefreshToken(req.user.username)
       res.clearCookie('refresh_token', REFRESH_TOKEN_COOKIE_OPTIONS)
       return
     } catch (error) {
@@ -105,30 +102,5 @@ export class AuthController {
   @Roles(Role.Newbie)
   async getRole(@Req() req: AuthenticatedRequest) {
     return { role: req.user.role }
-  }
-
-  @Get('invite-code')
-  @Roles(Role.SuperAdmin)
-  async getInviteCode(): Promise<string> {
-    return await this.authService.getInviteCode()
-  }
-
-  // only used for thunder-client test
-  @Public()
-  @Post('fake/login')
-  async fakeLogin(
-    @Body('userKey') userKey: string,
-    @Body('secret') secret: string,
-    @Res({ passthrough: true }) res: Response
-  ) {
-    try {
-      const token: JwtTokens = await this.authService.fakeLogin(userKey, secret)
-      this.setJwtResponse(res, token)
-    } catch (error) {
-      throw new HttpException(
-        '[TEST] 로그인 실패',
-        HttpStatus.INTERNAL_SERVER_ERROR
-      )
-    }
   }
 }

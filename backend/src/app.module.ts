@@ -1,9 +1,4 @@
-import {
-  CacheModule,
-  MiddlewareConsumer,
-  Module,
-  NestModule
-} from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -23,6 +18,7 @@ import { SurveyModule } from './survey/survey.module'
 import { ChatGptModule } from './chat-gpt/chat-gpt.module'
 import { GameModule } from './game/game.module'
 import { StatisticModule } from './statistic/statistic.module'
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [

@@ -17,7 +17,8 @@ export class BandService {
       select: {
         id: true,
         profileUrl: true,
-        userNickname: true,
+        realname: true,
+        email: true,
         role: true
       }
     })
@@ -33,19 +34,20 @@ export class BandService {
       return {
         id: bandUser.id,
         profileUrl: bandUser.profileUrl,
-        userNickname: bandUser.userNickname,
+        realname: bandUser.realname,
+        email: bandUser.email,
         role: bandUser.role
       }
     })
   }
 
-  async getBandProfile(userKey: string) {
+  async getBandProfile(username: string) {
     const profile = await this.prismaService.bandUser.findUnique({
       where: {
-        userKey
+        username
       },
       select: {
-        userNickname: true,
+        realname: true,
         profileUrl: true,
         role: true
       }
@@ -90,13 +92,13 @@ export class BandService {
         id: bandDTO.id
       },
       data: {
-        userNickname: bandDTO.name,
+        realname: bandDTO.name,
         role: Role[bandDTO.role]
       },
       select: {
         id: true,
         role: true,
-        userNickname: true
+        realname: true
       }
     })
   }
@@ -127,23 +129,6 @@ export class BandService {
       },
       select: {
         id: true
-      }
-    })
-  }
-
-  // only used to test
-  async createFakeBandUser(secret: string) {
-    if (secret !== process.env.JWT_SECRET) {
-      throw new BadRequestException('잘못된 접근입니다.')
-    }
-
-    return await this.prismaService.bandUser.create({
-      data: {
-        id: 100,
-        userKey: 'fakeUser',
-        userNickname: 'fakeUser',
-        profileUrl: '',
-        role: Role.Newbie
       }
     })
   }

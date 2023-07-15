@@ -6,7 +6,6 @@ import {
   Param,
   ParseIntPipe,
   Patch,
-  Post,
   Req
 } from '@nestjs/common'
 import { Role } from '@prisma/client'
@@ -28,7 +27,7 @@ export class BandController {
 
   @Get('profile')
   async getMyProfile(@Req() req: AuthenticatedRequest) {
-    return await this.bandService.getBandProfile(req.user.userKey)
+    return await this.bandService.getBandProfile(req.user.username)
   }
 
   @Get('profile/:userKey')
@@ -49,12 +48,5 @@ export class BandController {
   @Roles(Role.Admin)
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
     return await this.bandService.deleteUser(id)
-  }
-
-  // only used to test
-  @Post('fake/user')
-  @Roles(Role.SuperAdmin)
-  async createFakeBandUser(@Body('secret') secret: string) {
-    return await this.bandService.createFakeBandUser(secret)
   }
 }
