@@ -126,7 +126,7 @@ export class AuthService {
       throw new ConflictException('이미 존재하는 아이디입니다.')
     }
 
-    const duplicateEmail = await this.prismaService.bandUser.findUnique({
+    const duplicateEmail = await this.prismaService.bandUser.findFirst({
       where: {
         email: registerDTO.email
       }

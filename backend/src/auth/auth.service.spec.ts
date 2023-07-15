@@ -1,8 +1,9 @@
-import { CACHE_MANAGER } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { Cache } from 'cache-manager'
 import { expect } from 'chai'
+import { stub } from 'sinon'
 import { AuthService } from './auth.service'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
 
 describe('AuthService', () => {
   let service: AuthService
@@ -28,6 +29,7 @@ describe('AuthService', () => {
   })
 
   it('should be defined', () => {
+    stub(cache, 'get').resolves(true)
     expect(service).to.be.ok
   })
 })
