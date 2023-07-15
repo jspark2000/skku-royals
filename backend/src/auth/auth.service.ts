@@ -18,7 +18,6 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { LoginUserDto } from './dto/loginUser.dto'
 import { hash, verify } from 'argon2'
 import { RegisterDTO } from './dto/register.dto'
-import { Role } from '@prisma/client'
 
 @Injectable()
 export class AuthService {
@@ -29,7 +28,7 @@ export class AuthService {
   ) {}
 
   async issueJwtTokens(userDTO: LoginUserDto): Promise<JwtTokens> {
-    const user = await this.prismaService.bandUser.findFirst({
+    const user = await this.prismaService.bandUser.findUnique({
       where: {
         username: userDTO.username
       }
@@ -68,18 +67,9 @@ export class AuthService {
       REFRESH_TOKEN_EXPIRATION_SEC * 1000
     )
 
-    const id = await this.prismaService.bandUser.findFirst({
-      where: {
-        username: userDTO.username
-      },
-      select: {
-        id: true
-      }
-    })
-
     await this.prismaService.bandUser.update({
       where: {
-        id: id.id
+        username: userDTO.username
       },
       data: {
         lastActive: new Date()
@@ -116,7 +106,7 @@ export class AuthService {
   }
 
   async register(registerDTO: RegisterDTO): Promise<JwtTokens> {
-    const duplicateUsername = await this.prismaService.bandUser.findFirst({
+    const duplicateUsername = await this.prismaService.bandUser.findUnique({
       where: {
         username: registerDTO.username
       }
@@ -126,7 +116,7 @@ export class AuthService {
       throw new ConflictException('이미 존재하는 아이디입니다.')
     }
 
-    const duplicateEmail = await this.prismaService.bandUser.findFirst({
+    const duplicateEmail = await this.prismaService.bandUser.findUnique({
       where: {
         email: registerDTO.email
       }
@@ -150,8 +140,7 @@ export class AuthService {
         password: hashedPassword,
         realname: registerDTO.realname,
         email: registerDTO.email,
-        lastActive: new Date(),
-        role: Role.SuperAdmin
+        lastActive: new Date()
       },
       select: {
         username: true,
