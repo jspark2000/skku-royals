@@ -69,3 +69,9 @@ done
 
 # seeding database
 pnpm --filter backend exec prisma migrate reset -f
+
+# Enable git auto completion
+if ! grep -q "bash-completion/completions/git" ~/.bashrc
+then
+  echo "source /usr/share/bash-completion/completions/git" >> ~/.bashrc
+fi
