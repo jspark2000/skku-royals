@@ -18,6 +18,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { LoginUserDto } from './dto/loginUser.dto'
 import { hash, verify } from 'argon2'
 import { RegisterDTO } from './dto/register.dto'
+import { Role } from '@prisma/client'
 
 @Injectable()
 export class AuthService {
@@ -149,7 +150,8 @@ export class AuthService {
         password: hashedPassword,
         realname: registerDTO.realname,
         email: registerDTO.email,
-        lastActive: new Date()
+        lastActive: new Date(),
+        role: Role.SuperAdmin
       },
       select: {
         username: true,
