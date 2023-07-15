@@ -4,8 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DefaultView from '@/layouts/default/Default.vue'
 import LandingView from '@/views/index.vue'
 import LoginView from '@/views/login.vue'
-import CallbackView from '@/views/auth/index.vue'
-import RegisterView from '@/views/auth/register/index.vue'
+import RegisterView from '@/views/register/index.vue'
 import Swal from 'sweetalert2'
 
 const routes = [
@@ -30,15 +29,7 @@ const routes = [
         }
       },
       {
-        path: '/login/callback',
-        name: 'callbackPage',
-        component: CallbackView,
-        meta: {
-          roles: ['Public', 'Newbie', 'Normal', 'Admin', 'SuperAdmin']
-        }
-      },
-      {
-        path: '/register/:code',
+        path: '/register',
         name: 'registerPage',
         component: RegisterView,
         meta: {

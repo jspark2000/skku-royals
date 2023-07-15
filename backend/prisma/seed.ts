@@ -12,8 +12,6 @@ const prisma = new PrismaClient()
 async function main() {
   const bandUsers: Prisma.BandUserCreateManyInput[] = [
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Newbie,
       username: 'user01',
       password: await hash('1234'),
@@ -21,8 +19,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
       username: 'user02',
       password: await hash('1234'),
@@ -30,8 +26,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Admin,
       username: 'user03',
       password: await hash('1234'),
@@ -39,8 +33,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.SuperAdmin,
       username: 'user04',
       password: await hash('1234'),
@@ -48,8 +40,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
       username: 'user05',
       password: await hash('1234'),
@@ -57,8 +47,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
       username: 'user06',
       password: await hash('1234'),
@@ -66,8 +54,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
       username: 'user07',
       password: await hash('1234'),
@@ -75,8 +61,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
       username: 'user08',
       password: await hash('1234'),
@@ -84,8 +68,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
       username: 'user09',
       password: await hash('1234'),
@@ -93,8 +75,6 @@ async function main() {
       realname: 'realname'
     },
     {
-      profileUrl:
-        'https://coresos-phinf.pstatic.net/a/30f048/3_2h2Ud018svcxyrfbhxl9z38_2u6v6s.jpg',
       role: Role.Normal,
       username: 'user10',
       password: await hash('1234'),

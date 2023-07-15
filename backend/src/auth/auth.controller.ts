@@ -42,13 +42,9 @@ export class AuthController {
     @Body() loginUserDto: LoginUserDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    try {
-      const jwtTokens = await this.authService.issueJwtTokens(loginUserDto)
-      this.setJwtResponse(res, jwtTokens)
-      return
-    } catch (error) {
-      throw new UnauthorizedException(error.message)
-    }
+    const jwtTokens = await this.authService.issueJwtTokens(loginUserDto)
+    this.setJwtResponse(res, jwtTokens)
+    return
   }
 
   @Public()
@@ -102,5 +98,11 @@ export class AuthController {
   @Roles(Role.Newbie)
   async getRole(@Req() req: AuthenticatedRequest) {
     return { role: req.user.role }
+  }
+
+  @Roles(Role.Admin)
+  @Get('invite-code')
+  async getInviteCode(): Promise<string> {
+    return await this.authService.getInviteCode()
   }
 }

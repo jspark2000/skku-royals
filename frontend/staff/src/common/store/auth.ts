@@ -6,19 +6,11 @@ export const axiosInstance = axios.create({
   withCredentials: true
 })
 
-if (import.meta.env.MODE === 'production') {
-  axiosInstance.defaults.baseURL = import.meta.env.VITE_API_URL
-  axiosInstance.interceptors.request.use((request) => {
-    request.url = request.url?.replace('/api', '')
-    return request
-  })
-} else {
-  axiosInstance.defaults.baseURL = import.meta.env.VITE_API_URL
-  axiosInstance.interceptors.request.use((request) => {
-    request.url = request.url?.replace('/api', '')
-    return request
-  })
-}
+axiosInstance.defaults.baseURL = import.meta.env.VITE_API_URL
+axiosInstance.interceptors.request.use((request) => {
+  request.url = request.url?.replace('/api', '')
+  return request
+})
 
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -40,10 +32,11 @@ export const useAuthStore = defineStore('auth', {
     isLoggedIn: useStorage('isLoggedIn', false)
   }),
   actions: {
-    async login(code: string) {
+    async login(username: string, password: string) {
       try {
-        const res = await axiosInstance.post('/api/auth/login/callback', {
-          code
+        const res = await axiosInstance.post('/api/auth/login', {
+          username,
+          password
         })
         axiosInstance.defaults.headers.common.authorization =
           res.headers.authorization
@@ -54,10 +47,19 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async register(code: string, inviteCode: string) {
+    async register(
+      username: string,
+      password: string,
+      email: string,
+      realname: string,
+      inviteCode: string
+    ) {
       try {
         const registerDTO = {
-          code,
+          username,
+          password,
+          email,
+          realname,
           inviteCode
         }
         const res = await axiosInstance.post('/api/auth/register', registerDTO)

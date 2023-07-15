@@ -5,7 +5,7 @@
       <v-col cols="12">
         <v-card class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
-            밴드 계정 테이블
+            계정 테이블
           </v-card-title>
           <v-card-text class="font-weight-medium mt-lg-3">
             <EasyDataTable
@@ -49,7 +49,7 @@
           <v-text-field
             v-model="name"
             variant="outlined"
-            label="밴드 닉네임"
+            label="이름"
             clearable
           ></v-text-field>
           <v-select
@@ -71,8 +71,8 @@
     </v-dialog>
     <v-dialog v-model="deleteModal" width="auto">
       <v-sheet class="mx-auto pa-10">
-        <h5 class="text-h6 font-weight-bold mb-3">밴드계정 삭제하기</h5>
-        <p class="mb-5">삭제할 계정의 밴드 닉네임을 정확하게 입력해주세요</p>
+        <h5 class="text-h6 font-weight-bold mb-3">계정 삭제하기</h5>
+        <p class="mb-5">삭제할 계정의 이름을 정확하게 입력해주세요</p>
         <v-form ref="form" @submit.prevent @submit="deletePeople()">
           <v-text-field
             v-model="checkName"
@@ -144,15 +144,15 @@ const breadcumbs = ref([
 
 type BandUserResponseDTO = {
   id: number
-  userNickname: string
+  realname: string
   profileUrl: string
   role: string
 }
 
 const items: Ref<BandUserResponseDTO[]> = ref([])
 const headers: Header[] = [
-  { text: '밴드 프로필', value: 'profileUrl' },
-  { text: '밴드 닉네임', value: 'userNickname' },
+  { text: '프로필 사진', value: 'profileUrl' },
+  { text: '이름', value: 'realname' },
   { text: '권한', value: 'role' },
   { text: '수정하기', value: 'update' },
   { text: '삭제하기', value: 'delete' }
@@ -189,14 +189,14 @@ const errorMessage = ref('오류가 발생했습니다')
 
 async function getUpdateModal(item: BandUserResponseDTO) {
   targetId.value = item.id
-  name.value = item.userNickname
+  name.value = item.realname
   role.value = item.role
   modal.value = true
 }
 
 async function getDeleteModal(item: BandUserResponseDTO) {
   targetId.value = item.id
-  name.value = item.userNickname
+  name.value = item.realname
   deleteModal.value = true
 }
 
@@ -227,7 +227,7 @@ async function updatePeople() {
     items.value.forEach((item) => {
       if (item.id === result.id) {
         item.role = result.role
-        item.userNickname = result.userNickname
+        item.realname = result.realname
       }
     })
     successModal.value = true

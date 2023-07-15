@@ -25,7 +25,7 @@ export class BandService {
 
     if (bandUserList.length === 0) {
       throw new HttpException(
-        '밴드 계정 정보를 불러오는데 실패했습니다.',
+        '계정 정보를 불러오는데 실패했습니다.',
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     }
@@ -42,7 +42,7 @@ export class BandService {
   }
 
   async getBandProfile(username: string) {
-    const profile = await this.prismaService.bandUser.findUnique({
+    const profile = await this.prismaService.bandUser.findFirst({
       where: {
         username
       },
@@ -81,9 +81,9 @@ export class BandService {
       }
     })
 
-    if (superAdminCheck.role === Role.SuperAdmin) {
+    if (superAdminCheck.role === Role.SuperAdmin && role !== Role.SuperAdmin) {
       throw new BadRequestException(
-        'SuperAdmin의 권한은 임의로 변경할 수 없습니다.'
+        'SuperAdmin의 권한은 SuperAdmin만 변경할 수 없습니다.'
       )
     }
 

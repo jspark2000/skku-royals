@@ -16,7 +16,7 @@
                 </v-avatar>
               </v-row>
               <v-row class="font-weight-bold text-h6 mt-7" justify="center">
-                {{ userNickname }}
+                {{ realname }}
               </v-row>
               <v-row
                 class="align-self-center text-subtitle-1 mt-2 text-grey-darken-1"
@@ -231,7 +231,7 @@ import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { axiosInstance } from '@/common/store/auth'
 
 const role = ref()
-const userNickname = ref()
+const realname = ref()
 const profileUrl = ref()
 
 watchEffect(async () => {
@@ -247,7 +247,7 @@ watchEffect(async () => {
 
   if (profile) {
     role.value = profile.role
-    userNickname.value = profile.userNickname
+    realname.value = profile.realname
     profileUrl.value = profile.profileUrl
   }
 })

@@ -3,8 +3,7 @@ import {
   ConflictException,
   Inject,
   Injectable,
-  InternalServerErrorException,
-  UnauthorizedException
+  InternalServerErrorException
 } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { JwtService, JwtVerifyOptions } from '@nestjs/jwt'
@@ -29,18 +28,18 @@ export class AuthService {
   ) {}
 
   async issueJwtTokens(userDTO: LoginUserDto): Promise<JwtTokens> {
-    const user = await this.prismaService.bandUser.findUnique({
+    const user = await this.prismaService.bandUser.findFirst({
       where: {
         username: userDTO.username
       }
     })
 
     if (!user) {
-      throw new UnauthorizedException('해당하는 유저가 존재하지 않습니다.')
+      throw new BadRequestException('해당하는 유저가 존재하지 않습니다.')
     }
 
     if (!(await this.verifyLogin(user.password, userDTO.password))) {
-      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.')
+      throw new BadRequestException('비밀번호가 일치하지 않습니다.')
     }
 
     const payload: JwtPayload = { username: user.username, email: user.email }
@@ -67,6 +66,24 @@ export class AuthService {
       refreshToken,
       REFRESH_TOKEN_EXPIRATION_SEC * 1000
     )
+
+    const id = await this.prismaService.bandUser.findFirst({
+      where: {
+        username: userDTO.username
+      },
+      select: {
+        id: true
+      }
+    })
+
+    await this.prismaService.bandUser.update({
+      where: {
+        id: id.id
+      },
+      data: {
+        lastActive: new Date()
+      }
+    })
 
     return { accessToken, refreshToken }
   }
@@ -98,7 +115,7 @@ export class AuthService {
   }
 
   async register(registerDTO: RegisterDTO): Promise<JwtTokens> {
-    const duplicateUsername = await this.prismaService.bandUser.findUnique({
+    const duplicateUsername = await this.prismaService.bandUser.findFirst({
       where: {
         username: registerDTO.username
       }
@@ -191,7 +208,7 @@ export class AuthService {
   }
 
   private async verifyInviteCode(inviteCode: string): Promise<boolean> {
-    const origin = await this.cacheManager.get('invite-code')
+    const origin = await this.getInviteCode()
     return inviteCode === origin
   }
 
