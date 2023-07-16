@@ -68,10 +68,10 @@ jobs:
         run: pnpm --filter backend install
 
       - name: Lint
-        run: pnpm --filter backend lint
+        run: pnpm lint:backend
 
       - name: Check style
-        run: pnpm --filter backend format:check
+        run: pnpm format:check:backend
 
   test:
     runs-on: ${{ matrix.os }}

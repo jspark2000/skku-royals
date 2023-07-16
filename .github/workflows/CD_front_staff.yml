@@ -30,10 +30,10 @@ jobs:
         run: pnpm --filter "frontend/staff" install
 
       - name: Lint
-        run: pnpm --filter "frontend/staff" lint
+        run: pnpm lint:staff
 
       - name: Check style
-        run: pnpm --filter "frontend/staff" format:check
+        run: pnpm format:check:staff
 
   test:
     runs-on: ${{ matrix.os }}

@@ -1,8 +1,14 @@
 {
   "scripts": {
     "lint": "eslint . --ext .js,.ts,.vue",
+    "lint:backend": "eslint ./backend --ext .js,.ts,.vue",
+    "lint:staff": "eslint ./frontend/staff --ext .js,.ts,.vue",
+    "lint:survey": "eslint ./frontend/survey --ext .js,.ts,.vue",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "format:check:backend": "prettier --check ./backend",
+    "format:check:staff": "prettier --check ./frontend/staff",
+    "format:check:survey": "prettier --check ./frontend/survey",
     "dev:staff": "pnpm --filter=!frontend/survey -r dev",
     "dev:survey": "pnpm --filter=!frontend/staff -r dev"
   },
