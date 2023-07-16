@@ -15,7 +15,7 @@
             density="comfortable"
             label="Search"
             variant="solo"
-            class="ms-4 mt-3 w-50"
+            class="w-50 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-tabs v-model="tab" class="ms-4" bg-color="white">
@@ -131,7 +131,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="checkModal">
-      <v-sheet class="mx-auto pa-10 w-100">
+      <v-sheet class="pa-10 w-100 mx-auto">
         <h5 class="text-h6 font-weight-bold mb-5">출석체크</h5>
         <v-form @submit.prevent @submit="checkAttendance()">
           <v-text-field
@@ -169,7 +169,7 @@
           <v-btn
             @click="() => (checkModal = false)"
             block
-            class="mt-3 bg-amber-darken-2 text-white"
+            class="bg-amber-darken-2 mt-3 text-white"
           >
             뒤로가기
           </v-btn>
@@ -187,7 +187,7 @@
         :title="checkTitle"
         :text="checkText"
         border
-        class="align-self-center px-10 w-100"
+        class="align-self-center w-100 px-10"
       >
         <v-row class="mt-2">
           <v-col>
@@ -200,7 +200,7 @@
     </v-dialog>
     <v-dialog width="auto" v-model="invalid">
       <v-card class="pt-3">
-        <v-card-title class="text-center text-amber-accent-2">
+        <v-card-title class="text-amber-accent-2 text-center">
           <v-icon
             class="align-center"
             icon="fas fa-triangle-exclamation"

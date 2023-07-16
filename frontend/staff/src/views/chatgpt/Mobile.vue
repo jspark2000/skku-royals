@@ -1,6 +1,6 @@
 <template>
   <v-responsive class="chat-container">
-    <v-container class="pb-5 w-100">
+    <v-container class="w-100 pb-5">
       <v-row class="overflow-y-auto">
         <v-col cols="12">
           <v-col cols="12">
@@ -21,7 +21,7 @@
                 <div
                   v-if="chat.role === 'user'"
                   width="100%"
-                  class="justify-end d-flex"
+                  class="d-flex justify-end"
                 >
                   <v-card class="pa-2 me-2" maxWidth="80%">
                     <p v-html="handleNewLine(chat.content)"></p>
@@ -31,9 +31,9 @@
                 <div
                   v-if="chat.role === 'assistant'"
                   width="100%"
-                  class="text-start justify-start d-flex"
+                  class="d-flex justify-start text-start"
                 >
-                  <div class="text-grey-lighten-1 me-2 font-weight-medium">
+                  <div class="text-grey-lighten-1 font-weight-medium me-2">
                     ChatGPT:
                   </div>
                   <v-card class="pa-2" maxWidth="80%">
@@ -55,7 +55,7 @@
         </v-textarea>
       </div>
     </v-container>
-    <v-container class="msg-input px-7 w-100">
+    <v-container class="msg-input w-100 px-7">
       <div class="d-flex">
         <v-textarea
           @keypress.enter="ask()"

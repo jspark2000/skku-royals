@@ -5,7 +5,7 @@
         <div class="ps-15 ms-15">
           <p class="text-h1 font-weight-bold mb-1">SKKU ROYALS</p>
           <p class="text-h1 font-weight-bold mb-3">STAFF TEAM</p>
-          <p class="ms-1 text-h6 font-weight-regular mb-12">
+          <p class="text-h6 font-weight-regular mb-12 ms-1">
             An integrated team management system for
             <span class="font-weight-bold">ROYALS</span>
           </p>
@@ -28,45 +28,40 @@
             target="_blank"
             icon="fas fa-book"
             size="small"
-            class="text-white bg-black"
-          >
-          </v-btn>
+            class="bg-black text-white"
+          ></v-btn>
           <v-btn
             href="https://github.com/jspark2000/royals-staff"
             rel="noopener noreferrer"
             target="_blank"
             size="small"
             icon="fa-brands fa-github"
-            class="text-white bg-black ms-4"
-          >
-          </v-btn>
+            class="ms-4 bg-black text-white"
+          ></v-btn>
           <v-btn
             href="https://www.instagram.com/skku_royals_1957"
             rel="noopener noreferrer"
             target="_blank"
             size="small"
             icon="fa-brands fa-instagram"
-            class="text-white bg-black ms-4"
-          >
-          </v-btn>
+            class="ms-4 bg-black text-white"
+          ></v-btn>
           <v-btn
             href="https://www.facebook.com/skkuroyals"
             rel="noopener noreferrer"
             target="_blank"
             size="small"
             icon="fa-brands fa-facebook"
-            class="text-white bg-black ms-4"
-          >
-          </v-btn>
+            class="ms-4 bg-black text-white"
+          ></v-btn>
           <v-btn
             href=""
             rel="noopener noreferrer"
             target="_blank"
             size="small"
             icon="fa-brands fa-youtube"
-            class="text-white bg-black ms-4"
-          >
-          </v-btn>
+            class="ms-4 bg-black text-white"
+          ></v-btn>
         </div>
       </v-col>
       <v-col cols="5">

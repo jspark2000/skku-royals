@@ -1,7 +1,7 @@
 <template>
   <v-parallax height="1000" src="/recruiting/background.jpeg">
     <v-container class="fill-height px-5 pt-10">
-      <v-responsive class="text-center fill-height mt-3">
+      <v-responsive class="fill-height mt-3 text-center">
         <v-avatar size="75px">
           <v-img src="/recruiting/logo.png"></v-img>
         </v-avatar>
@@ -16,7 +16,7 @@
             <v-btn
               prepend-icon="fa-brands fa-facebook"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               block
@@ -29,7 +29,7 @@
             <v-btn
               prepend-icon="fa-brands fa-youtube"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               block
@@ -42,7 +42,7 @@
             <v-btn
               prepend-icon="fa-brands fa-instagram"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               block
@@ -55,7 +55,7 @@
             <v-btn
               prepend-icon="fa-solid fa-person"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               to="/recruiting/fbti"
@@ -68,7 +68,7 @@
             <v-btn
               prepend-icon="fas fa-trophy"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               block
@@ -81,7 +81,7 @@
             <v-btn
               prepend-icon="fas fa-newspaper"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               block
@@ -94,7 +94,7 @@
             <v-btn
               prepend-icon="fa-regular fa-comment"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               block
@@ -107,7 +107,7 @@
             <v-btn
               prepend-icon="fas fa-phone"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               @click="() => (call = !call)"
@@ -120,7 +120,7 @@
             <v-btn
               prepend-icon="fas fa-envelope"
               variant="outlined"
-              class="text-white font-weight-bold"
+              class="font-weight-bold text-white"
               size="large"
               rounded="pill"
               href="https://forms.gle/ywwo8QS4iyhs4mA89"
@@ -129,7 +129,7 @@
               CONTACT(입부신청서)
             </v-btn>
           </v-col>
-          <v-col class="text-center text-white mt-6" cols="12">
+          <v-col class="mt-6 text-center text-white" cols="12">
             © {{ new Date().getFullYear() }}
             <strong>SKKU ROYALS</strong>
           </v-col>
@@ -139,7 +139,7 @@
         <v-dialog v-model="records">
           <v-card class="text-center">
             <v-card-text class="font-weight-regular text-subtitle-2">
-              <h3 class="mb-3 font-weight-black">
+              <h3 class="font-weight-black mb-3">
                 <v-icon
                   class="fas fa-football text-brown-darken-1"
                   size="20px"
@@ -203,7 +203,7 @@
         <v-dialog v-model="call">
           <v-card class="text-center">
             <v-card-text class="font-weight-regular text-subtitle-2">
-              <h3 class="mb-3 font-weight-black">
+              <h3 class="font-weight-black mb-3">
                 <v-icon icon="fas fa-phone" size="17px"></v-icon>
                 연락처
               </h3>

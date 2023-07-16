@@ -5,7 +5,7 @@
       <v-col cols="12">
         <v-card class="pa-2" elevation="3">
           <v-card-title
-            class="text-indigo-darken-4 text-h6 mb-2 font-weight-medium"
+            class="text-indigo-darken-4 text-h6 font-weight-medium mb-2"
           >
             변경할 출석 선택
           </v-card-title>
@@ -14,7 +14,7 @@
             density="comfortable"
             label="이름 검색"
             variant="solo"
-            class="ms-4 mt-3 w-25"
+            class="w-25 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-card-text class="font-weight-medium">
@@ -77,7 +77,7 @@
     </v-row>
   </v-responsive>
   <v-dialog v-model="updateModal" width="auto">
-    <v-sheet width="350" class="mx-auto pa-10">
+    <v-sheet width="350" class="pa-10 mx-auto">
       <h5 class="text-h6 font-weight-bold mb-5">출석정보 변경</h5>
       <v-form @submit.prevent @submit="updateAttendance()">
         <v-text-field
@@ -126,7 +126,7 @@
         <v-btn
           @click="() => (updateModal = false)"
           block
-          class="mt-3 bg-amber-darken-2 text-white"
+          class="bg-amber-darken-2 mt-3 text-white"
         >
           뒤로가기
         </v-btn>

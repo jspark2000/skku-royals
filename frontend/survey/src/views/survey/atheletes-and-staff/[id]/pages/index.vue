@@ -1,24 +1,24 @@
 <template>
-  <div class="relative flex flex-col min-h-screen justify-center mx-auto">
-    <div v-if="!deadline" class="flex mx-auto">
+  <div class="relative mx-auto flex min-h-screen flex-col justify-center">
+    <div v-if="!deadline" class="mx-auto flex">
       <div>
-        <div class="flex mx-auto font-mono font-black text-3xl">
+        <div class="mx-auto flex font-mono text-3xl font-black">
           마감된 출석조사 입니다
         </div>
         <button
-          class="rounded-lg drop-shadow-xl w-full p-3 font-bold font-mono text-white mt-10 transition ease-in-out delay-150 bg-red-300 hover:-translate-y-1 hover:scale-110 duration-300"
+          class="mt-10 w-full rounded-lg bg-red-300 p-3 font-mono font-bold text-white drop-shadow-xl transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           @click="router.back()"
         >
           목록으로
         </button>
       </div>
     </div>
-    <div v-else class="flex flex-col mx-auto font-mono">
+    <div v-else class="mx-auto flex flex-col font-mono">
       <div v-if="!identified">
         <StudentID @identified="(result: any) => identify(result)"></StudentID>
-        <div class="px-6 mt-5">
+        <div class="mt-5 px-6">
           <button
-            class="rounded-lg drop-shadow-xl w-full p-3 font-bold font-mono text-white transition ease-in-out delay-150 bg-gray-400 hover:-translate-y-1 hover:scale-110 duration-300"
+            class="w-full rounded-lg bg-gray-400 p-3 font-mono font-bold text-white drop-shadow-xl transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
             @click="router.back()"
           >
             목록으로
@@ -26,11 +26,11 @@
         </div>
       </div>
       <div v-else>
-        <div class="font-bold text-lg text-center">
+        <div class="text-center text-lg font-bold">
           총 {{ pages }}개 중 {{ current + 1 }}번 째
         </div>
         <Transition name="slide">
-          <div class="flex flex-row mx-auto">
+          <div class="mx-auto flex flex-row">
             <SurveyItem
               v-for="page in pages"
               :key="page"
@@ -45,9 +45,9 @@
             ></SurveyItem>
           </div>
         </Transition>
-        <div class="px-6 mt-5">
+        <div class="mt-5 px-6">
           <button
-            class="rounded-lg drop-shadow-xl w-full p-3 font-bold font-mono text-white transition ease-in-out delay-150 bg-gray-400 hover:-translate-y-1 hover:scale-110 duration-300"
+            class="w-full rounded-lg bg-gray-400 p-3 font-mono font-bold text-white drop-shadow-xl transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
             @click="router.back()"
           >
             목록으로

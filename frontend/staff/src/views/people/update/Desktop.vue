@@ -15,7 +15,7 @@
             density="comfortable"
             label="Search"
             variant="solo"
-            class="ms-4 mt-3 w-25"
+            class="w-25 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-card-text class="font-weight-medium">
@@ -48,7 +48,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="modal">
-      <v-sheet width="300" class="mx-auto pa-10 w-50">
+      <v-sheet width="300" class="pa-10 w-50 mx-auto">
         <v-form @submit.prevent @submit="updatePeople()">
           <v-text-field
             v-model="targetId"
@@ -111,7 +111,7 @@
             :items="['STAFF', 'NORMAL', 'KICKER', 'RETURNER', 'SNAPPER']"
           ></v-select>
           <v-btn type="submit" block class="bg-amber-lighten-2">수정하기</v-btn>
-          <v-btn @click="closeModal()" block class="mt-3 bg-green-lighten-2">
+          <v-btn @click="closeModal()" block class="bg-green-lighten-2 mt-3">
             뒤로가기
           </v-btn>
         </v-form>

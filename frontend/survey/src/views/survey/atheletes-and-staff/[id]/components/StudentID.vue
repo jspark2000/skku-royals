@@ -1,25 +1,26 @@
 <template>
-  <div class="flex mx-auto p-6 font-mono">
-    <div class="pb-6 rounded-lg shadow-lg bg-white">
+  <div class="mx-auto flex p-6 font-mono">
+    <div class="rounded-lg bg-white pb-6 shadow-lg">
       <div
-        class="relative flex flex-wrap justify-center py-6 bg-black rounded-t-xl pb-6"
+        class="relative flex flex-wrap justify-center rounded-t-xl bg-black py-6 pb-6"
       >
         <h1
-          class="relative text-center w-full flex-none mb-2 text-2xl font-semibold text-white"
+          class="relative mb-2 w-full flex-none text-center text-2xl font-semibold text-white"
         >
           학번 정보 입력
         </h1>
       </div>
-      <div class="flex justify-center mb-10">
+      <div class="mb-10 flex justify-center">
         <div
-          class="mt-10 px-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 font-mono"
+          class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-10 font-mono sm:grid-cols-6"
         >
           <div class="col-span-full">
             <label
               for="studentId"
               class="block text-sm font-semibold leading-6 text-gray-900"
-              >학번</label
             >
+              학번
+            </label>
             <div class="mt-2">
               <input
                 type="text"
@@ -33,7 +34,7 @@
             <Transition name="slide-fade">
               <p
                 v-if="!valid"
-                class="transition ease-in-out mt-1 text-red-500 text-sm font-semibold"
+                class="mt-1 text-sm font-semibold text-red-500 transition ease-in-out"
               >
                 {{ invalidMsg }}
               </p>
@@ -41,10 +42,10 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-center mb-4 text-sm font-medium">
+      <div class="mb-4 flex justify-center text-sm font-medium">
         <div class="flex">
           <button
-            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            class="h-12 border-2 border-black bg-teal-400 px-6 font-semibold uppercase tracking-wider text-black ease-in"
             @click="identify()"
           >
             다음으로

@@ -1,26 +1,26 @@
 <template>
   <div
-    class="relative flex flex-col min-h-screen justify-center overflow-hidden text-center pt-2 pb-10 max-w-screen-sm mx-auto"
+    class="relative mx-auto flex min-h-screen max-w-screen-sm flex-col justify-center overflow-hidden pb-10 pt-2 text-center"
   >
     <div class="animate-bounce">
-      <div class="font-black font-mono text-4xl mb-1 pb-0 skew-y-6">
+      <div class="mb-1 skew-y-6 pb-0 font-mono text-4xl font-black">
         로얄스 출석조사
       </div>
       <div
-        class="font-extrabold font-mono ml-32 mt-0 pt-0 text-xl text-yellow-500 skew-y-6"
+        class="ml-32 mt-0 skew-y-6 pt-0 font-mono text-xl font-extrabold text-yellow-500"
       >
         SEASON {{ year }}
       </div>
     </div>
-    <div class="flex flex-col text-center mt-16 px-14">
+    <div class="mt-16 flex flex-col px-14 text-center">
       <button
-        class="rounded-lg font-mono drop-shadow-xl w-full p-3 font-bold text-white mb-4 transition ease-in-out delay-150 bg-green-300 hover:-translate-y-1 hover:scale-110 active:-translate-y-1 active:scale-110 duration-300"
+        class="mb-4 w-full rounded-lg bg-green-300 p-3 font-mono font-bold text-white drop-shadow-xl transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 active:-translate-y-1 active:scale-110"
         @click="move('athletes-and-staff')"
       >
         선수 및 스태프
       </button>
       <button
-        class="rounded-lg font-mono drop-shadow-xl w-full p-3 font-bold text-white transition ease-in-out delay-150 bg-indigo-300 hover:-translate-y-1 hover:scale-110 active:-translate-y-1 active:scale-110 duration-300"
+        class="w-full rounded-lg bg-indigo-300 p-3 font-mono font-bold text-white drop-shadow-xl transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 active:-translate-y-1 active:scale-110"
         @click="move('coach')"
       >
         코치진(준비중)

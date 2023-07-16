@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive class="align-center text-center fill-height" id="login-modal">
+    <v-responsive class="align-center fill-height text-center" id="login-modal">
       <v-sheet class="mx-auto" width="300">
         <v-img src="@/assets/royals_logo.png" class="mb-5" />
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -34,14 +34,14 @@
             label="초대코드"
           ></v-text-field>
           <v-btn
-            class="mb-3 bg-green-lighten-2 text-white"
+            class="bg-green-lighten-2 mb-3 text-white"
             block
             @click="validate"
           >
             등록하기
           </v-btn>
           <v-btn
-            class="mb-3 bg-red-lighten-2 text-white"
+            class="bg-red-lighten-2 mb-3 text-white"
             block
             @click="router.back"
           >

@@ -19,7 +19,7 @@
                 {{ realname }}
               </v-row>
               <v-row
-                class="align-self-center text-subtitle-1 mt-2 text-grey-darken-1"
+                class="align-self-center text-subtitle-1 text-grey-darken-1 mt-2"
                 justify="center"
               >
                 {{ role }}
@@ -32,9 +32,9 @@
         <v-card class="pa-2 fill-height" rounded="lg" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             패치노트
-            <v-card-subtitle class="d-inline px-0"
-              >| 1.0.1(Beta)-b</v-card-subtitle
-            >
+            <v-card-subtitle class="d-inline px-0">
+              | 1.0.1(Beta)-b
+            </v-card-subtitle>
           </v-card-title>
           <v-card-text class="mt-0">
             <p class="text-subtitle-1 font-weight-bold">출석통계 기능 추가</p>
@@ -94,7 +94,7 @@
                   출석체크
                 </v-row>
                 <v-row
-                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  class="align-self-center text-subtitle-2 text-grey-darken-1 mt-4"
                   justify="center"
                 >
                   출석체크 페이지로 이동합니다
@@ -133,7 +133,7 @@
                   출석명단
                 </v-row>
                 <v-row
-                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  class="align-self-center text-subtitle-2 text-grey-darken-1 mt-4"
                   justify="center"
                 >
                   출석명단 페이지로 이동합니다
@@ -172,7 +172,7 @@
                   시합정보
                 </v-row>
                 <v-row
-                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  class="align-self-center text-subtitle-2 text-grey-darken-1 mt-4"
                   justify="center"
                 >
                   시합정보 페이지로 이동합니다
@@ -211,7 +211,7 @@
                   사용가이드
                 </v-row>
                 <v-row
-                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  class="align-self-center text-subtitle-2 text-grey-darken-1 mt-4"
                   justify="center"
                 >
                   사용가이드 페이지(외부링크)로 이동합니다

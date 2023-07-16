@@ -13,13 +13,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [19]
+        node: [18]
 
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
@@ -43,13 +43,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [19]
+        node: [18]
 
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
@@ -70,13 +70,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [19]
+        node: [18]
 
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}

@@ -9,7 +9,7 @@
               <v-row>
                 <v-col cols="4" class="text-center">
                   <p class="text-subtitle-2 font-weight-bold text-blue">HOME</p>
-                  <p class="mt-3 text-h4 font-weight-bold">
+                  <p class="text-h4 font-weight-bold mt-3">
                     {{ gameData.homeTeamName }}
                   </p>
                 </v-col>
@@ -23,7 +23,7 @@
                 </v-col>
                 <v-col cols="4" class="text-center">
                   <p class="text-subtitle-2 font-weight-bold text-red">AWAY</p>
-                  <p class="mt-3 text-h4 font-weight-bold">
+                  <p class="text-h4 font-weight-bold mt-3">
                     {{ gameData.awayTeamName }}
                   </p>
                 </v-col>
@@ -58,8 +58,8 @@
       </v-col>
       <v-col cols="12" elevation="3">
         <v-row>
-          <v-col cols="7"
-            ><h5 class="text-subtitle-1 font-weight-bold mb-3">선수단</h5>
+          <v-col cols="7">
+            <h5 class="text-subtitle-1 font-weight-bold mb-3">선수단</h5>
             <EasyDataTable
               :headers="headers"
               :items="athelete"
@@ -165,9 +165,9 @@
         </v-row>
       </v-col>
       <v-col>
-        <v-btn @click="() => router.back()" class="bg-green-darken-1"
-          >뒤로가기</v-btn
-        >
+        <v-btn @click="() => router.back()" class="bg-green-darken-1">
+          뒤로가기
+        </v-btn>
       </v-col>
     </v-row>
   </v-responsive>

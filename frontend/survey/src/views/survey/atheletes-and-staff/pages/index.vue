@@ -1,10 +1,10 @@
 <template>
   <div
-    class="relative flex flex-col min-h-screen text-center justify-center py-10 max-w-screen-sm mx-auto"
+    class="relative mx-auto flex min-h-screen max-w-screen-sm flex-col justify-center py-10 text-center"
     mx-auto
   >
-    <div class="font-black font-mono text-3xl mb-10">출석조사 목록</div>
-    <div class="flex flex-col text-center px-10">
+    <div class="mb-10 font-mono text-3xl font-black">출석조사 목록</div>
+    <div class="flex flex-col px-10 text-center">
       <div>
         <div
           v-for="(surveyGroup, index) in surveyGroups"
@@ -15,7 +15,7 @@
         </div>
       </div>
       <button
-        class="rounded-lg drop-shadow-xl w-full p-3 font-bold font-mono text-white mt-10 transition ease-in-out delay-150 bg-red-300 hover:-translate-y-1 hover:scale-110 duration-300"
+        class="mt-10 w-full rounded-lg bg-red-300 p-3 font-mono font-bold text-white drop-shadow-xl transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
         @click="router.back()"
       >
         뒤로가기

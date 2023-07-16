@@ -15,7 +15,7 @@
             density="comfortable"
             label="Search"
             variant="solo"
-            class="ms-4 mt-3 w-25"
+            class="w-25 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-card-text class="font-weight-medium">

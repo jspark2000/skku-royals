@@ -6,7 +6,7 @@
         <v-card rounded="lg" class="pa-2" elevation="3">
           <v-card-title class="text-indigo-darken-4">
             시합 목록
-            <v-card-subtitle class="d-inline px-0"> </v-card-subtitle>
+            <v-card-subtitle class="d-inline px-0"></v-card-subtitle>
           </v-card-title>
           <v-card-text class="font-weight-medium mt-lg-3">
             <EasyDataTable
