@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive class="align-center text-center fill-height" id="login-modal">
+    <v-responsive class="align-center fill-height text-center" id="login-modal">
       <v-sheet class="mx-auto" width="300">
         <v-img src="@/assets/royals_logo.png" class="mb-5" />
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -21,13 +21,13 @@
 
           <v-btn
             block
-            class="mb-3 bg-green-lighten-2 text-white"
+            class="bg-green-lighten-2 mb-3 text-white"
             @click="validate"
           >
             로그인
           </v-btn>
           <v-btn
-            class="mb-3 bg-amber-lighten-2 text-white"
+            class="bg-amber-lighten-2 mb-3 text-white"
             block
             @click="register"
           >

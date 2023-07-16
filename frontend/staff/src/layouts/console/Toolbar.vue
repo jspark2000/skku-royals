@@ -245,9 +245,7 @@
         ></v-list-item>
       </v-list-group>
 
-      <v-list-subheader class="font-weight-bold mt-3">
-        실험실
-      </v-list-subheader>
+      <v-list-subheader class="font-weight-bold mt-3">실험실</v-list-subheader>
       <v-list-group value="chat-gpt">
         <template v-slot:activator="{ props }">
           <v-list-item v-bind="props">
@@ -269,9 +267,9 @@
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block class="bg-amber-lighten-2 text-white mb-2"
-          >Version 1.0.1(Beta)</v-btn
-        >
+        <v-btn block class="bg-amber-lighten-2 mb-2 text-white">
+          Version 1.0.1(Beta)
+        </v-btn>
       </div>
     </template>
   </v-navigation-drawer>

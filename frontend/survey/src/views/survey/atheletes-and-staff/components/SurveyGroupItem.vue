@@ -1,21 +1,21 @@
 <template>
   <div
-    class="relative flex mx-auto pl-5 py-6 font-mono rounded-lg shadow-lg hover:bg-black hover:text-white hover:rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+    class="relative mx-auto flex rounded-lg py-6 pl-5 font-mono shadow-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:rounded-lg hover:bg-black hover:text-white"
     @click="select()"
   >
     <span
-      class="animate-ping absolute inline-flex h-3 w-3 rounded-full opacity-75"
+      class="absolute inline-flex h-3 w-3 animate-ping rounded-full opacity-75"
       :class="[{ 'bg-red-400': deadline }, { 'bg-green-400': !deadline }]"
     ></span>
     <span
-      class="relative inline-flex rounded-full h-3 w-3"
+      class="relative inline-flex h-3 w-3 rounded-full"
       :class="[{ 'bg-red-400': deadline }, { 'bg-green-400': !deadline }]"
     ></span>
     <div class="text-start">
-      <div class="font-extrabold text-xl">
+      <div class="text-xl font-extrabold">
         {{ props.surveyGroupInfo?.name }}
       </div>
-      <div class="font-semibold text-gray-500 text-sm">
+      <div class="text-sm font-semibold text-gray-500">
         총 출석조사 수: {{ props.surveyGroupInfo?.surveys.length }}
       </div>
     </div>

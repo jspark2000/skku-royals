@@ -15,7 +15,7 @@
             density="comfortable"
             label="Search"
             variant="solo"
-            class="ms-4 mt-3 w-50"
+            class="w-50 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-card-text class="font-weight-medium">
@@ -46,7 +46,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="modal">
-      <v-sheet class="mx-auto pa-10 w-100">
+      <v-sheet class="pa-10 w-100 mx-auto">
         <h5 class="text-h6 font-weight-bold mb-5">부상정보 수정</h5>
         <v-form @submit.prevent @submit="updateInjury()">
           <v-text-field
@@ -89,7 +89,7 @@
           <v-btn
             @click="() => (modal = false)"
             block
-            class="mt-3 bg-green-lighten-2"
+            class="bg-green-lighten-2 mt-3"
           >
             뒤로가기
           </v-btn>

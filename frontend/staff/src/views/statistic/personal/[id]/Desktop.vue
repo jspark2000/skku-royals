@@ -7,10 +7,9 @@
         <v-card class="pa-10 text-center" elevation="1">
           <h5 class="text-h5 font-weight-bold mb-3">
             {{ people.name }}
-            <span class="text-subtitle-2 text-grey-darken-2"
-              >|
-              {{ people.studentNo ? people.studentNo % 100 : '??' }} 학번</span
-            >
+            <span class="text-subtitle-2 text-grey-darken-2">
+              | {{ people.studentNo ? people.studentNo % 100 : '??' }} 학번
+            </span>
           </h5>
           <h5 class="text-subtitle-1 font-weight-bold mb-3">
             {{ people.offPosition }} / {{ people.defPosition }}
@@ -118,7 +117,7 @@
     </v-row>
     <v-dialog v-model="errorModal" width="400">
       <v-card>
-        <v-card-title class="text-center text-red-darken-2">
+        <v-card-title class="text-red-darken-2 text-center">
           <v-icon
             class="align-center"
             icon="fas fa-triangle-exclamation"
@@ -129,7 +128,7 @@
           {{ errorMsg }}
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" block @click="router.back()"> 확인 </v-btn>
+          <v-btn color="primary" block @click="router.back()">확인</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

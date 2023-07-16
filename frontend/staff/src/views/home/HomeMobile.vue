@@ -16,10 +16,10 @@
                 </v-avatar>
               </v-row>
               <v-row class="font-weight-bold text-h6 mt-7" justify="center">
-                {{ userNickname }}
+                {{ realname }}
               </v-row>
               <v-row
-                class="align-self-center text-subtitle-1 mt-2 text-grey-darken-1"
+                class="align-self-center text-subtitle-1 text-grey-darken-1 mt-2"
                 justify="center"
               >
                 {{ role }}
@@ -60,7 +60,7 @@
                   출석체크
                 </v-row>
                 <v-row
-                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  class="align-self-center text-subtitle-2 text-grey-darken-1 mt-4"
                   justify="center"
                 >
                   출석체크 페이지로 이동합니다
@@ -102,7 +102,7 @@
                   출석명단
                 </v-row>
                 <v-row
-                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  class="align-self-center text-subtitle-2 text-grey-darken-1 mt-4"
                   justify="center"
                 >
                   출석명단 페이지로 이동합니다
@@ -141,7 +141,7 @@
                   시합정보
                 </v-row>
                 <v-row
-                  class="align-self-center text-subtitle-2 mt-4 text-grey-darken-1"
+                  class="align-self-center text-subtitle-2 text-grey-darken-1 mt-4"
                   justify="center"
                 >
                   시합정보 페이지로 이동합니다
@@ -161,7 +161,7 @@ import BreadCrumb from '@/components/Breadcrumbs.vue'
 import { axiosInstance } from '@/common/store/auth'
 
 const role = ref()
-const userNickname = ref()
+const realname = ref()
 const profileUrl = ref()
 
 watchEffect(async () => {
@@ -177,7 +177,7 @@ watchEffect(async () => {
 
   if (profile) {
     role.value = profile.role
-    userNickname.value = profile.userNickname
+    realname.value = profile.realname
     profileUrl.value = profile.profileUrl
   }
 })

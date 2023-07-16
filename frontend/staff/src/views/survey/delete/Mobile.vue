@@ -34,7 +34,7 @@
     </v-row>
     <v-dialog v-model="dialogFailed" width="auto">
       <v-card>
-        <v-card-title class="text-center text-red-darken-2">
+        <v-card-title class="text-red-darken-2 text-center">
           <v-icon class="align-center" icon="fas fa-check"></v-icon>
         </v-card-title>
         <v-card-text class="text-center">
@@ -49,7 +49,7 @@
     </v-dialog>
     <v-dialog v-model="dialogSuccess" width="auto">
       <v-card>
-        <v-card-title class="text-center text-amber-accent-2">
+        <v-card-title class="text-amber-accent-2 text-center">
           <v-icon
             class="align-center"
             icon="fas fa-triangle-exclamation"

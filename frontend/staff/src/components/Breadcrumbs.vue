@@ -8,7 +8,7 @@
       <v-col cols="8">
         <v-breadcrumbs
           :items="props.items"
-          class="justify-end font-weight-medium text-caption"
+          class="font-weight-medium text-caption justify-end"
         >
           <template v-slot:prepend>
             <v-icon size="small" :icon="props.icon"></v-icon>
@@ -24,7 +24,7 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="8">
-        <v-breadcrumbs :items="props.items" class="justify-end text-subtitle-2">
+        <v-breadcrumbs :items="props.items" class="text-subtitle-2 justify-end">
           <template v-slot:prepend>
             <v-icon size="small" :icon="props.icon"></v-icon>
           </template>

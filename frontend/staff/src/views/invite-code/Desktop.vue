@@ -7,14 +7,14 @@
           <v-card-title class="text-indigo-darken-4 mb-3">
             초대코드
           </v-card-title>
-          <v-card-text class="text-subtitle-1 font-weight-medium"
-            >{{ inviteCode }}
+          <v-card-text class="text-subtitle-1 font-weight-medium">
+            {{ inviteCode }}
             <p
-              class="mt-5 text-subtitle-2 font-weight-regular text-grey-darken-1"
+              class="text-subtitle-2 font-weight-regular text-grey-darken-1 mt-5"
             >
               24시간 주기로 초대코드가 변경됩니다.
-            </p></v-card-text
-          >
+            </p>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>

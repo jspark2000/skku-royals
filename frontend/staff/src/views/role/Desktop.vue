@@ -4,9 +4,7 @@
     <v-row>
       <v-col cols="12">
         <v-card class="pa-2" elevation="3">
-          <v-card-title class="text-indigo-darken-4">
-            계정 테이블
-          </v-card-title>
+          <v-card-title class="text-indigo-darken-4">계정 테이블</v-card-title>
           <v-card-text class="font-weight-medium mt-lg-3">
             <EasyDataTable
               :headers="headers"
@@ -38,7 +36,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="modal">
-      <v-sheet class="mx-auto pa-10 w-50">
+      <v-sheet class="pa-10 w-50 mx-auto">
         <v-form @submit.prevent @submit="updatePeople()">
           <v-text-field
             v-model="targetId"
@@ -62,7 +60,7 @@
           <v-btn
             @click="() => (modal = false)"
             block
-            class="mt-3 bg-green-lighten-2"
+            class="bg-green-lighten-2 mt-3"
           >
             뒤로가기
           </v-btn>
@@ -70,7 +68,7 @@
       </v-sheet>
     </v-dialog>
     <v-dialog v-model="deleteModal" width="auto">
-      <v-sheet class="mx-auto pa-10">
+      <v-sheet class="pa-10 mx-auto">
         <h5 class="text-h6 font-weight-bold mb-3">계정 삭제하기</h5>
         <p class="mb-5">삭제할 계정의 이름을 정확하게 입력해주세요</p>
         <v-form ref="form" @submit.prevent @submit="deletePeople()">
@@ -86,7 +84,7 @@
           <v-btn
             @click="() => (deleteModal = false)"
             block
-            class="mt-3 bg-indigo-darken-2"
+            class="bg-indigo-darken-2 mt-3"
           >
             뒤로가기
           </v-btn>

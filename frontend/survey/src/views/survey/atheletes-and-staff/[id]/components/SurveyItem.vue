@@ -1,21 +1,21 @@
 <template>
   <div
-    v-if="props.pageInfo?.currentPage === props.pageInfo?.index as number - 1"
-    class="flex mx-auto p-6 font-mono"
+    v-if="props.pageInfo?.currentPage === (props.pageInfo?.index as number) - 1"
+    class="mx-auto flex p-6 font-mono"
   >
-    <div class="pb-6 rounded-lg shadow-lg bg-white">
+    <div class="rounded-lg bg-white pb-6 shadow-lg">
       <div
-        class="relative flex flex-wrap justify-center py-6 bg-black rounded-t-xl pb-6"
+        class="relative flex flex-wrap justify-center rounded-t-xl bg-black py-6 pb-6"
       >
         <h1
-          class="relative text-center w-full flex-none mb-2 text-2xl font-semibold text-white"
+          class="relative mb-2 w-full flex-none text-center text-2xl font-semibold text-white"
         >
           {{ props.surveyData?.description }}
         </h1>
         <div class="relative text-lg text-white">
           {{ props.surveyData?.date.substring(5, 10) }}
         </div>
-        <div class="relative text-teal-400 ml-3">
+        <div class="relative ml-3 text-teal-400">
           {{
             props.surveyData?.type === AttendanceType.Integrated
               ? '통합훈련'
@@ -23,9 +23,9 @@
           }}
         </div>
       </div>
-      <div class="flex justify-center mb-10">
+      <div class="mb-10 flex justify-center">
         <div
-          class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 font-mono"
+          class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 font-mono sm:grid-cols-6"
         >
           <div
             v-if="props.surveyData?.type === AttendanceType.Dispersion"
@@ -34,8 +34,9 @@
             <label
               for="location"
               class="block text-sm font-semibold leading-6 text-gray-900"
-              >캠퍼스</label
             >
+              캠퍼스
+            </label>
             <div class="mt-2">
               <select
                 id="location"
@@ -53,8 +54,9 @@
             <label
               for="survey"
               class="block text-sm font-semibold leading-6 text-gray-900"
-              >출석</label
             >
+              출석
+            </label>
             <div class="mt-2">
               <select
                 id="survey"
@@ -73,8 +75,9 @@
             <label
               for="reason"
               class="block text-sm font-semibold leading-6 text-gray-900"
-              >늦참 혹은 불참 사유</label
             >
+              늦참 혹은 불참 사유
+            </label>
             <div class="mt-2">
               <input
                 type="text"
@@ -87,7 +90,7 @@
             <Transition name="slide-fade">
               <p
                 v-if="!valid"
-                class="transition ease-in-out mt-1 text-red-500 text-sm font-semibold"
+                class="mt-1 text-sm font-semibold text-red-500 transition ease-in-out"
               >
                 필수 입력 항목입니다.
               </p>
@@ -95,11 +98,11 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-center mb-4 text-sm font-medium">
+      <div class="mb-4 flex justify-center text-sm font-medium">
         <div class="flex">
           <button
             v-if="props.pageInfo?.currentPage !== 0"
-            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black mr-4"
+            class="mr-4 h-12 border-2 border-black bg-teal-400 px-6 font-semibold uppercase tracking-wider text-black ease-in"
             @click="decrement"
           >
             뒤로가기
@@ -107,8 +110,11 @@
         </div>
         <div class="flex">
           <button
-            v-if="props.pageInfo?.currentPage !== props.pageInfo?.totalPages as number - 1"
-            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            v-if="
+              props.pageInfo?.currentPage !==
+              (props.pageInfo?.totalPages as number) - 1
+            "
+            class="h-12 border-2 border-black bg-teal-400 px-6 font-semibold uppercase tracking-wider text-black ease-in"
             @click="increment()"
           >
             다음으로
@@ -116,8 +122,11 @@
         </div>
         <div class="flex">
           <button
-            v-if="props.pageInfo?.currentPage === props.pageInfo?.totalPages as number - 1"
-            class="px-6 h-12 ease-in uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+            v-if="
+              props.pageInfo?.currentPage ===
+              (props.pageInfo?.totalPages as number) - 1
+            "
+            class="h-12 border-2 border-black bg-teal-400 px-6 font-semibold uppercase tracking-wider text-black ease-in"
             @click="increment()"
           >
             제출하기

@@ -39,7 +39,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="checkModal" width="auto">
-      <v-sheet width="400" class="mx-auto pa-10">
+      <v-sheet width="400" class="pa-10 mx-auto">
         <h5 class="text-h6 font-weight-bold mb-3">출석삭제</h5>
         <p class="text-body-2 mb-5">
           삭제할 출석의 날짜를 정확하게 입력해주세요
@@ -48,7 +48,9 @@
           <v-text-field
             v-model="checkInput"
             variant="outlined"
-            :rules="[(v: any) => v === targetDate || '날짜를 정확하게 입력해주세요']"
+            :rules="[
+              (v: any) => v === targetDate || '날짜를 정확하게 입력해주세요'
+            ]"
             :label="targetDate"
           ></v-text-field>
           <v-btn type="submit" class="bg-red-darken-2 mt-3">삭제하기</v-btn>

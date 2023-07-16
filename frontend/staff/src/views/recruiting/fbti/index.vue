@@ -1,9 +1,9 @@
 <template>
   <v-container class="fill-height" :class="{ 'd-none': landing }">
-    <v-responsive class="align-center text-center fill-height">
+    <v-responsive class="align-center fill-height text-center">
       <v-img contain height="160" src="@/assets/intro.svg" />
 
-      <div class="text-h5 font-weight-bold mt-3 mb-1">풋볼 성격유형 검사</div>
+      <div class="text-h5 font-weight-bold mb-1 mt-3">풋볼 성격유형 검사</div>
 
       <p class="text-subtitle-2 font-weight-regular">
         나에게 어울리는 미식축구 포지션은?
@@ -32,9 +32,9 @@
   <v-container class="fill-height" :class="{ 'd-none': !landing }">
     <v-responsive
       :class="{ 'd-none': landing }"
-      class="align-center text-center fill-height"
+      class="align-center fill-height text-center"
     >
-      <div class="text-h6 font-weight-bold mt-3 mb-10">
+      <div class="text-h6 font-weight-bold mb-10 mt-3">
         풋볼 성격유형 검사 (FBTI)
       </div>
       <v-carousel
@@ -53,7 +53,7 @@
           <v-radio-group v-model="answer[i]" mandatory>
             <template v-slot:label>
               <div
-                class="text-subtitle-2 font-weight-bold mb-2 text-cyan-darken-3"
+                class="text-subtitle-2 font-weight-bold text-cyan-darken-3 mb-2"
               >
                 {{ question.title }}
               </div>
@@ -73,7 +73,7 @@
             </v-radio>
             <v-btn
               :class="{ 'd-none': !lastPage }"
-              class="mt-4 bg-green-accent-4 text-white"
+              class="bg-green-accent-4 mt-4 text-white"
               @click="submit()"
               block
             >
@@ -98,7 +98,7 @@
     </v-responsive>
     <v-dialog v-model="invalid">
       <v-card class="pt-3">
-        <v-card-title class="text-center text-amber-accent-2">
+        <v-card-title class="text-amber-accent-2 text-center">
           <v-icon
             class="align-center"
             icon="fas fa-triangle-exclamation"
@@ -114,7 +114,7 @@
     </v-dialog>
     <v-dialog v-model="result">
       <v-card class="pt-3">
-        <v-card-title class="text-center text-brown-darken-2">
+        <v-card-title class="text-brown-darken-2 text-center">
           <v-icon class="align-center" icon="fas fa-football"></v-icon>
         </v-card-title>
         <v-card-text class="text-center">
@@ -125,11 +125,11 @@
           <p class="text-subtitle-2 font-weight-medium mb-8">
             {{ recommandDesc }}
           </p>
-          <v-btn class="bg-amber-accent-3 text-white my-3" block>
+          <v-btn class="bg-amber-accent-3 my-3 text-white" block>
             카카오톡으로 공유하기(준비중)
           </v-btn>
           <v-btn
-            class="bg-green-accent-4 text-white my-3"
+            class="bg-green-accent-4 my-3 text-white"
             href="https://forms.gle/ywwo8QS4iyhs4mA89"
             block
           >

@@ -15,7 +15,7 @@
             density="comfortable"
             label="Search"
             variant="solo"
-            class="ms-4 mt-3 w-50"
+            class="w-50 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-card-text class="font-weight-medium">
@@ -44,7 +44,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="modal" width="auto">
-      <v-sheet class="mx-auto w-100 pa-10">
+      <v-sheet class="w-100 pa-10 mx-auto">
         <h5 class="text-h6 font-weight-bold mb-3">부원 삭제하기</h5>
         <p class="mb-5">삭제할 부원의 이름을 정확하게 입력해주세요</p>
         <v-form ref="form" @submit.prevent @submit="deletePeople()">
@@ -57,7 +57,7 @@
           <v-btn type="submit" block class="bg-red-darken-2 mt-3">
             삭제하기
           </v-btn>
-          <v-btn @click="closeModal()" block class="mt-3 bg-green-darken-2">
+          <v-btn @click="closeModal()" block class="bg-green-darken-2 mt-3">
             뒤로가기
           </v-btn>
         </v-form>

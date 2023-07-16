@@ -26,7 +26,9 @@
               variant="outlined"
               type="date"
               label="종료날짜"
-              :rules="[(v: any) => !!(v.length === 10) || '필수 입력 항목입니다']"
+              :rules="[
+                (v: any) => !!(v.length === 10) || '필수 입력 항목입니다'
+              ]"
             ></v-text-field>
             <v-btn type="submit" block class="bg-green-darken-1">
               불러오기

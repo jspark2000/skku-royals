@@ -40,7 +40,7 @@
     </v-row>
     <v-dialog width="auto" v-model="invalid">
       <v-card rounded="lg" class="pt-3">
-        <v-card-title class="text-center text-amber-accent-2">
+        <v-card-title class="text-amber-accent-2 text-center">
           <v-icon
             class="align-center"
             icon="fas fa-triangle-exclamation"

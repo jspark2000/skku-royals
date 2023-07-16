@@ -31,7 +31,7 @@
       </v-col>
     </v-row>
     <v-dialog v-model="modal" width="auto">
-      <v-sheet width="400" class="mx-auto pa-10">
+      <v-sheet width="400" class="pa-10 mx-auto">
         <h5 class="text-h6 font-weight-bold mb-3">시합정보 삭제하기</h5>
         <p class="mb-5">삭제할 시합명을 정확하게 입력해주세요</p>
         <v-form ref="form" @submit.prevent @submit="deleteGame()">
@@ -39,12 +39,14 @@
             v-model="validation"
             variant="outlined"
             :label="gameName"
-            :rules="[(v: any) => v === gameName || '시합명을 정확하게 입력해주세요']"
+            :rules="[
+              (v: any) => v === gameName || '시합명을 정확하게 입력해주세요'
+            ]"
           ></v-text-field>
           <v-btn type="submit" block class="bg-red-darken-2 mt-3">
             삭제하기
           </v-btn>
-          <v-btn @click="closeModal()" block class="mt-3 bg-green-darken-2">
+          <v-btn @click="closeModal()" block class="bg-green-darken-2 mt-3">
             뒤로가기
           </v-btn>
         </v-form>

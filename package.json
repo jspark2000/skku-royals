@@ -1,8 +1,14 @@
 {
   "scripts": {
     "lint": "eslint . --ext .js,.ts,.vue",
+    "lint:backend": "eslint ./backend --ext .js,.ts,.vue",
+    "lint:staff": "eslint ./frontend/staff --ext .js,.ts,.vue",
+    "lint:survey": "eslint ./frontend/survey --ext .js,.ts,.vue",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "format:check:backend": "prettier --check ./backend",
+    "format:check:staff": "prettier --check ./frontend/staff",
+    "format:check:survey": "prettier --check ./frontend/survey",
     "dev:staff": "pnpm --filter=!frontend/survey -r dev",
     "dev:survey": "pnpm --filter=!frontend/staff -r dev"
   },
@@ -14,7 +20,8 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-vue": "^9.15.1",
     "lefthook": "^1.4.5",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.4.1",
     "typescript": "^5.1.6",
     "vue-eslint-parser": "^9.3.1"
   }

@@ -15,7 +15,7 @@
             density="comfortable"
             label="Search"
             variant="solo"
-            class="ms-4 mt-3 w-50"
+            class="w-50 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-tabs v-model="tab" class="ms-4" bg-color="white">

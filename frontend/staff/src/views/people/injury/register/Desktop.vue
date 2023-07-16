@@ -48,7 +48,7 @@
               label="복귀시점"
               :rules="[(v: any) => !!v || '필수 입력 항목입니다']"
             ></v-text-field>
-            <v-btn type="submit" block class="mt-5 bg-amber-lighten-2">
+            <v-btn type="submit" block class="bg-amber-lighten-2 mt-5">
               등록하기
             </v-btn>
           </v-form>

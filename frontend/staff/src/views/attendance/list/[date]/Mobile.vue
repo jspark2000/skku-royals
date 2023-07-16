@@ -132,7 +132,7 @@
             density="comfortable"
             label="Search"
             variant="solo"
-            class="ms-4 mt-3 w-75"
+            class="w-75 ms-4 mt-3"
             clearable
           ></v-text-field>
           <v-tabs v-model="tab" class="ms-4" bg-color="white">
@@ -249,7 +249,7 @@
     </v-row>
     <v-dialog width="auto" v-model="invalid">
       <v-card class="pt-3">
-        <v-card-title class="text-center text-amber-accent-2">
+        <v-card-title class="text-amber-accent-2 text-center">
           <v-icon
             class="align-center"
             icon="fas fa-triangle-exclamation"

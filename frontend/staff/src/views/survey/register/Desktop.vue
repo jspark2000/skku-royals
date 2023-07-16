@@ -14,7 +14,7 @@
             ></v-text-field>
           </v-card>
           <v-card
-            class="px-4 py-5 mt-3"
+            class="mt-3 px-4 py-5"
             elevation="2"
             v-for="(item, index) in surveys"
             :key="index"
@@ -51,7 +51,7 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-card class="px-4 py-5 mt-3" elevation="2">
+          <v-card class="mt-3 px-4 py-5" elevation="2">
             <v-row>
               <v-col cols="6">
                 <v-btn block class="bg-indigo-lighten-1" @click="addSurvey()">
