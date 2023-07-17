@@ -19,6 +19,9 @@ import { ChatGptModule } from './chat-gpt/chat-gpt.module'
 import { GameModule } from './game/game.module'
 import { StatisticModule } from './statistic/statistic.module'
 import { CacheModule } from '@nestjs/cache-manager'
+import { EmailModule } from './email/email.module'
+import { MailerModule } from '@nestjs-modules/mailer'
+import { MailerConfigService } from './email/mailConfig.service'
 
 @Module({
   imports: [
@@ -39,7 +42,11 @@ import { CacheModule } from '@nestjs/cache-manager'
     SurveyModule,
     ChatGptModule,
     GameModule,
-    StatisticModule
+    StatisticModule,
+    EmailModule,
+    MailerModule.forRootAsync({
+      useClass: MailerConfigService
+    })
   ],
   controllers: [AppController],
   providers: [

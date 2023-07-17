@@ -11,7 +11,7 @@ import { Roles } from 'src/common/decorators/roles.decorator'
 import { GameService } from './game.service'
 import { GameListDTO } from './dto/gameList.dto'
 
-@Roles(Role.Newbie)
+@Roles(Role.Normal)
 @Controller('game')
 export class GameController {
   constructor(private readonly gameService: GameService) {}

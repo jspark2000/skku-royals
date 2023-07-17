@@ -641,35 +641,6 @@
             }
         },
         {
-            "_id": "d3c10c38-314b-4941-ad14-7d24b1049e8e",
-            "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
-            "containerId": "ad9cc884-1d8e-461c-a78c-d0d2f058cf63",
-            "name": "Create Fake User",
-            "url": "/band/fake/user/",
-            "method": "POST",
-            "sortNum": 150000,
-            "created": "2023-03-09T11:49:05.837Z",
-            "modified": "2023-03-09T12:00:31.631Z",
-            "headers": [],
-            "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"secret\": \"45069a61bc8cacfac7300fe9b22216cae315be07d4bfe043d7a4886b1b40fe31\"\n}",
-                "form": []
-            },
-            "tests": [],
-            "preReq": {
-                "runRequests": [
-                    {
-                        "reqId": "cb3317fe-e798-4632-aaf6-03e0f225744d",
-                        "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
-                        "triggerCondition": "run-always",
-                        "triggerValue": ""
-                    }
-                ]
-            }
-        },
-        {
             "_id": "f675eb41-ed30-40c6-ba90-871aa0f2346b",
             "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
             "containerId": "85df4747-6952-45ff-9f69-0a06e743b2ac",
@@ -865,30 +836,6 @@
                 "runRequests": [
                     {
                         "reqId": "0d5ca4a5-b065-432f-a78f-4df15db37b33",
-                        "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
-                        "triggerCondition": "run-always",
-                        "triggerValue": ""
-                    }
-                ]
-            }
-        },
-        {
-            "_id": "0d5ca4a5-b065-432f-a78f-4df15db37b33",
-            "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
-            "containerId": "ad9cc884-1d8e-461c-a78c-d0d2f058cf63",
-            "name": "Delete Fake User",
-            "url": "/band/100",
-            "method": "DELETE",
-            "sortNum": 220000,
-            "created": "2023-03-09T12:08:41.812Z",
-            "modified": "2023-03-09T12:09:29.255Z",
-            "headers": [],
-            "params": [],
-            "tests": [],
-            "preReq": {
-                "runRequests": [
-                    {
-                        "reqId": "cb3317fe-e798-4632-aaf6-03e0f225744d",
                         "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
                         "triggerCondition": "run-always",
                         "triggerValue": ""
@@ -1156,35 +1103,14 @@
             "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
             "containerId": "",
             "name": "test",
-            "url": "/statistic/people/1?start=2022-01-01&end=2024-01-01",
+            "url": "/email-test",
             "method": "GET",
             "sortNum": 340000,
             "created": "2023-05-11T13:16:05.631Z",
-            "modified": "2023-05-11T13:41:55.459Z",
+            "modified": "2023-07-16T22:09:23.164Z",
             "headers": [],
-            "params": [
-                {
-                    "name": "start",
-                    "value": "2022-01-01",
-                    "isPath": false
-                },
-                {
-                    "name": "end",
-                    "value": "2024-01-01",
-                    "isPath": false
-                }
-            ],
-            "tests": [],
-            "preReq": {
-                "runRequests": [
-                    {
-                        "reqId": "c6d517f3-0882-41d1-9715-91947a18e7cd",
-                        "colId": "626299d2-0cca-4c41-92b3-3c56e48103c4",
-                        "triggerCondition": "run-always",
-                        "triggerValue": ""
-                    }
-                ]
-            }
+            "params": [],
+            "tests": []
         }
     ]
 }

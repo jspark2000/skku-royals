@@ -51,6 +51,14 @@ const routes = [
         meta: {
           roles: ['Public', 'Newbie', 'Normal', 'Admin', 'SuperAdmin']
         }
+      },
+      {
+        path: '/verify-email',
+        name: 'verify-email',
+        component: () => import('@/views/verify-email/index.vue'),
+        meta: {
+          roles: ['Public', 'Newbie', 'Normal', 'Admin', 'SuperAdmin']
+        }
       }
     ]
   },
@@ -77,7 +85,7 @@ const routes = [
         name: 'people-list',
         component: () => import('@/views/people/list/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       },
       {
@@ -109,7 +117,7 @@ const routes = [
         name: 'injury-list',
         component: () => import('@/views/people/injury/list/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       },
       {
@@ -133,7 +141,7 @@ const routes = [
         name: 'coaching-staff-list',
         component: () => import('@/views/people/coaching-staff/list/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       },
       {
@@ -165,7 +173,7 @@ const routes = [
         name: 'attendance-list',
         component: () => import('@/views/attendance/list/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       },
       {
@@ -173,7 +181,7 @@ const routes = [
         name: 'attendance-detail',
         component: () => import('@/views/attendance/list/[date]/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       },
       {
@@ -249,7 +257,7 @@ const routes = [
         name: 'game-list',
         component: () => import('@/views/game/list/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       },
       {
@@ -257,7 +265,7 @@ const routes = [
         name: 'game-detail',
         component: () => import('@/views/game/list/[id]/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       },
       {
@@ -301,7 +309,7 @@ const routes = [
         name: 'chat-gpt',
         component: () => import('@/views/chatgpt/index.vue'),
         meta: {
-          roles: ['Newbie', 'Normal', 'Admin', 'SuperAdmin']
+          roles: ['Normal', 'Admin', 'SuperAdmin']
         }
       }
     ]

@@ -22,6 +22,7 @@ import { AuthenticatedRequest } from './interfaces/authenticated-request.interfa
 import { JwtTokens } from './interfaces/jwt.interface'
 import { LoginUserDto } from './dto/loginUser.dto'
 import { RegisterDTO } from './dto/register.dto'
+import { VerifyEmailDTO } from './dto/verifyEmail.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -34,6 +35,14 @@ export class AuthController {
       jwtTokens.refreshToken,
       REFRESH_TOKEN_COOKIE_OPTIONS
     )
+  }
+
+  @Public()
+  @Post('verify-email')
+  async verifyEmail(
+    @Body() emailDTO: VerifyEmailDTO
+  ): Promise<{ realname: string }> {
+    return await this.authService.verifyEmail(emailDTO)
   }
 
   @Public()

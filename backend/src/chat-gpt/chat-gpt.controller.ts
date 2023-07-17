@@ -10,7 +10,7 @@ import { Roles } from 'src/common/decorators/roles.decorator'
 import { ChatGptService } from './chat-gpt.service'
 import { ChatDTO } from './dto/chat.dto'
 
-@Roles(Role.Newbie)
+@Roles(Role.Normal)
 @Controller('chat-gpt')
 export class ChatGptController {
   constructor(private readonly chatGPTService: ChatGptService) {}

@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <script src='https://cdn.tailwindcss.com'></script>
+    <style>
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        cursor: pointer;
+        border-radius: 5px;
+        color: white;
+        background-color: blue;
+      }
+
+      .btn:hover {
+        background-color: darkblue;
+      }
+    </style>
+  </head>
+  <body>
+    <img src='cid:logo' width='300' />
+    <h1 class='text-4xl font-bold'>
+      아래 버튼을 클릭하여 이메일 주소를 인증해주세요
+    </h1>
+    <p class='text-2xl'>
+      Welcome to SKKU ROYALS! To complete your sign up, <br/>
+      click button below and verify your email address.
+    </p>
+    <a
+      href='{{link}}'
+      class='btn font-bold text-white'
+    >
+      verify email
+    </a class='text-2xl'>
+    <p>
+      If you did not sign up, you can just ignore this email.
+    </p>
+    <p>
+      SKKU ROYALS
+    </p>
+    <footer>
+      성균관대학교 미식축구부 로얄스
+    </footer>
+  </body>
+</html>

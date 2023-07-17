@@ -8,7 +8,7 @@ import { AttendanceDeleteDTO } from './dto/attendanceDelete.dto'
 import { RegisterAttendancesDTO } from './dto/attendanceRegister.dto'
 
 @Controller('attendance')
-@Roles(Role.Newbie)
+@Roles(Role.Normal)
 export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceService) {}
 

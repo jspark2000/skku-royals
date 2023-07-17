@@ -2,3 +2,4 @@ dist
 node_modules
 thunder-tests
 .pnpm-store
+*.hbs

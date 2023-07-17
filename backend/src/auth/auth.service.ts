@@ -18,12 +18,17 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { LoginUserDto } from './dto/loginUser.dto'
 import { hash, verify } from 'argon2'
 import { RegisterDTO } from './dto/register.dto'
+import { EmailService } from 'src/email/email.service'
+import { generateHash } from 'src/common/hash/generate-hash'
+import { Role } from '@prisma/client'
+import { VerifyEmailDTO } from './dto/verifyEmail.dto'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly mailerService: EmailService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
@@ -148,10 +153,40 @@ export class AuthService {
       }
     })
 
+    const pin = generateHash()
+
+    await this.cacheManager.set(registerResult.email, pin, 24 * 60 * 60 * 1000)
+
+    this.sendEmail(registerResult.email, pin)
+
     return await this.createJwtTokens(
       registerResult.username,
       registerResult.email
     )
+  }
+
+  async verifyEmail(emailDTO: VerifyEmailDTO): Promise<{ realname: string }> {
+    const { email, pin } = emailDTO
+
+    const target = await this.cacheManager.get(email)
+
+    if (target !== pin) {
+      throw new BadRequestException('유효하지 않은 요청입니다.')
+    }
+
+    await this.cacheManager.del(email)
+
+    return await this.prismaService.bandUser.update({
+      where: {
+        email
+      },
+      data: {
+        role: Role.Normal
+      },
+      select: {
+        realname: true
+      }
+    })
   }
 
   async verifyJwtToken(
@@ -211,5 +246,9 @@ export class AuthService {
       return false
     }
     return true
+  }
+
+  private async sendEmail(email: string, pin: string) {
+    this.mailerService.sendEmailAuthenticationPin(email, pin)
   }
 }
