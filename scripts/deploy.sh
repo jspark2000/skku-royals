@@ -1,7 +1,6 @@
 #!/bin/bash
 . ~/.nvm/nvm.sh
-nvm install --lts
-npm update -g
+nvm use 18
 
 cd /home/ec2-user/action
 
