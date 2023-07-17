@@ -19,7 +19,8 @@ export class BandService {
         profileUrl: true,
         realname: true,
         email: true,
-        role: true
+        role: true,
+        lastActive: true
       }
     })
 
@@ -36,7 +37,8 @@ export class BandService {
         profileUrl: bandUser.profileUrl,
         realname: bandUser.realname,
         email: bandUser.email,
-        role: bandUser.role
+        role: bandUser.role,
+        lastActive: bandUser.lastActive
       }
     })
   }
@@ -49,7 +51,8 @@ export class BandService {
       select: {
         realname: true,
         profileUrl: true,
-        role: true
+        role: true,
+        email: true
       }
     })
 

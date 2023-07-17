@@ -19,16 +19,26 @@
                 {{ realname }}
               </v-row>
               <v-row
+                v-if="emailVerified"
                 class="align-self-center text-subtitle-1 text-grey-darken-1 mt-2"
                 justify="center"
               >
                 {{ role }}
               </v-row>
+              <v-row
+                v-else
+                class="align-self-center text-subtitle-1 text-red-darken-2 mt-5 text-center"
+                justify="center"
+              >
+                이메일 미인증
+                <br />
+                {{ email }}으로 전송한 이메일을 확인해주세요
+              </v-row>
             </v-container>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col v-if="emailVerified" cols="12" md="4">
         <v-hover v-slot="{ isHovering, props }">
           <v-card
             class="pa-2 transition-swing"
@@ -70,7 +80,7 @@
           </v-card>
         </v-hover>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col v-if="emailVerified" cols="12" md="4">
         <v-hover v-slot="{ isHovering, props }">
           <v-card
             class="pa-2 transition-swing"
@@ -112,7 +122,7 @@
           </v-card>
         </v-hover>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col v-if="emailVerified" cols="12" md="4">
         <v-hover v-slot="{ isHovering, props }">
           <v-card
             class="pa-2 transition-swing"
@@ -163,6 +173,8 @@ import { axiosInstance } from '@/common/store/auth'
 const role = ref()
 const realname = ref()
 const profileUrl = ref()
+const email = ref()
+const emailVerified = ref(true)
 
 watchEffect(async () => {
   const profile = await axiosInstance
@@ -179,6 +191,11 @@ watchEffect(async () => {
     role.value = profile.role
     realname.value = profile.realname
     profileUrl.value = profile.profileUrl
+    email.value = profile.email
+  }
+
+  if (!profile || profile.role === 'Newbie') {
+    emailVerified.value = false
   }
 })
 

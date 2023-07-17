@@ -20,6 +20,13 @@
                   <v-img :src="item.profileUrl"></v-img>
                 </v-avatar>
               </template>
+              <template #item-lastActive="item">
+                {{
+                  item.lastActive
+                    ? new Date(item.lastActive).toLocaleString()
+                    : ''
+                }}
+              </template>
               <template #item-update="item">
                 <v-btn @click="getUpdateModal(item)" class="bg-green-darken-2">
                   <v-icon icon="fas fa-pencil" size="12px"></v-icon>
@@ -145,13 +152,17 @@ type BandUserResponseDTO = {
   realname: string
   profileUrl: string
   role: string
+  email: string
+  lastActive: string
 }
 
 const items: Ref<BandUserResponseDTO[]> = ref([])
 const headers: Header[] = [
-  { text: '프로필 사진', value: 'profileUrl' },
+  { text: '프로필', value: 'profileUrl' },
   { text: '이름', value: 'realname' },
   { text: '권한', value: 'role' },
+  { text: '이메일', value: 'email' },
+  { text: '마지막 접속', value: 'lastActive' },
   { text: '수정하기', value: 'update' },
   { text: '삭제하기', value: 'delete' }
 ]
