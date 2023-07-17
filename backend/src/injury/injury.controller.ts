@@ -16,7 +16,7 @@ import { RegisterInjuryDTO } from './dto/registerInjury.dto'
 import { UpdateInjuryInfoDTO } from './dto/updateInjury.dto'
 import { InjuryService } from './injury.service'
 
-@Roles(Role.Normal)
+@Roles(Role.Admin)
 @Controller('injury')
 export class InjuryController {
   constructor(private readonly injuryService: InjuryService) {}

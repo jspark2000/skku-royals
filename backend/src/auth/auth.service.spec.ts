@@ -4,6 +4,7 @@ import { expect } from 'chai'
 import { stub } from 'sinon'
 import { AuthService } from './auth.service'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { EmailService } from 'src/email/email.service'
 
 describe('AuthService', () => {
   let service: AuthService
@@ -14,6 +15,7 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         { provide: AuthService, useValue: {} },
+        { provide: EmailService, useValue: {} },
         {
           provide: CACHE_MANAGER,
           useFactory: () => ({

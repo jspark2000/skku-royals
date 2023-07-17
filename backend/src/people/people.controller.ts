@@ -5,12 +5,12 @@ import { PeopleService } from './people.service'
 import { Public } from 'src/auth/decorators/public.decorator'
 
 @Public()
+@Roles(Role.Normal)
 @Controller('people')
 export class PeopleController {
   constructor(private readonly peopleService: PeopleService) {}
 
   @Get('list')
-  @Roles(Role.Newbie)
   async getPeopleList(): Promise<People[]> {
     return await this.peopleService.getPeopleList()
   }
@@ -24,7 +24,6 @@ export class PeopleController {
   }
 
   @Get('coaching-staff/list')
-  @Roles(Role.Newbie)
   async getCoachingStaffList() {
     return await this.peopleService.getCoachingStaffList()
   }

@@ -4,8 +4,8 @@ import { Roles } from 'src/common/decorators/roles.decorator'
 import { StatisticService } from './statistic.service'
 import { GetAttendanceStatisticsDTO } from './dto/getAttendanceStatistics.dto'
 
+@Roles(Role.Normal)
 @Controller('statistic')
-@Roles(Role.Newbie)
 export class StatisticController {
   constructor(private readonly statisticService: StatisticService) {}
 
