@@ -20,8 +20,8 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers-contrib/features/pnpm:2": {},
-    "ghcr.io/devcontainers/features/terraform:1": {}
+    "ghcr.io/devcontainers-contrib/features/pnpm:latest": {},
+    "ghcr.io/devcontainers/features/terraform:latest": {}
   },
   "mounts": [
     "source=${localEnv:HOME}/.aws,target=/home/node/.aws,type=bind,consistency=cached"
