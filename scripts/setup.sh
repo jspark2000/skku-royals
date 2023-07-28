@@ -38,12 +38,6 @@ echo "ORIGIN=http://localhost:5173" >> backend/.env
 # Set PORT
 echo "PORT=4000" >> backend/.env
 
-# Set BAND API
-echo "# GET BAND API KEY HERE - https://developers.band.us/" >> backend/.env
-echo "CLIENT_ID=YOUR_CLIENT_ID_HERE" >> backend/.env
-echo "CLIENT_SECRET=YOUR_CLIENT_SECRET_HERE" >> backend/.env
-echo "ROYALS_BAND_KEY=YOUR_BAND_KEY_HERE" >> backend/.env
-
 # Set OPENAI KEY - 
 echo "OPENAI_API_KEY=YOUR_OPENAI_API_KEY_HERE" >> backend/.env
 
@@ -61,14 +55,14 @@ npx lefthook install
 # Apply database migration
 for i in {1..5}
 do
-  pnpm --filter backend exec prisma generate &&
-  pnpm --filter backend exec prisma migrate dev && break # break if migration succeed
+  pnpm -F backend exec prisma generate &&
+  pnpm -F backend exec prisma migrate dev && break # break if migration succeed
   echo -e '\n⚠️ Failed to migrate. Waiting for db to be ready...\n'
   sleep 5
 done
 
 # seeding database
-pnpm --filter backend exec prisma migrate reset -f
+pnpm -F backend exec prisma migrate reset -f
 
 # Enable git auto completion
 if ! grep -q "bash-completion/completions/git" ~/.bashrc

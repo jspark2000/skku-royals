@@ -50,3 +50,18 @@ thunderActivity.json
 thunder-tests/environments
 !thunder-tests/environments/base.json
 thunder-tests/_db-backup
+
+# terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# tfvars
+*.tfvars
+*.tfvars.json
