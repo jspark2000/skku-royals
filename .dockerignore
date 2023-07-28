@@ -1,9 +1,0 @@
-*
-
-!backend
-!package.json
-!pnpm-lock.yaml
-!pnpm-workspace.yaml
-
-**/dist
-**/.env
