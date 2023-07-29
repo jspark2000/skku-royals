@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "frontend_survey" {
   bucket = var.s3_survey_bucket
 
   tags = {
-    Name = "Codedang"
+    Name = "frontend-survey-s3-bucket"
   }
 }
 
