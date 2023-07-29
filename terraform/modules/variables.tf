@@ -1,3 +1,9 @@
+variable "s3_survey_bucket" {
+  description = "Bucket name for survey page s3 store"
+  type        = string
+  default     = "survey.skku-royals.football"
+}
+
 variable "postgres_username" {
   description = "Username for Postgres DB"
   type        = string
