@@ -8,8 +8,8 @@ RUN corepack enable
 RUN pnpm --filter=backend deploy out
 
 WORKDIR /build/out
-RUN npx prisma generate
-RUN npm run build
+RUN pnpm prisma generate
+RUN pnpm build
 
 ### PRODUCTION ###
 FROM node:18-alpine
